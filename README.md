@@ -10,6 +10,6 @@ Nous avons choisi d'utiliser XAMPP pour mettre en place notre serveur. Ce choix 
 
 Choix de la plateforme logicielle : JavaFX
 
-Nous avons choisi JavaFX pour notre plateforme logicielle. Ce choix s'est fait naturellement car il s'agit de la seule plateforme logicielle que nous avons étudiée en cours de programmation Java, et donc la seule que nous connaissons.
+Nous avons choisi JavaFX pour notre plateforme logicielle. Ce choix s'est fait naturellement car il s'agit de la seule plateforme logicielle que nous avons étudiée en cours de programmation Java, et donc la seule que nous connaissons. De plus, son intégration avec l'écosystème Java et sa richesse de fonctionnalités de l'UI en fait une plateforme adéquate pour notre projet.
 
 
