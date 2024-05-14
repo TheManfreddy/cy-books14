@@ -1,7 +1,7 @@
 CREATE TABLE User(mail VARCHAR(50) PRIMARY KEY,
 					name VARCHAR(50),
 					first_name VARCHAR(50),
-					age INT,
+					date_birth DATE,
 					adress VARCHAR(100),
 					number INT,
 					number_borrow INT);
@@ -10,9 +10,11 @@ CREATE TABLE Book(ISBN INT PRIMARY KEY,
 					title VARCHAR(50),
 					kind VARCHAR(50),
 					author VARCHAR(50),
+					editor VARCHAR(50),
 					picture VARCHAR(100),
-					stock INT,
-					time_borrow INT DEFAULT 30);
+					language VARCHAR(50),
+					release_year INT,
+					stock INT);
 					
 CREATE TABLE Loan(idLoan INT AUTO_INCREMENT PRIMARY KEY,
 					idBook INT,
@@ -20,7 +22,6 @@ CREATE TABLE Loan(idLoan INT AUTO_INCREMENT PRIMARY KEY,
 					duration INT,
 					start_date DATE,
 					end_date DATE,
-					late INT DEFAULT 0,
 					FOREIGN KEY (idBook) REFERENCES Book(ISBN),
 					FOREIGN KEY (idUser) REFERENCES User(mail));
 					
