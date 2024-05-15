@@ -1,9 +1,8 @@
-DROP TABLE Library;
-DROP TABLE Loan;
-DROP TABLE Book;
-DROP TABLE User;
+DROP TABLE if exists library;
+DROP TABLE if exists borrow;
+DROP TABLE if exists user;
 
-CREATE TABLE User(mail VARCHAR(50) PRIMARY KEY,
+CREATE TABLE user(mail VARCHAR(50) PRIMARY KEY,
 					name VARCHAR(50),
 					first_name VARCHAR(50),
 					date_birth DATE,
@@ -11,25 +10,14 @@ CREATE TABLE User(mail VARCHAR(50) PRIMARY KEY,
 					number INT,
 					number_borrow INT);
 					
-CREATE TABLE Book(ISBN INT PRIMARY KEY,
-					title VARCHAR(50),
-					kind VARCHAR(50),
-					author VARCHAR(50),
-					editor VARCHAR(50),
-					picture VARCHAR(100),
-					language VARCHAR(50),
-					release_year VARCHAR(50),
-					stock INT);
-					
-CREATE TABLE Loan(idLoan INT AUTO_INCREMENT PRIMARY KEY,
-					idBook INT,
+CREATE TABLE borrow(idLoan INT AUTO_INCREMENT PRIMARY KEY,
+					isbn INT,
 					idUser VARCHAR(50),
 					duration INT,
 					start_date DATE,
 					end_date DATE,
-					FOREIGN KEY (idBook) REFERENCES Book(ISBN),
 					FOREIGN KEY (idUser) REFERENCES User(mail));
 					
-CREATE TABLE Library(login VARCHAR(50) PRIMARY KEY,
+CREATE TABLE library(login VARCHAR(50) PRIMARY KEY,
 						password VARCHAR(50));
 					
