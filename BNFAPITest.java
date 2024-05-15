@@ -3,9 +3,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BNFAPITest {
-
     public static void main(String[] args) {
         try {
             // URL de l'API BNF avec la requête
@@ -37,31 +38,34 @@ public class BNFAPITest {
             // Texte extrait de l'API XML
             String extractedText = response.toString();
 
-            // Extraction de l'ISBN
-            String isbn = extractDataWithAttributes(extractedText, "<mxc:datafield tag=\"073\" ind1=\" \" ind2=\"0\">", "<mxc:subfield code=\"a\">");
 
-            // Extraction de la langue
-            String langue = extractDataWithAttributes(extractedText, "<mxc:datafield tag=\"102\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"a\">");
+            List<String> isbn = extractDataFromRecords(extractedText, "<mxc:datafield tag=\"073\" ind1=\" \" ind2=\"0\">", "<mxc:subfield code=\"a\">");
+            List<String> langue = extractDataFromRecords(extractedText, "<mxc:datafield tag=\"102\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"a\">");
+            List<String> titre = extractDataFromRecords(extractedText, "<mxc:datafield tag=\"200\" ind1=\"1\" ind2=\" \">", "<mxc:subfield code=\"a\">");
+            List<String> auteur = extractDataFromRecords(extractedText, "<mxc:datafield tag=\"200\" ind1=\"1\" ind2=\" \">", "<mxc:subfield code=\"f\">");
+            List<String> editeur = extractDataFromRecords(extractedText, "<mxc:datafield tag=\"210\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"c\">");
+            List<String> date_parution = extractDataFromRecords(extractedText, "<mxc:datafield tag=\"210\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"d\">");
 
-            // Extraction du titre
-            String titre = extractDataWithAttributes(extractedText, "<mxc:datafield tag=\"200\" ind1=\"1\" ind2=\" \">", "<mxc:subfield code=\"a\">");
-
-            // Extraction de l'auteur
-            String auteur = extractDataWithAttributes(extractedText, "<mxc:datafield tag=\"200\" ind1=\"1\" ind2=\" \">", "<mxc:subfield code=\"f\">");
-
-            //Extraction de l'éditeur
-            String editeur = extractDataWithAttributes(extractedText, "<mxc:datafield tag=\"210\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"c\">");
-
-            //Extraction de la date de parution
-            String date_parution = extractDataWithAttributes(extractedText, "<mxc:datafield tag=\"210\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"d\">");
-
-            // Affichage des informations extraites
+            // Supprimer les éléments indésirables en parcourant les listes à l'envers
+            for (int i = isbn.size() - 1; i >= 0; i--) {
+                // Si l'un des éléments de la liste est null, supprimez tous les éléments correspondants de toutes les listes
+                if (isbn.get(i) == null || langue.get(i) == null || titre.get(i) == null || auteur.get(i) == null || editeur.get(i) == null || date_parution.get(i) == null) {
+                    isbn.remove(i);
+                    langue.remove(i);
+                    titre.remove(i);
+                    auteur.remove(i);
+                    editeur.remove(i);
+                    date_parution.remove(i);
+                }
+            }
+            System.out.println("        ");
             System.out.println("ISBN: " + isbn);
             System.out.println("Langue: " + langue);
             System.out.println("Titre: " + titre);
             System.out.println("L'auteur: " + auteur);
             System.out.println("L'éditeur: " + editeur);
             System.out.println("Année de parution: " + date_parution);
+
 
 
             // Fermeture de la connexion
@@ -72,33 +76,55 @@ public class BNFAPITest {
         }
 
     }
-    private static String extractData(String text, String startTag, String endTag) {
-        int startIndex = text.indexOf(startTag);
-        int endIndex = text.indexOf(endTag);
-        if (startIndex != -1 && endIndex != -1) {
-            return text.substring(startIndex + startTag.length(), endIndex);
-        } else {
-            return "";
+
+
+    private static List<String> extractDataFromRecords(String text, String parentTag, String subfieldTag) {
+        List<String> dataList = new ArrayList<>();
+
+        // Déterminer la première occurrence de la balise <srw:record>
+        int recordStartIndex = text.indexOf("<srw:record>");
+
+        while (recordStartIndex != -1) {
+            // Déterminer la fin de la balise <srw:record>
+            int recordEndIndex = text.indexOf("</srw:record>", recordStartIndex);
+
+            if (recordEndIndex != -1) {
+                // Extraire le texte entre les balises <srw:record> et </srw:record>
+                String recordText = text.substring(recordStartIndex, recordEndIndex);
+
+                // Recherche de la balise parent à l'intérieur de chaque balise <srw:record>
+                int parentIndex = recordText.indexOf(parentTag);
+                if (parentIndex != -1) {
+                    // Recherche de la balise <mxc:subfield code="a"> à l'intérieur de la balise parent
+                    int subfieldIndex = recordText.indexOf(subfieldTag, parentIndex);
+                    if (subfieldIndex != -1) {
+                        // Trouver le début du contenu de la balise
+                        int contentStart = recordText.indexOf(">", subfieldIndex) + 1;
+                        // Trouver la fin du contenu de la balise
+                        int contentEnd = recordText.indexOf("</mxc:subfield>", contentStart);
+                        if (contentEnd != -1) {
+                            // Extraction du contenu de la balise <mxc:subfield code="a">
+                            String data = recordText.substring(contentStart, contentEnd);
+                            dataList.add(data);
+                        } else {
+                            dataList.add(null); // Ajouter explicitement null si aucune donnée n'est trouvée
+                        }
+                    } else {
+                        dataList.add(null); // Ajouter explicitement null si aucune balise subfield n'est trouvée
+                    }
+                } else {
+                    dataList.add(null); // Ajouter explicitement null si aucune balise parent n'est trouvée
+                }
+            } else {
+                dataList.add(null); // Ajouter explicitement null si aucune fin de balise </srw:record> n'est trouvée
+                break; // Sortir de la boucle pour éviter une boucle infinie
+            }
+
+            // Chercher la prochaine occurrence de la balise <srw:record> après la balise </srw:record>
+            recordStartIndex = text.indexOf("<srw:record>", recordEndIndex);
         }
+
+        return dataList;
     }
 
-    private static String extractDataWithAttributes(String text, String parentTag, String subfieldTag) {
-        // Recherche de la balise parent
-        int parentIndex = text.indexOf(parentTag);
-        if (parentIndex != -1) {
-            // Recherche de la balise <mxc:subfield code="a"> à l'intérieur de la balise parent
-            int subfieldIndex = text.indexOf(subfieldTag, parentIndex);
-            if (subfieldIndex != -1) {
-                // Trouver le début du contenu de la balise
-                int contentStart = subfieldIndex + subfieldTag.length();
-                // Trouver la fin du contenu de la balise
-                int contentEnd = text.indexOf("</mxc:subfield>", contentStart);
-                if (contentEnd != -1) {
-                    // Extraction du contenu de la balise <mxc:subfield code="a">
-                    return text.substring(contentStart, contentEnd);
-                }
-            }
-        }
-        return ""; // Retourne une chaîne vide si le contenu n'est pas trouvé
-    }
 }
