@@ -1,3 +1,8 @@
+DROP TABLE Library;
+DROP TABLE Loan;
+DROP TABLE Book;
+DROP TABLE User;
+
 CREATE TABLE User(mail VARCHAR(50) PRIMARY KEY,
 					name VARCHAR(50),
 					first_name VARCHAR(50),
@@ -13,7 +18,7 @@ CREATE TABLE Book(ISBN INT PRIMARY KEY,
 					editor VARCHAR(50),
 					picture VARCHAR(100),
 					language VARCHAR(50),
-					release_year INT,
+					release_year VARCHAR(50),
 					stock INT);
 					
 CREATE TABLE Loan(idLoan INT AUTO_INCREMENT PRIMARY KEY,
