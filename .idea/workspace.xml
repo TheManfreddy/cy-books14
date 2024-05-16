@@ -4,57 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f26bf83d-0213-48cb-aae1-00a2d8e5a2c8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Java/BNFAPITest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Java/Book.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Java/Client.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Java/Library.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Java/Loan.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Java/Server.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Java/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Java/UserInterface.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Ressources/CY-Books.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Ressources/Structure fichier XML" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Ressources/UML.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SQL/bibli.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SQL/bibli_data.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Style/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/mysql_connector_j_8_4_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BNFAPITest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CY-Books.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Serveur.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UML.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserInterface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cy-books14.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cy-books14.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cy-books14.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/.idea/libraries/mysql_connector_j_8_4_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/CY-Books.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/UML.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/bibli.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/bibli_data.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/cy-books14.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cy-books14/Cy_book/test/mysql-connector-j-8.4.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/bibli.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/bibli_data.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Book.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Client.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Library.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Loan.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Server.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/User.java" beforeDir="false" />
+    <list default="true" id="f26bf83d-0213-48cb-aae1-00a2d8e5a2c8" name="Changes" comment="restructuration">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Java/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Java/UserInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Style/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Style/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,8 +22,25 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="MaximePaviet &lt;maxime.pvet@gmail.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "MaximePaviet"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/TheManfreddy/cy-books14.git",
+    "accountId": "aca75bae-3f05-44ad-ae97-b05a382d26e2"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -82,28 +52,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.BNFAPITest.executor&quot;: &quot;Run&quot;,
-    &quot;Application.BNFAPITest2.executor&quot;: &quot;Run&quot;,
-    &quot;Application.UserInterface.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Developpement/mysql-connector-j-8.4.0.jar&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.BNFAPITest.executor": "Run",
+    "Application.BNFAPITest2.executor": "Run",
+    "Application.UserInterface.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Developpement/mysql-connector-j-8.4.0.jar",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Developpement\xampp\htdocs\Projet\ProjetJavaFX\cy-books14\src\Style" />
+      <recent name="C:\Developpement\xampp\htdocs\Projet\ProjetJavaFX\cy-books14\src\Java" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.UserInterface">
     <configuration name="BNFAPITest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="BNFAPITest" />
@@ -143,11 +119,48 @@
       <option name="presentableId" value="Default" />
       <updated>1715845308204</updated>
       <workItem from="1715845309327" duration="1411000" />
-      <workItem from="1715846756210" duration="301000" />
+      <workItem from="1715846756210" duration="2738000" />
     </task>
+    <task id="LOCAL-00001" summary="restructuration">
+      <option name="closed" value="true" />
+      <created>1715847246686</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1715847246686</updated>
+    </task>
+    <task id="LOCAL-00002" summary="restructuration">
+      <option name="closed" value="true" />
+      <created>1715847940106</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1715847940106</updated>
+    </task>
+    <task id="LOCAL-00003" summary="restructuration">
+      <option name="closed" value="true" />
+      <created>1715847960886</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1715847960886</updated>
+    </task>
+    <task id="LOCAL-00004" summary="restructuration">
+      <option name="closed" value="true" />
+      <created>1715848022502</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1715848022502</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="restructuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="restructuration" />
   </component>
 </project>

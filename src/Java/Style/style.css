@@ -1,0 +1,54 @@
+/*  Page inscrition */
+
+
+.root {
+    -fx-background-color: white;
+    -fx-padding: 20;
+}
+.title {
+    -fx-font-size: 24pt;
+    -fx-font-family: 'Courier New', Courier, monospace;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+    -fx-alignment: center;
+}
+
+.container {
+    -fx-background-color: #EBDEDE;
+    -fx-padding: 20;
+    -fx-border-color: #590824;
+    -fx-border-width: 2;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+}
+
+/* Style pour le label "Identifiant" */
+.label {
+    -fx-font-size: 14pt;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+
+.text-field, .password-field {
+    -fx-font-size: 12pt;
+    -fx-padding: 10;
+    -fx-border-color: #590824;
+    -fx-border-width: 1;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+}
+
+
+.button {
+    -fx-background-color: #590824;
+    -fx-text-fill: white;
+    -fx-font-size: 12pt;
+    -fx-padding: 10 20;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+}
+
+.button:hover {
+    -fx-background-color: #660000;
+}
