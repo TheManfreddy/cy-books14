@@ -10,7 +10,7 @@ CREATE TABLE user(mail VARCHAR(50) PRIMARY KEY,
 					number INT,
 					number_borrow INT);
 					
-CREATE TABLE borrow(idLoan INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE borrow(idBorrow INT AUTO_INCREMENT PRIMARY KEY,
 					isbn INT,
 					idUser VARCHAR(50),
 					duration INT,
