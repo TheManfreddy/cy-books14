@@ -5,7 +5,7 @@ DROP TABLE if exists user;
 CREATE TABLE user(mail VARCHAR(50) PRIMARY KEY,
 					name VARCHAR(50),
 					first_name VARCHAR(50),
-					date_birth DATE,
+					date_birth VARCHAR(10),
 					adress VARCHAR(100),
 					phonenumber VARCHAR(10),
 					number_borrow INT);
