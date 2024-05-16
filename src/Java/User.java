@@ -7,7 +7,7 @@ public class User implements Serializable {
     private String firstName;
     private Date date_birth;
     private String adress;
-    private int number;
+    private int phonenumber;
     private int number_borrow;
 
     public User(String mail, String name, String firstName, Date date_birth, int number,int number_borrow,String adress)  {
@@ -16,7 +16,7 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.date_birth = date_birth;
         this.adress = adress;
-        this.number = number;
+        this.phonenumber = number;
         this.number_borrow = number_borrow;
     }
 
@@ -54,8 +54,8 @@ public class User implements Serializable {
         this.adress = adress;
     }
 
-    public int getNumber() {return number;}
-    public void setMail(int number) {this.number = number; }
+    public int getNumber() {return phonenumber;}
+    public void setMail(int number) {this.phonenumber = number; }
 
     public int getNumber_borrow() {
         return number_borrow;
@@ -74,7 +74,7 @@ public class User implements Serializable {
                 ", firstName='" + firstName + '\'' +
                 ", date_birth='" + date_birth + '\'' +
                 "adress='" + adress + '\'' +
-                "number='" + number + '\'' +
+                "number='" + phonenumber + '\'' +
                 "number_borrow='" + number_borrow + '\'' +
                 '}';
     }

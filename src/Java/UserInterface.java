@@ -72,7 +72,7 @@ public class UserInterface extends Application {
                 Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
                 Statement stmt = conn.createStatement();
 
-                ResultSet usersResultSet = stmt.executeQuery("SELECT * FROM User");
+                ResultSet usersResultSet = stmt.executeQuery("SELECT * FROM user");
                 VBox userInfoBox = new VBox(10);
                 while (usersResultSet.next()) {
                     // Création des labels pour afficher les informations des utilisateurs
