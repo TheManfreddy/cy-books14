@@ -1,17 +1,16 @@
 import java.io.Serializable;
 import java.util.Date;
 
-
-public class Loan implements Serializable {
-    private int idLoan ;
+public class Borrow implements Serializable {
+    private int idBorrow ;
     private int idBook ;
     private String idUser ;
     private int duration ;
     private Date start_date ;
     private Date end_date ;
 
-    public Loan(int idLoan, int idBook, String idUser, int duration,Date start_date,Date end_date)  {
-        this.idLoan = idLoan;
+    public Borrow(int idBorrow, int idBook, String idUser, int duration,Date start_date,Date end_date)  {
+        this.idBorrow = idBorrow;
         this.idBook = idBook;
         this.idUser = idUser;
         this.duration = duration;
@@ -19,11 +18,11 @@ public class Loan implements Serializable {
         this.end_date = end_date;
     }
 
-    public int getIdLoan() {
-        return idLoan;
+    public int getIdBorrow() {
+        return idBorrow;
     }
-    public void setIdLoan(int idLoan) {
-        this.idLoan = idLoan;
+    public void setIdBorrow(int idBorrow) {
+        this.idBorrow = idBorrow;
     }
 
     public int getIdBook() { return idBook;
@@ -60,8 +59,8 @@ public class Loan implements Serializable {
 
     @Override
     public String toString() {
-        return "Loan{" +
-                "idLoan='" + idLoan + '\'' +
+        return "Borrow{" +
+                "idBorrow='" + idBorrow + '\'' +
                 ", idBook='" + idBook + '\'' +
                 ", idUser='" + idUser + '\'' +
                 "duration='" + duration + '\'' +

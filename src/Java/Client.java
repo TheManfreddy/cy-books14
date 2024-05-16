@@ -30,13 +30,16 @@ public class Client {
             }
 
             // Lecture de la liste des prêts envoyée par le serveur
-            ObjectInputStream inLoans = new ObjectInputStream(socket.getInputStream());
-            List<Loan> loans = (List<Loan>) inLoans.readObject();
+            ObjectInputStream inBorrows = new ObjectInputStream(socket.getInputStream());
+            List<Borrow
+                    > borrows = (List<Borrow
+                    >) inBorrows.readObject();
 
             // Affichage des prêts reçus
             System.out.println("Liste des prêts reçus :");
-            for (Loan loan : loans) {
-                System.out.println(loan);
+            for (Borrow
+                    borrow : borrows) {
+                System.out.println(borrow);
             }
 
             // Lecture de la liste des prêts envoyée par le serveur
@@ -51,7 +54,7 @@ public class Client {
             // Fermeture des ressources
             inUsers.close();
             inBooks.close();
-            inLoans.close();
+            inBorrows.close();
             inLibrary.close();
             socket.close();
         } catch (IOException | ClassNotFoundException e) {

@@ -33,7 +33,7 @@ public class Server {
     }
 
     public static void main(String[] args) throws IOException {
-        List<Loan> loans;
+        List<Borrow> Borrows;
         List<User> users;
         List<Book> books;
         List<Library> libraries;
@@ -43,17 +43,17 @@ public class Server {
 
             String sqlUser = "SELECT * FROM user";
             String sqlBook = "SELECT * FROM book";
-            String sqlLoan = "SELECT * FROM loan";
+            String sqlBorrow = "SELECT * FROM Borrow";
             String sqlLibrary = "SELECT * FROM library";
 
             PreparedStatement statementUser = conn.prepareStatement(sqlUser);
             PreparedStatement statementBook = conn.prepareStatement(sqlBook);
-            PreparedStatement statementLoan = conn.prepareStatement(sqlLoan);
+            PreparedStatement statementBorrow = conn.prepareStatement(sqlBorrow);
             PreparedStatement statementLibrary = conn.prepareStatement(sqlLibrary);
 
             ResultSet resultSetUser = statementUser.executeQuery();
             ResultSet resultSetBook = statementBook.executeQuery();
-            ResultSet resultSetLoan = statementLoan.executeQuery();
+            ResultSet resultSetBorrow = statementBorrow.executeQuery();
             ResultSet resultSetLibrary = statementLibrary.executeQuery();
 
 
@@ -69,8 +69,8 @@ public class Server {
                 System.out.println("Échec de l'exécution de la requête SQL.");
             }
 
-            if (resultSetLoan != null) {
-                System.out.println("Requête SQLLoan exécutée avec succès.");
+            if (resultSetBorrow != null) {
+                System.out.println("Requête SQLBorrow exécutée avec succès.");
             } else {
                 System.out.println("Échec de l'exécution de la requête SQL.");
             }
@@ -119,19 +119,19 @@ public class Server {
                 System.out.println("Liste de livres créée avec succès.");
             }
 
-            loans = new ArrayList<>();
+            Borrows = new ArrayList<>();
             while (true) {
-                assert resultSetLoan != null;
-                if (!resultSetLoan.next()) break;
-                int idLoan = resultSetLoan.getInt("idLoan");
-                int idBook = resultSetLoan.getInt("idBook");
-                String idUser = resultSetLoan.getString("idUser");
-                int duration = resultSetLoan.getInt("duration");
-                Date start_date = resultSetLoan.getDate("start_date");
-                Date end_date = resultSetLoan.getDate("end_date");
+                assert resultSetBorrow != null;
+                if (!resultSetBorrow.next()) break;
+                int idBorrow = resultSetBorrow.getInt("idBorrow");
+                int idBook = resultSetBorrow.getInt("idBook");
+                String idUser = resultSetBorrow.getString("idUser");
+                int duration = resultSetBorrow.getInt("duration");
+                Date start_date = resultSetBorrow.getDate("start_date");
+                Date end_date = resultSetBorrow.getDate("end_date");
 
-                Loan loan = new Loan( idLoan,idBook, idUser, duration, start_date, end_date);
-                loans.add(loan);
+                Borrow Borrow = new Borrow( idBorrow,idBook, idUser, duration, start_date, end_date);
+                Borrows.add(Borrow);
 
                 System.out.println("Liste de prêts créée avec succès.");
             }
@@ -169,15 +169,15 @@ public class Server {
         ObjectOutputStream outBook = new ObjectOutputStream(clientSocket.getOutputStream());
         outBook.writeObject(books);
 
-        ObjectOutputStream outLoan = new ObjectOutputStream(clientSocket.getOutputStream());
-        outLoan.writeObject(loans);
+        ObjectOutputStream outBorrow = new ObjectOutputStream(clientSocket.getOutputStream());
+        outBorrow.writeObject(Borrows);
 
         ObjectOutputStream outLibrary = new ObjectOutputStream(clientSocket.getOutputStream());
         outLibrary.writeObject(libraries);
 
         outUser.close();
         outBook.close();
-        outLoan.close();
+        outBorrow.close();
         outLibrary.close();
         clientSocket.close();
         serverSocket.close();
