@@ -1,0 +1,19 @@
+<srw: records> //liste des livres
+    <srw: record> // un livre
+        <mxc:datafield tag="073" ind1="" ind2="0">
+            <mxc:subfield code="a">ISBN</mxc:subfield>
+        </mxc:datafield>
+        <mxc:datafield tag="102" ind1="" ind2="">
+            <mxc:subfield code="a">Langue</mxc:subfield>
+        </mxc:datafield>
+        <mxc:datafield tag="200" ind1="1" ind2="">
+             <mxc:subfield code="a">Titre</mxc:subfield>
+             <mxc:subfield code="f">Auteur</mxc:subfield>
+        </mxc:datafield>
+        <mxc:datafield tag="210" ind1="" ind2="">
+            <mxc:subfield code="c">Editeur</mxc:subfield>
+             <mxc:subfield code="d">Date de parution</mxc:subfield>
+        </mxc:datafield>
+    </srw: record>
+</srw: records>
+
