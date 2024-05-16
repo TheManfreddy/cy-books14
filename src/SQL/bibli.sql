@@ -7,7 +7,7 @@ CREATE TABLE user(mail VARCHAR(50) PRIMARY KEY,
 					first_name VARCHAR(50),
 					date_birth DATE,
 					adress VARCHAR(100),
-					phonenumber INT,
+					phonenumber VARCHAR(10),
 					number_borrow INT);
 					
 CREATE TABLE borrow(idBorrow INT AUTO_INCREMENT PRIMARY KEY,
