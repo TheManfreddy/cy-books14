@@ -16,6 +16,7 @@ CREATE TABLE borrow(idBorrow INT AUTO_INCREMENT PRIMARY KEY,
 					duration INT,
 					start_date DATE,
 					end_date DATE,
+					status INT,
 					FOREIGN KEY (idUser) REFERENCES User(mail));
 					
 CREATE TABLE library(login VARCHAR(50) PRIMARY KEY,

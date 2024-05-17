@@ -13,6 +13,71 @@ import java.sql.*;
 
 public class UserInterface extends Application {
 
+    public static void ajouterEmprunt(int isbn, String idUser){
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connexion à la base de données
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
+
+            // Récupérer le nombre d'emprunts de l'utilisateur
+            String getUserBorrowCountSql = "SELECT number_borrow FROM user WHERE mail = ?";
+            pstmt = conn.prepareStatement(getUserBorrowCountSql);
+            pstmt.setString(1, idUser);
+
+            ResultSet rs = pstmt.executeQuery();
+            int numberBorrow = 0;
+
+            if (rs.next()) {
+                numberBorrow = rs.getInt("number_borrow");
+                System.out.println("Nombre d'emprunts actuels: " + numberBorrow);
+            } else {
+                System.out.println("Utilisateur non trouvé.");
+                return;
+            }
+
+            // Vérifier si l'utilisateur peut emprunter plus de livres
+            if (numberBorrow >= 10) {
+                System.out.println("L'utilisateur a atteint le nombre maximal d'emprunts.");
+                return;
+            } else {
+                // Ajouter un nouvel emprunt
+                Borrow.registerBorrow(isbn, idUser);
+
+                // Mettre à jour le nombre d'emprunts de l'utilisateur
+                String updateUserBorrowCountSql = "UPDATE user SET number_borrow = number_borrow + 1 WHERE mail = ?";
+                pstmt = conn.prepareStatement(updateUserBorrowCountSql);
+                pstmt.setString(1, idUser);
+
+                int updateRows = pstmt.executeUpdate();
+                if (updateRows > 0) {
+                    System.out.println("Nombre d'emprunts mis à jour avec succès!");
+                } else {
+                    System.out.println("Échec de la mise à jour du nombre d'emprunts.");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Fermeture des ressources
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
+    /****************************/
+
+
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
@@ -103,6 +168,7 @@ public class UserInterface extends Application {
     }
 
     public static void main(String[] args) {
+        ajouterEmprunt(1475, "albertroger@gmail.com");
         launch(args);
     }
 }
