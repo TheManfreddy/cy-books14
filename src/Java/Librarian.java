@@ -148,9 +148,6 @@ public class Librarian {
         }
     }
 
-    public static void main(String[] args) throws SQLException {
-        modifyInformation("albertroger@gmail.com","Branda",null,null,"12 rue des merles chanteurs,Paris",null);
 
-    }
 }
 
