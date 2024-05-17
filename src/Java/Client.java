@@ -31,14 +31,11 @@ public class Client {
 
             // Lecture de la liste des prêts envoyée par le serveur
             ObjectInputStream inBorrows = new ObjectInputStream(socket.getInputStream());
-            List<Borrow
-                    > borrows = (List<Borrow
-                    >) inBorrows.readObject();
+            List<Borrow> borrows = (List<Borrow>) inBorrows.readObject();
 
             // Affichage des prêts reçus
             System.out.println("Liste des prêts reçus :");
-            for (Borrow
-                    borrow : borrows) {
+            for (Borrow borrow : borrows) {
                 System.out.println(borrow);
             }
 

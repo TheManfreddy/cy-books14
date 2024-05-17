@@ -21,7 +21,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 public class UserInterface extends Application {
 
-    public static void addBorrow(int isbn, String idUser){
+    public static void addBorrow(String isbn, String idUser){
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -104,13 +104,13 @@ public class UserInterface extends Application {
 
                 List<String> list1 = new ArrayList<>();
 
-                int isbn = r.getInt("isbn");
+                String isbn = r.getString("isbn");
                 int duration = r.getInt("duration");
                 Date start_date = r.getDate("start_date");
                 Date end_date = r.getDate("end_date");
                 int status = r.getInt("status");
 
-                list1.add(String.valueOf(isbn));
+                list1.add(isbn);
                 list1.add(String.valueOf(duration));
                 list1.add(String.valueOf(start_date));
                 list1.add(String.valueOf(end_date));

@@ -69,7 +69,7 @@ public class Borrow implements Serializable {
     public String toString() {
         return "Borrow{" +
                 "idBorrow='" + idBorrow + '\'' +
-                ", idBook='" + idBook + '\'' +
+                ", isbn='" + isbn + '\'' +
                 ", idUser='" + idUser + '\'' +
                 "duration='" + duration + '\'' +
                 "start_date='" + start_date + '\'' +
@@ -146,7 +146,7 @@ public class Borrow implements Serializable {
             String statusSql = "SELECT status FROM Borrow WHERE isbn=? AND idUser=?";
             pstmt = conn.prepareStatement(statusSql);
             // Attribution des valeurs aux paramètres
-            pstmt.setInt(1, isbn);
+            pstmt.setString(1, isbn);
             pstmt.setString(2,idUser);
 
             ResultSet r = pstmt.executeQuery();
@@ -160,7 +160,7 @@ public class Borrow implements Serializable {
                     pstmt = conn.prepareStatement(sql);
 
                     // Attribution des valeurs aux paramètres
-                    pstmt.setInt(1, isbn);
+                    pstmt.setString(1, isbn);
                     pstmt.setString(2,idUser);
 
                     ResultSet rs = pstmt.executeQuery();

@@ -124,13 +124,13 @@ public class Server {
                 assert resultSetBorrow != null;
                 if (!resultSetBorrow.next()) break;
                 int idBorrow = resultSetBorrow.getInt("idBorrow");
-                int idBook = resultSetBorrow.getInt("idBook");
+                String isbn = resultSetBorrow.getString("isbn");
                 String idUser = resultSetBorrow.getString("idUser");
                 int duration = resultSetBorrow.getInt("duration");
                 Date start_date = resultSetBorrow.getDate("start_date");
                 Date end_date = resultSetBorrow.getDate("end_date");
 
-                Borrow Borrow = new Borrow( idBorrow,idBook, idUser, duration, start_date, end_date);
+                Borrow Borrow = new Borrow( idBorrow,isbn, idUser, duration, start_date, end_date);
                 Borrows.add(Borrow);
 
                 System.out.println("Liste de prêts créée avec succès.");
