@@ -8,7 +8,8 @@ import java.util.List;
 
 public class APIBNF{
 
-    private static List<String> extractData(String text, String parentTag, String subfieldTag) {
+    //private changé en public pour utilisation dans displayUser
+    public static List<String> extractData(String text, String parentTag, String subfieldTag) {
         List<String> dataList = new ArrayList<>();
 
         // Déterminer la première occurrence de la balise <srw:record>

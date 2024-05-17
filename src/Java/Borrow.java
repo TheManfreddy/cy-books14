@@ -11,15 +11,15 @@ import java.time.temporal.ChronoUnit;
 
 public class Borrow implements Serializable {
     private int idBorrow ;
-    private int idBook ;
+    private String isbn ;
     private String idUser ;
     private int duration ;
     private Date start_date ;
     private Date end_date ;
 
-    public Borrow(int idBorrow, int idBook, String idUser, int duration,Date start_date,Date end_date)  {
+    public Borrow(int idBorrow, String isbn, String idUser, int duration,Date start_date,Date end_date)  {
         this.idBorrow = idBorrow;
-        this.idBook = idBook;
+        this.isbn = isbn;
         this.idUser = idUser;
         this.duration = duration;
         this.start_date = start_date;
@@ -33,10 +33,10 @@ public class Borrow implements Serializable {
         this.idBorrow = idBorrow;
     }
 
-    public int getIdBook() { return idBook;
+    public String getIsbn() { return isbn;
     }
-    public void setIdBook(int idBook) {
-        this.idBook = idBook;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getIdUser() {
@@ -77,7 +77,7 @@ public class Borrow implements Serializable {
                 '}';
     }
 
-    public static void registerBorrow(int isbn, String idUser){
+    public static void registerBorrow(String isbn, String idUser){
 
 
         LocalDate start_date = LocalDate.now();
@@ -96,7 +96,7 @@ public class Borrow implements Serializable {
             pstmt = conn.prepareStatement(sql);
 
             // Attribution des valeurs aux paramètres
-            pstmt.setInt(1, isbn);
+            pstmt.setString(1, isbn);
             pstmt.setString(2, idUser);
             pstmt.setInt(3, 0);
             pstmt.setDate(4, java.sql.Date.valueOf(start_date));
@@ -132,7 +132,7 @@ public class Borrow implements Serializable {
 
 
 
-    public static void updateBorrow(int isbn, String idUser) {
+    public static void updateBorrow(String isbn, String idUser) {
 
         LocalDate dateActuelle = LocalDate.now();
 
@@ -179,7 +179,7 @@ public class Borrow implements Serializable {
 
                         // Attribution des valeurs aux paramètres
                         pstmt.setLong(1, differenceJours);
-                        pstmt.setInt(2, isbn);
+                        pstmt.setString(2, isbn);
                         pstmt.setString(3,idUser);
 
                         // Exécution de la requête d'insertion
@@ -217,7 +217,7 @@ public class Borrow implements Serializable {
 
     }
 
-    public static void returnBorrow(int isbn, String idUser){
+    public static void returnBorrow(String isbn, String idUser){
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -232,7 +232,7 @@ public class Borrow implements Serializable {
 
             // Attribution des valeurs aux paramètres
             pstmt.setInt(1, 1);
-            pstmt.setInt(2, isbn);
+            pstmt.setString(2, isbn);
             pstmt.setString(3,idUser);
 
             // Exécution de la requête d'insertion
@@ -265,7 +265,7 @@ public class Borrow implements Serializable {
 
     public static void main(String[] args){
 
-        // returnBorrow(1752,"albertroger@gmail.com");
+        // returnBorrow("1752","albertroger@gmail.com");
     }
 
 }

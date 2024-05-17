@@ -11,7 +11,7 @@ CREATE TABLE user(mail VARCHAR(50) PRIMARY KEY,
 					number_borrow INT);
 					
 CREATE TABLE borrow(idBorrow INT AUTO_INCREMENT PRIMARY KEY,
-					isbn INT,
+					isbn VARCHAR(50),-- changement de int en varchar car ISBN peut contenir des tirets ex : 2-7298-9646-5
 					idUser VARCHAR(50),
 					duration INT,
 					start_date DATE,

@@ -14,7 +14,11 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.Date;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 public class UserInterface extends Application {
 
     public static void addBorrow(int isbn, String idUser){
@@ -120,13 +124,14 @@ public class UserInterface extends Application {
                 }
                 if(status == 0 && duration<=30){
                     System.out.println("status: in progress " + "OKAY");
-                    list1.add("gris");
+                    list1.add("vert");
                 }
                 if(status == 1){
                     System.out.println("status: done " + "OKAY");
+                    list1.add("gris");
                 }
 
-
+                listOfBorrows.add(list1);
             }
 
 
@@ -142,7 +147,87 @@ public class UserInterface extends Application {
                 e.printStackTrace();
             }
         }
+        return(listOfBorrows);
+    }
+    public static void displayUser(String mail ) {
+        String query = "SELECT * FROM  user WHERE mail= ?";
 
+        try{
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
+             PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, mail);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String mail1 = rs.getString("mail");
+                    String name = rs.getString("name");
+                    String first_name = rs.getString("first_name");
+                    String date_birth = rs.getString("date_birth");
+                    String adress = rs.getString("adress");
+                    String phonenumber = rs.getString("phonenumber");
+                    int number_borrow = rs.getInt("number_borrow");
+
+                    // Print the results
+                    System.out.println("Mail: " + mail);
+                    System.out.println("Name: " + name);
+                    System.out.println("First Name: " + first_name);
+                    System.out.println("Date of Birth: " + date_birth);
+                    System.out.println("Address: " + adress);
+                    System.out.println("Phone Number: " + phonenumber);
+                    System.out.println("Number Borrow: " + number_borrow);
+                }
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        List<List<String>> listborrow = historyBorrow(mail);
+        for (List list : listborrow) {
+            String query1 = "bib.isbn " + "\"" + list.get(0) + "\"";
+            try {
+                // URL de l'API BNF avec la requête
+                String encodedQuery = URLEncoder.encode(query1, "UTF-8");
+                String apiUrl = "http://catalogue.bnf.fr/api/SRU?version=1.2&operation=searchRetrieve&query=" + encodedQuery;
+
+                // Création de l'URL
+                URL url = new URL(apiUrl);
+
+                // Ouverture de la connexion HTTP
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                // Configuration de la méthode de requête
+                conn.setRequestMethod("GET");
+
+                // Lecture de la réponse
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                // Affichage de la réponse
+                System.out.println(response.toString());
+
+                // Texte extrait de l'API XML
+                String extractedText = response.toString();
+                List<String> titre = APIBNF.extractData(extractedText, "<mxc:datafield tag=\"200\" ind1=\"1\" ind2=\" \">", "<mxc:subfield code=\"a\">");
+
+                /*System.out.println("Titre" + titre);*/
+                System.out.println("Nombre de jours depuis l'emprunt : " + list.get(1));
+                System.out.println("Date d'emprunt : " + list.get(2));
+                System.out.println("Date de retour prévue : " + list.get(3));
+                System.out.println("Surligner le titre en " + list.get(4)); // à faire avec javafx
+
+                conn.disconnect();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -240,8 +325,9 @@ public class UserInterface extends Application {
     }
 
     public static void main(String[] args) {
-        historyBorrow("albertroger@gmail.com");
         launch(args);
+        displayUser("albertroger@gmail.com");
+
     }
 }
 
