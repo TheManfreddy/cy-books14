@@ -6,7 +6,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BNFAPITest {
+public class APIBNF{
 
     private static List<String> extractData(String text, String parentTag, String subfieldTag) {
         List<String> dataList = new ArrayList<>();
