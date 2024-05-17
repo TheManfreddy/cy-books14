@@ -10,10 +10,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.Date;
 
 public class UserInterface extends Application {
 
-    public static void ajouterEmprunt(int isbn, String idUser){
+    public static void addBorrow(int isbn, String idUser){
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -39,7 +43,7 @@ public class UserInterface extends Application {
             }
 
             // Vérifier si l'utilisateur peut emprunter plus de livres
-            if (numberBorrow >= 10) {
+            if (numberBorrow >= 5) {
                 System.out.println("L'utilisateur a atteint le nombre maximal d'emprunts.");
                 return;
             } else {
@@ -58,6 +62,74 @@ public class UserInterface extends Application {
                     System.out.println("Échec de la mise à jour du nombre d'emprunts.");
                 }
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Fermeture des ressources
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
+    public static List<List<String>> historyBorrow(String idUser){
+
+        List<List<String>> listOfBorrows = new ArrayList<>();
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connexion à la base de données
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
+
+            String statusSql = "SELECT isbn,duration,start_date,end_date,status FROM Borrow WHERE idUser=?";
+            pstmt = conn.prepareStatement(statusSql);
+            // Attribution des valeurs aux paramètres
+            pstmt.setString(1,idUser);
+
+            ResultSet r = pstmt.executeQuery();
+            while (r.next()) {  // Déplacer le curseur au premier enregistrement
+
+                List<String> list1 = new ArrayList<>();
+
+                int isbn = r.getInt("isbn");
+                int duration = r.getInt("duration");
+                Date start_date = r.getDate("start_date");
+                Date end_date = r.getDate("end_date");
+                int status = r.getInt("status");
+
+                list1.add(String.valueOf(isbn));
+                list1.add(String.valueOf(duration));
+                list1.add(String.valueOf(start_date));
+                list1.add(String.valueOf(end_date));
+
+
+                System.out.println("ISBN: "+ isbn + " Duration: " + duration + " Start Date: "+ start_date + " End Date: " + end_date);
+
+                if(status == 0 && duration>30){
+                    System.out.println("status: in progress " + " LATE!");
+                    list1.add("rouge");
+                }
+                if(status == 0 && duration<=30){
+                    System.out.println("status: in progress " + "OKAY");
+                    list1.add("gris");
+                }
+                if(status == 1){
+                    System.out.println("status: done " + "OKAY");
+                }
+
+
+            }
+
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -144,7 +216,7 @@ public class UserInterface extends Application {
                     String userInfo = "Name: " + usersResultSet.getString("name") +
                             ", First Name: " + usersResultSet.getString("first_name") +
                             ", Address: " + usersResultSet.getString("adress") +
-                            ", Number: " + usersResultSet.getInt("number") +
+                            ", Phone Number: " + usersResultSet.getInt("phonenumber") +
                             ", Number Borrow: " + usersResultSet.getInt("number_borrow");
                     Label userInfoLabel = new Label(userInfo);
                     userInfoLabel.getStyleClass().add("label");
@@ -168,7 +240,7 @@ public class UserInterface extends Application {
     }
 
     public static void main(String[] args) {
-        ajouterEmprunt(1475, "albertroger@gmail.com");
+        historyBorrow("albertroger@gmail.com");
         launch(args);
     }
 }
