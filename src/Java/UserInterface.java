@@ -163,18 +163,18 @@ public class UserInterface extends Application {
                     String mail1 = rs.getString("mail");
                     String name = rs.getString("name");
                     String first_name = rs.getString("first_name");
-                    String date_birth = rs.getString("date_birth");
-                    String adress = rs.getString("adress");
-                    String phonenumber = rs.getString("phonenumber");
+                    String birth_date = rs.getString("birth_date");
+                    String address = rs.getString("address");
+                    String phone_number = rs.getString("phone_number");
                     int number_borrow = rs.getInt("number_borrow");
 
                     // Print the results
                     System.out.println("Mail: " + mail);
                     System.out.println("Name: " + name);
                     System.out.println("First Name: " + first_name);
-                    System.out.println("Date of Birth: " + date_birth);
-                    System.out.println("Address: " + adress);
-                    System.out.println("Phone Number: " + phonenumber);
+                    System.out.println("Date of Birth: " + birth_date);
+                    System.out.println("Address: " + address);
+                    System.out.println("Phone Number: " + phone_number);
                     System.out.println("Number Borrow: " + number_borrow);
                 }
             }
@@ -300,8 +300,10 @@ public class UserInterface extends Application {
                     // Création des labels pour afficher les informations des utilisateurs
                     String userInfo = "Name: " + usersResultSet.getString("name") +
                             ", First Name: " + usersResultSet.getString("first_name") +
-                            ", Address: " + usersResultSet.getString("adress") +
-                            ", Phone Number: " + usersResultSet.getInt("phonenumber") +
+                            ", Address: " + usersResultSet.getString("address") +
+                            ", Phone Number: " + usersResultSet.getInt("phone_number") +
+                            ", Mail: " + usersResultSet.getInt("mail") +
+                            ", Birth date: " + usersResultSet.getInt("birth_date") +
                             ", Number Borrow: " + usersResultSet.getInt("number_borrow");
                     Label userInfoLabel = new Label(userInfo);
                     userInfoLabel.getStyleClass().add("label");

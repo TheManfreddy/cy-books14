@@ -6,7 +6,7 @@ public class Book implements Serializable {
     private String kind;
     private String author;
     private String editor;
-    private String picture;
+    private String bookCover;
     private String language;
     private int release_year;
     private int stock;
@@ -17,7 +17,7 @@ public class Book implements Serializable {
         this.kind = kind;
         this.author = author;
         this.editor = editor;
-        this.picture = picture;
+        this.bookCover = picture;
         this.language = language;
         this.release_year = release_year;
         this.stock = stock;
@@ -59,10 +59,10 @@ public class Book implements Serializable {
     }
 
     public String getPicture() {
-        return picture;
+        return bookCover;
     }
     public void setPicture(String picture) {
-        this.picture = picture;
+        this.bookCover = picture;
     }
 
     public String getLanguage() {
@@ -87,7 +87,7 @@ public class Book implements Serializable {
                 ", kind='" + kind + '\'' +
                 "author='" + author + '\'' +
                 "editor='" + editor + '\'' +
-                "picture='" + picture + '\'' +
+                "picture='" + bookCover + '\'' +
                 "language='" + language + '\'' +
                 "author='" + author + '\'' +
                 "release_year='" + release_year + '\'' +

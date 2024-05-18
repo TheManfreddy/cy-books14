@@ -26,18 +26,18 @@ public class Librarian {
                         String mail1 = rs.getString("mail");
                         String name = rs.getString("name");
                         String first_name = rs.getString("first_name");
-                        String date_birth = rs.getString("date_birth");
-                        String adress = rs.getString("adress");
-                        String phonenumber = rs.getString("phonenumber");
+                        String birth_date = rs.getString("birth_date");
+                        String address = rs.getString("address");
+                        String phone_number = rs.getString("phone_number");
                         int number_borrow = rs.getInt("number_borrow");
 
                         // Print the results
                         System.out.println("mail: " + mail);
                         System.out.println("Name: " + name);
                         System.out.println("First Name: " + first_name);
-                        System.out.println("Date of Birth: " + date_birth);
-                        System.out.println("Address: " + adress);
-                        System.out.println("Phone Number: " + phonenumber);
+                        System.out.println("Date of Birth: " + birth_date);
+                        System.out.println("Address: " + address);
+                        System.out.println("Phone Number: " + phone_number);
                         System.out.println("Number Borrow: " + number_borrow);
                     }
                 }
@@ -49,11 +49,11 @@ public class Librarian {
         }
 
     }
-    public static void registerUser(String mail, String name, String first_name, String date_birth, String adress, String phonenumber, int number_borrow) throws SQLException {
+    public static void registerUser(String mail, String name, String first_name, String birth_date, String address, String phone_number, int number_borrow) throws SQLException {
 
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
-            String query = "INSERT INTO user  (mail, name, first_name, date_birth, adress, phonenumber, number_borrow)  VALUES (?, ?, ?, ?, ?, ?, ?) ";
+            String query = "INSERT INTO user  (mail, name, first_name, birth_date, address, phone_number, number_borrow)  VALUES (?, ?, ?, ?, ?, ?, ?) ";
 
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -61,9 +61,9 @@ public class Librarian {
                 stmt.setString(1, mail);
                 stmt.setString(2, name);
                 stmt.setString(3, first_name);
-                stmt.setString(4, date_birth);
-                stmt.setString(5, adress);
-                stmt.setString(6, phonenumber);
+                stmt.setString(4, birth_date);
+                stmt.setString(5, address);
+                stmt.setString(6, phone_number);
                 stmt.setInt(7, number_borrow);
 
                 // Exécuter la requête pour insérer l'utilisateur dans la base de données
@@ -80,7 +80,7 @@ public class Librarian {
         }
     }
 
-    public static void modifyInformation(String mail, String name, String first_name,String date_birth, String adress,String phonenumber) throws SQLException {
+    public static void modifyInformation(String mail, String name, String first_name,String birth_date, String address,String phone_number) throws SQLException {
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
             int rowsInserted;
@@ -108,10 +108,10 @@ public class Librarian {
                 } else {
                     System.out.println("Échec modification du nom de famille.");
                 }
-            } if (date_birth != null) {
+            } if (birth_date != null) {
                 String query3 = "UPDATE user SET date_birth = ? WHERE mail = ?";
                 PreparedStatement stmt = conn.prepareStatement(query3);
-                stmt.setString(1, date_birth);
+                stmt.setString(1, birth_date);
                 stmt.setString(2, mail);
                 rowsInserted = stmt.executeUpdate();
                 if (rowsInserted > 0) {
@@ -119,10 +119,10 @@ public class Librarian {
                 } else {
                     System.out.println("Échec modification de la date de naissance.");
                 }
-            } if (adress != null) {
+            } if (address != null) {
                 String query4 = "UPDATE user SET adress = ? WHERE mail = ?";
                 PreparedStatement stmt = conn.prepareStatement(query4);
-                stmt.setString(1, adress);
+                stmt.setString(1, address);
                 stmt.setString(2, mail);
                 rowsInserted = stmt.executeUpdate();
                 if (rowsInserted > 0) {
@@ -130,10 +130,10 @@ public class Librarian {
                 } else {
                     System.out.println("Échec modification de l'adresse.");
                 }
-            } if (phonenumber != null) {
+            } if (phone_number != null) {
                 String query5 = "UPDATE user SET phonenumber = ? WHERE mail = ?";
                 PreparedStatement stmt = conn.prepareStatement(query5);
-                stmt.setString(1, phonenumber);
+                stmt.setString(1, phone_number);
                 stmt.setString(2, mail);
                 rowsInserted = stmt.executeUpdate();
                 if (rowsInserted > 0) {

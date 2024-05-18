@@ -4,19 +4,19 @@ import java.util.Date;
 public class User implements Serializable {
     private String mail;
     private String name;
-    private String firstName;
-    private Date date_birth;
-    private String adress;
-    private int phonenumber;
+    private String first_name;
+    private Date birth_date;
+    private String address;
+    private int phone_number;
     private int number_borrow;
 
-    public User(String mail, String name, String firstName, Date date_birth, int number,int number_borrow,String adress)  {
+    public User(String mail, String name, String first_name, Date birth_date, int phone_number,int number_borrow,String address)  {
         this.mail = mail;
         this.name = name;
-        this.firstName = firstName;
-        this.date_birth = date_birth;
-        this.adress = adress;
-        this.phonenumber = number;
+        this.first_name = first_name;
+        this.birth_date = birth_date;
+        this.address = address;
+        this.phone_number = phone_number;
         this.number_borrow = number_borrow;
     }
 
@@ -34,28 +34,28 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirst_name() {
+        return first_name;
     }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public Date getDate_birth() {
-        return date_birth;
-    }
-    public void setDate_birth(Date date_birth) {
-        this.date_birth = date_birth;
-    }
-    public String getAdress() {
-        return adress;
-    }
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
-    public int getNumber() {return phonenumber;}
-    public void setMail(int number) {this.phonenumber = number; }
+    public Date getBirth_date() {
+        return birth_date;
+    }
+    public void setBirth_date(Date birth_date) {
+        this.birth_date = birth_date;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getNumber() {return phone_number;}
+    public void setMail(int number) {this.phone_number = number; }
 
     public int getNumber_borrow() {
         return number_borrow;
@@ -71,10 +71,10 @@ public class User implements Serializable {
         return "User{" +
                 "mail='" + mail + '\'' +
                 ", name='" + name + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", date_birth='" + date_birth + '\'' +
-                "adress='" + adress + '\'' +
-                "number='" + phonenumber + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", birth_date='" + birth_date + '\'' +
+                "address='" + address + '\'' +
+                "phone_number='" + phone_number + '\'' +
                 "number_borrow='" + number_borrow + '\'' +
                 '}';
     }
