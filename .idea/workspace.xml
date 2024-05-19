@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f26bf83d-0213-48cb-aae1-00a2d8e5a2c8" name="Changes" comment="restructuration">
+    <list default="true" id="f26bf83d-0213-48cb-aae1-00a2d8e5a2c8" name="Changes" comment="ajout Librarian">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cy-books14.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cy-books14.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Java/Librarian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Java/Librarian.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ressources/UML.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ressources/UML.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +75,7 @@
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "CodeWithMe",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -87,7 +85,7 @@
       <recent name="C:\Developpement\xampp\htdocs\Projet\ProjetJavaFX\cy-books14\src\Java" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.UserInterface">
     <configuration name="BNFAPITest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="BNFAPITest" />
       <module name="cy-books14" />
@@ -133,7 +131,9 @@
       <workItem from="1715846756210" duration="2738000" />
       <workItem from="1715850861358" duration="409000" />
       <workItem from="1715851281250" duration="2000" />
-      <workItem from="1715851316971" duration="16546000" />
+      <workItem from="1715851316971" duration="17420000" />
+      <workItem from="1715931872364" duration="11771000" />
+      <workItem from="1716103593737" duration="5575000" />
     </task>
     <task id="LOCAL-00001" summary="restructuration">
       <option name="closed" value="true" />
@@ -167,7 +167,14 @@
       <option name="project" value="LOCAL" />
       <updated>1715848022502</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="ajout Librarian">
+      <created>1715874580691</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1715874580691</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,6 +182,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="restructuration" />
-    <option name="LAST_COMMIT_MESSAGE" value="restructuration" />
+    <MESSAGE value="ajout Librarian" />
+    <option name="LAST_COMMIT_MESSAGE" value="ajout Librarian" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
