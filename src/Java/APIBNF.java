@@ -86,8 +86,6 @@ public class APIBNF{
             }
             in.close();
 
-            // Affichage de la réponse
-            System.out.println(response.toString());
 
             // Texte extrait de l'API XML
             String extractedText = response.toString();
