@@ -47,7 +47,7 @@ public class HomePage extends VBox {
 
         // Configure le bouton usagers pour ouvrir la page usagers
         usersButton.setOnAction(e -> {
-            UsersPage usersPage = new UsersPage(primaryStage,width, height);
+            UsersPage usersPage = new UsersPage(primaryStage,width,height);
             primaryStage.setScene(usersPage.getUsersPageScene());
         });
 
