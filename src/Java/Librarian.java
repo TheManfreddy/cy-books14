@@ -109,7 +109,7 @@ public class Librarian {
                     System.out.println("Échec modification du nom de famille.");
                 }
             } if (birth_date != null) {
-                String query3 = "UPDATE user SET date_birth = ? WHERE mail = ?";
+                String query3 = "UPDATE user SET birth_date = ? WHERE mail = ?";
                 PreparedStatement stmt = conn.prepareStatement(query3);
                 stmt.setString(1, birth_date);
                 stmt.setString(2, mail);
@@ -120,7 +120,7 @@ public class Librarian {
                     System.out.println("Échec modification de la date de naissance.");
                 }
             } if (address != null) {
-                String query4 = "UPDATE user SET adress = ? WHERE mail = ?";
+                String query4 = "UPDATE user SET address = ? WHERE mail = ?";
                 PreparedStatement stmt = conn.prepareStatement(query4);
                 stmt.setString(1, address);
                 stmt.setString(2, mail);
@@ -131,7 +131,7 @@ public class Librarian {
                     System.out.println("Échec modification de l'adresse.");
                 }
             } if (phone_number != null) {
-                String query5 = "UPDATE user SET phonenumber = ? WHERE mail = ?";
+                String query5 = "UPDATE user SET phone_number = ? WHERE mail = ?";
                 PreparedStatement stmt = conn.prepareStatement(query5);
                 stmt.setString(1, phone_number);
                 stmt.setString(2, mail);
@@ -147,6 +147,7 @@ public class Librarian {
             e.printStackTrace();
         }
     }
+
 
 
 }

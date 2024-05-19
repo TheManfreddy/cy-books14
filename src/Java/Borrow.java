@@ -263,9 +263,6 @@ public class Borrow implements Serializable {
 
 
 
-    public static void main(String[] args){
 
-        // returnBorrow("1752","albertroger@gmail.com");
-    }
 
 }
