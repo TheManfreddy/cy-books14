@@ -1,4 +1,5 @@
-import javafx.application.Application;
+package app;
+
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,13 +10,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.sql.*;
+public class ConnexionPage extends VBox {
+    private Scene scene;
 
-public class Interface extends Application {
-
-    @Override
-    public void start(Stage primaryStage) {
+    public ConnexionPage(Stage primaryStage, double width, double height) {
+        // Crée et configure la scène
         BorderPane root = new BorderPane();
+        scene = new Scene(root, width, height);
+        scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
         // Crée un Label pour le titre
         Label titleLabel = new Label("CYBOOKS");
@@ -54,53 +56,28 @@ public class Interface extends Application {
         passwordBox.setAlignment(Pos.CENTER_LEFT);
 
         // Crée un bouton pour se connecter
-        Button userButton = new Button("Se connecter");
-        userButton.getStyleClass().add("button");
+        Button loginButton = new Button("Se connecter");
+        loginButton.getStyleClass().add("button");
 
         // Crée un conteneur VBox et y ajoute les composants
         VBox vbox = new VBox(15); // 15 est l'espacement entre les éléments
-        vbox.getChildren().addAll(identifiantBox, passwordBox, userButton);
+        vbox.getChildren().addAll(identifiantBox, passwordBox, loginButton);
         vbox.getStyleClass().add("container");
         vbox.setAlignment(Pos.CENTER);
 
         // Place le VBox contenant le champ de texte et le bouton au centre du BorderPane
         root.setCenter(vbox);
 
-        // Configure l'action du bouton
-        userButton.setOnAction(event -> {
-            try {
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
-                Statement stmt = conn.createStatement();
-
-                ResultSet usersResultSet = stmt.executeQuery("SELECT * FROM user");
-                VBox userInfoBox = new VBox(10);
-                while (usersResultSet.next()) {
-                    // Création des labels pour afficher les informations des utilisateurs
-                    String userInfo = "Name: " + usersResultSet.getString("name") +
-                            ", First Name: " + usersResultSet.getString("first_name") +
-                            ", Address: " + usersResultSet.getString("address") +
-                            ", Phone Number: " + usersResultSet.getInt("phone_number") +
-                            ", Mail: " + usersResultSet.getInt("mail") +
-                            ", Birth date: " + usersResultSet.getInt("birth_date") +
-                            ", Number Borrow: " + usersResultSet.getInt("number_borrow");
-                    Label userInfoLabel = new Label(userInfo);
-                    userInfoLabel.getStyleClass().add("label");
-                    userInfoBox.getChildren().add(userInfoLabel);
-                }
-                root.setCenter(userInfoBox);
-
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        // Configure le bouton pour ouvrir la page d'accueil
+        loginButton.setOnAction(e -> {
+            HomePage homePage = new HomePage(primaryStage,width, height);
+            primaryStage.setScene(homePage.getHomePageScene());
         });
+    }
 
-        // Crée et configure la scène
-        Scene scene = new Scene(root, 700, 500);
-        scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
-
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Test Bibli");
-        primaryStage.show();
+    public Scene getConnexionPageScene() {
+        return scene;
     }
 }
+
+

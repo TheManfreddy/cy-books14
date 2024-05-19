@@ -17,13 +17,13 @@ public class Librarian {
             String query = "SELECT * FROM  user WHERE mail = ?";
 
             try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
-                    PreparedStatement stmt = conn.prepareStatement(query)) {
+                PreparedStatement stmt = conn.prepareStatement(query)) {
 
                 stmt.setString(1, mail);
 
                 try (ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {
-                        String mail1 = rs.getString("mail");
+                        mail = rs.getString("mail");
                         String name = rs.getString("name");
                         String first_name = rs.getString("first_name");
                         String birth_date = rs.getString("birth_date");
@@ -32,13 +32,14 @@ public class Librarian {
                         int number_borrow = rs.getInt("number_borrow");
 
                         // Print the results
-                        System.out.println("mail: " + mail);
+                        System.out.println("Mail: " + mail);
                         System.out.println("Name: " + name);
                         System.out.println("First Name: " + first_name);
                         System.out.println("Date of Birth: " + birth_date);
                         System.out.println("Address: " + address);
                         System.out.println("Phone Number: " + phone_number);
                         System.out.println("Number Borrow: " + number_borrow);
+                        System.out.println(" ");
                     }
                 }
 
