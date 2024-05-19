@@ -22,7 +22,7 @@ public class MainApp extends Application {
 
         // Configurer la scène principale
         primaryStage.setScene(connexionScene);
-        primaryStage.setTitle("Application de Connexion");
+        primaryStage.setTitle("CYBook");
         primaryStage.setX(bounds.getMinX());
         primaryStage.setY(bounds.getMinY());
         primaryStage.setWidth(bounds.getWidth());

@@ -16,6 +16,7 @@ public class UserProfile extends VBox {
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
 
+
         // Crée un Label pour le titre
         Label titleLabel = new Label("Profil Usager");
         titleLabel.getStyleClass().add("title");

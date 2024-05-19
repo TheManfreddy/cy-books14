@@ -21,6 +21,7 @@ public class UsersPage extends VBox {
         // Crée et configure la scène
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
+        scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
         // Crée un Label pour le titre
         Label titleLabel = new Label("Usagers");
@@ -32,17 +33,16 @@ public class UsersPage extends VBox {
 
         // Crée un conteneur HBox pour le bouton retour et le titre
         HBox topBox = new HBox(100);
-        topBox.setAlignment(Pos.CENTER);
+        topBox.setAlignment(Pos.CENTER_LEFT);
         topBox.setStyle("-fx-padding: 20;");
         topBox.getChildren().addAll(returnButton, titleLabel);
 
         // Configure le bouton retour
         returnButton.setOnAction(e -> {
             HomePage homePage = new HomePage(primaryStage, width, height);
-            primaryStage.setScene(homePage.getScene());
+            primaryStage.setScene(homePage.getHomePageScene());
         });
 
-        root.setTop(topBox);
 
         // Crée un champ de texte pour la barre de recherche
         TextField textFieldResearchBar = new TextField();
@@ -59,16 +59,19 @@ public class UsersPage extends VBox {
 
         // Crée un conteneur HBox pour la barre de recherche, le bouton ajouter usager et le bouton afficher retardataire
         HBox hBox = new HBox(100);
-        hBox.setAlignment(Pos.CENTER);
+        hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setStyle("-fx-padding: 20;");
         hBox.getChildren().addAll(textFieldResearchBar, addUserButton, lateUserButton);
-        root.setTop(hBox);
 
+
+
+        /*
         // Configure le bouton usagers pour ouvrir la page usagers
         addUserButton.setOnAction(e -> {
             RegisterUser registerUser = new RegisterUser(primaryStage,width,height);
             primaryStage.setScene(registerUser.getRegisterUserScene());
         });
+         */
 
 
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
@@ -78,13 +81,13 @@ public class UsersPage extends VBox {
             VBox userInfoBox = new VBox(10);
             while (usersResultSet.next()) {
                 // Création des labels pour afficher les informations des utilisateurs
-                String userInfo = "Mail: " + usersResultSet.getString("mail") +
-                        ", Name: " + usersResultSet.getString("name") +
-                        ", First Name: " + usersResultSet.getString("first_name") +
-                        ", Birth date: " + usersResultSet.getString("birth_date") +
-                        ", Address: " + usersResultSet.getString("address") +
-                        ", Phone Number: " + usersResultSet.getString("phone_number") +
-                        ", Number Borrow: " + usersResultSet.getInt("number_borrow");
+                String userInfo =  usersResultSet.getString("mail")
+                         + usersResultSet.getString("name") + "        "
+                         + usersResultSet.getString("first_name") + "        "
+                         + usersResultSet.getString("birth_date") + "        "
+                         + usersResultSet.getString("address") + "        "
+                         + usersResultSet.getString("phone_number") + "        "
+                         + usersResultSet.getInt("number_borrow") + "        ";
                 Label userInfoLabel = new Label(userInfo);
                 userInfoLabel.getStyleClass().add("label");
 
@@ -99,12 +102,17 @@ public class UsersPage extends VBox {
                     UserProfile userProfile = new UserProfile(primaryStage, width, height);
                     primaryStage.setScene(userProfile.getUserProfileScene());
                 });
+                VBox finalBox = new VBox(15);
+                finalBox.getChildren().addAll(topBox, hBox, userInfoBox);
+                finalBox.setAlignment(Pos.CENTER);
+                root.setCenter(finalBox);
+
             }
-            root.setLeft(userInfoBox);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     public Scene getUsersPageScene() {
