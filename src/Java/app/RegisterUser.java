@@ -28,6 +28,16 @@ public class RegisterUser {
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
+        //Create an return button
+        Button returnButton = new Button("Retour");
+        returnButton.getStyleClass().add("button");
+
+        // Configure the button to open the user page
+        returnButton.setOnAction(e -> {
+            UsersPage usersPage = new UsersPage(primaryStage, width, height);
+            primaryStage.setScene(usersPage.getUsersPageScene());
+        });
+
         // Create a Label for the title
         Label titleLabel = new Label("Inscrire un usager");
         titleLabel.getStyleClass().add("title");
@@ -114,7 +124,7 @@ public class RegisterUser {
 
         // Create a VBox and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(titleBox, nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton);
+        vbox.getChildren().addAll(titleBox, nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton,returnButton);
         vbox.getStyleClass().add("container");
 
         // Place the VBox containing the text fields and button in the center of the BorderPane
