@@ -10,121 +10,165 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
+
 public class RegisterUser {
 
     private Scene scene;
+    private TextField textFieldName;
+    private TextField textFieldFirstName;
+    private TextField textFieldBirthDate;
+    private TextField textFieldMail;
+    private TextField textFieldNumber;
+    private TextField textFieldAddress;
 
-    public RegisterUser(Stage primaryStage, double width, double height){
-        // Crée et configure la scène
+    public RegisterUser(Stage primaryStage, double width, double height) {
+        // Create and configure the scene
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-        // Crée un Label pour le titre
+        // Create a Label for the title
         Label titleLabel = new Label("Inscrire un usager");
         titleLabel.getStyleClass().add("title");
 
-        // Crée un conteneur pour le titre
+        // Create a container for the title
         HBox titleBox = new HBox(titleLabel);
         root.setTop(titleBox);
 
-        // Crée un Label pour le nom
+        // Create a Label for the name
         Label labelName = new Label("Nom :");
         labelName.getStyleClass().add("label");
 
-        // Crée un champ de texte pour le nom
-        TextField textFieldName= new TextField();
+        // Create a text field for the name
+        textFieldName = new TextField();
         textFieldName.setPromptText("Nom");
         textFieldName.getStyleClass().add("text-field");
 
-        // Crée un conteneur VBox pour le nom et son champ de texte
+        // Create an HBox for the name and its text field
         HBox nameBox = new HBox(5, labelName, textFieldName);
 
-
-        // Crée un Label pour le prénom
+        // Create a Label for the first name
         Label labelFirstName = new Label("Prénom :");
         labelFirstName.getStyleClass().add("label");
 
-        // Crée un champ de texte pour le prénom
-        TextField textFieldFirstName= new TextField();
+        // Create a text field for the first name
+        textFieldFirstName = new TextField();
         textFieldFirstName.setPromptText("Prénom");
         textFieldFirstName.getStyleClass().add("text-field");
 
-        // Crée un conteneur VBox pour le prénom et son champ de texte
+        // Create an HBox for the first name and its text field
         HBox firstNameBox = new HBox(5, labelFirstName, textFieldFirstName);
 
-        // Crée un Label pour la date de naissance
+        // Create a Label for the birth date
         Label labelBirthDate = new Label("Date de naissance :");
         labelBirthDate.getStyleClass().add("label");
 
-        // Crée un champ de texte pour la date de naissance
-        TextField textFieldBirthDate= new TextField();
+        // Create a text field for the birth date
+        textFieldBirthDate = new TextField();
         textFieldBirthDate.setPromptText("Date de naissance");
         textFieldBirthDate.getStyleClass().add("text-field");
 
-        // Crée un conteneur VBox pour la date de naissance et son champ de texte
+        // Create an HBox for the birth date and its text field
         HBox birthDateBox = new HBox(5, labelBirthDate, textFieldBirthDate);
 
-        // Crée un Label pour le mail
+        // Create a Label for the email
         Label labelMail = new Label("Mail :");
         labelMail.getStyleClass().add("label");
 
-        // Crée un champ de texte pour le mail
-        TextField textFieldMail = new TextField();
+        // Create a text field for the email
+        textFieldMail = new TextField();
         textFieldMail.setPromptText("Mail");
         textFieldMail.getStyleClass().add("text-field");
 
-        // Crée un conteneur VBox pour le mail et son champ de texte
+        // Create an HBox for the email and its text field
         HBox mailBox = new HBox(5, labelMail, textFieldMail);
 
-        // Crée un Label pour le numéro de téléphone
+        // Create a Label for the phone number
         Label labelNumber = new Label("Téléphone :");
         labelNumber.getStyleClass().add("label");
 
-        // Crée un champ de texte pour le numéro de téléphone
-        TextField textFieldNumber= new TextField();
+        // Create a text field for the phone number
+        textFieldNumber = new TextField();
         textFieldNumber.setPromptText("Prénom");
         textFieldNumber.getStyleClass().add("text-field");
 
-        // Crée un conteneur VBox pour le numéro de téléphone et son champ de texte
+        // Create an HBox for the phone number and its text field
         HBox numberBox = new HBox(5, labelNumber, textFieldNumber);
 
-        // Crée un Label pour l'adresse
+        // Create a Label for the address
         Label labelAddress = new Label("Adresse :");
         labelAddress.getStyleClass().add("label");
 
-        // Crée un champ de texte pour l'adresse
-        TextField textFieldAddress= new TextField();
+        // Create a text field for the address
+        textFieldAddress = new TextField();
         textFieldAddress.setPromptText("Adresse");
         textFieldAddress.getStyleClass().add("text-field");
 
-        // Crée un conteneur VBox pour l'adresse et son champ de texte
+        // Create an HBox for the address and its text field
         HBox addressBox = new HBox(5, labelAddress, textFieldAddress);
 
-        // Crée un bouton ajouter
+        // Create an add button
         Button addUserButton = new Button("Ajouter");
         addUserButton.getStyleClass().add("button");
 
-        // Crée un conteneur VBox et y ajoute les composants
-        VBox vbox = new VBox(15); // 15 est l'espacement entre les éléments
-        vbox.getChildren().addAll(titleBox, nameBox,firstNameBox,birthDateBox,mailBox,numberBox, addressBox ,addUserButton);
+        // Create a VBox and add the components
+        VBox vbox = new VBox(15); // 15 is the spacing between elements
+        vbox.getChildren().addAll(titleBox, nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton);
         vbox.getStyleClass().add("container");
 
-
-        // Place le VBox contenant le champ de texte et le bouton au centre du BorderPane
+        // Place the VBox containing the text fields and button in the center of the BorderPane
         root.setCenter(vbox);
 
-        // Configure le bouton pour ouvrir la page utilisateur
+        // Configure the button to open the user page
         addUserButton.setOnAction(e -> {
-            UsersPage usersPage = new UsersPage(primaryStage,width, height);
+            // Retrieve values from text fields
+            String name = getTextFieldName();
+            String firstName = getTextFieldFirstName();
+            String birthDate = getTextFieldBirthDate();
+            String mail = getTextFieldMail();
+            String phoneNumber = getTextFieldNumber();
+            String address = getTextFieldAddress();
+
+            try {
+                Librarian.registerUser(mail,name, firstName, birthDate,address , phoneNumber,0 );
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            UsersPage usersPage = new UsersPage(primaryStage, width, height);
             primaryStage.setScene(usersPage.getUsersPageScene());
         });
 
 
 
 
-
     }
+    public String getTextFieldName() {
+        return textFieldName.getText();
+    }
+
+    public String getTextFieldFirstName() {
+        return textFieldFirstName.getText();
+    }
+
+    public String getTextFieldBirthDate() {
+        return textFieldBirthDate.getText();
+    }
+
+    public String getTextFieldMail() {
+        return textFieldMail.getText();
+    }
+
+    public String getTextFieldNumber() {
+        return textFieldNumber.getText();
+    }
+
+    public String getTextFieldAddress() {
+        return textFieldAddress.getText();
+    }
+
+
 
     public Scene getRegisterUserScene() {
         return scene;
