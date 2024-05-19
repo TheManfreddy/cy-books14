@@ -65,13 +65,13 @@ public class UsersPage extends VBox {
 
 
 
-        /*
+
         // Configure le bouton usagers pour ouvrir la page usagers
         addUserButton.setOnAction(e -> {
             RegisterUser registerUser = new RegisterUser(primaryStage,width,height);
             primaryStage.setScene(registerUser.getRegisterUserScene());
         });
-         */
+
 
 
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
