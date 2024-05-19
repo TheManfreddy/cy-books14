@@ -50,8 +50,14 @@ public class HomePage extends VBox {
             UsersPage usersPage = new UsersPage(primaryStage,width,height);
             primaryStage.setScene(usersPage.getUsersPageScene());
         });
+        // Configure le bouton usagers pour ouvrir la page usagers
+        libraryButton.setOnAction(e -> {
+            LibraryPage libraryPage = new LibraryPage(primaryStage,width, height);
+            primaryStage.setScene(libraryPage.getLibraryPageScene());
+        });
 
     }
+
 
 
     public Scene getHomePageScene() {
