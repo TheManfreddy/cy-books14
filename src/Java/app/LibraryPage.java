@@ -1,5 +1,7 @@
 package app;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
@@ -8,8 +10,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import methods.APIBNF;
+import methods.Librarian;
+import methods.System1;
 
-public class LibraryPage extends VBox {
+import java.util.Arrays;
+import java.util.List;
+
+
+public class LibraryPage extends VBox  {
     private Scene scene;
 
     public LibraryPage(Stage primaryStage,double width, double height) {
@@ -61,7 +70,7 @@ public class LibraryPage extends VBox {
         mostborrowedButton.getStyleClass().add("button");
 
         // Crée un conteneur VBox pour l'identifiant et son champ de texte
-        HBox searchBox = new HBox(15, labelSearch, textFieldSearch,langageButton);
+        HBox searchBox = new HBox(15, labelSearch, textFieldSearch,searchButton,langageComboBox);
         searchBox.setAlignment(Pos.TOP_CENTER);
 
 
@@ -83,6 +92,29 @@ public class LibraryPage extends VBox {
             HomePage homePage = new HomePage(primaryStage,width, height);
             primaryStage.setScene(homePage.getHomePageScene());
         });
+
+        searchButton.setOnAction(e -> {
+            String Text = textFieldSearch.getText();
+            List<String> listBook = System1.displayBookList(Text);
+
+            // Débogage : affiche le contenu de la liste
+            for (String book : listBook) {
+                System.out.println(book);
+            }
+
+
+            // Convertir la liste en ObservableList pour qu'elle soit compatible avec ListView
+            ObservableList<String> items = FXCollections.observableArrayList(listBook);
+
+            // Créer un ListView et ajouter les éléments
+            ListView<String> listView = new ListView<>(items);
+
+            // Ajouter le ListView à un VBox
+            VBox vbox = new VBox(listView);
+            root.setCenter(vbox);
+
+        });
+
 
     }
 
