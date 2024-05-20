@@ -1,10 +1,7 @@
-
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+package methods;
 
 import java.io.Serializable;
 import java.sql.*;
-import java.time.temporal.Temporal;
 import java.util.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -67,7 +64,7 @@ public class Borrow implements Serializable {
 
     @Override
     public String toString() {
-        return "Borrow{" +
+        return "methods.Borrow{" +
                 "idBorrow='" + idBorrow + '\'' +
                 ", isbn='" + isbn + '\'' +
                 ", idUser='" + idUser + '\'' +

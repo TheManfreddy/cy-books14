@@ -1,3 +1,5 @@
+package methods;
+
 import java.io.*;
 import java.net.*;
 import java.sql.*;
@@ -161,7 +163,7 @@ public class Server {
         System.out.println("Serveur en attente de connexion...");
 
         Socket clientSocket = serverSocket.accept();
-        System.out.println("Client connecté.");
+        System.out.println("methods.Client connecté.");
 
         ObjectOutputStream outUser = new ObjectOutputStream(clientSocket.getOutputStream());
         outUser.writeObject(users);

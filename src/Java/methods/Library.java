@@ -1,3 +1,5 @@
+package methods;
+
 import java.io.Serializable;
 
 
@@ -32,7 +34,7 @@ public class Library implements Serializable {
 
     @Override
     public String toString() {
-        return "Library{" +
+        return "methods.Library{" +
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 '}';

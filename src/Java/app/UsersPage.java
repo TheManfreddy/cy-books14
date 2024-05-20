@@ -17,6 +17,8 @@ import java.sql.Statement;
 public class UsersPage extends VBox {
     private Scene scene;
 
+    TextField textFieldResearchBar;
+
     public UsersPage(Stage primaryStage, double width, double height) {
         // Crée et configure la scène
         BorderPane root = new BorderPane();
@@ -45,9 +47,28 @@ public class UsersPage extends VBox {
 
 
         // Crée un champ de texte pour la barre de recherche
-        TextField textFieldResearchBar = new TextField();
+        textFieldResearchBar = new TextField();
         textFieldResearchBar.setPromptText("Rechercher un usager");
         textFieldResearchBar.getStyleClass().add("text-field");
+
+        // Crée un bouton recherche
+        Button searchButton = new Button("Rechercher");
+        searchButton.getStyleClass().add("button");
+
+        // Configure the button to open the user page
+        searchButton.setOnAction(e -> {
+            // Retrieve values from text fields
+            String mail = getTextFieldResearchBar();
+
+            try {
+                System1.displayUser(mail);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            UserProfile usersProfile = new UserProfile(primaryStage, width, height);
+            primaryStage.setScene(usersProfile.getUserProfileScene());
+        });
 
         //Crée le bouton ajouter usager
         Button addUserButton = new Button("+");
@@ -61,10 +82,7 @@ public class UsersPage extends VBox {
         HBox hBox = new HBox(100);
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setStyle("-fx-padding: 20;");
-        hBox.getChildren().addAll(textFieldResearchBar, addUserButton, lateUserButton);
-
-
-
+        hBox.getChildren().addAll(textFieldResearchBar, searchButton,addUserButton, lateUserButton);
 
         // Configure le bouton usagers pour ouvrir la page usagers
         addUserButton.setOnAction(e -> {
@@ -72,6 +90,18 @@ public class UsersPage extends VBox {
             primaryStage.setScene(registerUser.getRegisterUserScene());
         });
 
+        // Création des labels pour afficher les légendes
+        String legend =  "Mail" + "        " + "Prénom" + "        " + "Nom" + "        "
+                + "Date de naissance" + "        "  + "Adresse" + "        " + "téléphone" + "        "
+                + "Emprunts" + "        ";
+        Label legendLabel = new Label(legend);
+        legendLabel.getStyleClass().add("label");
+
+        //Crée un conteneur HBox pour les légendes
+        HBox legendBox = new HBox();
+        legendBox.setAlignment(Pos.CENTER_LEFT);
+        legendBox.setStyle("-fx-padding: 20;");
+        legendBox.getChildren().add(legendLabel);
 
 
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
@@ -81,7 +111,7 @@ public class UsersPage extends VBox {
             VBox userInfoBox = new VBox(10);
             while (usersResultSet.next()) {
                 // Création des labels pour afficher les informations des utilisateurs
-                String userInfo =  usersResultSet.getString("mail")
+                String userInfo =  usersResultSet.getString("mail") + "        "
                          + usersResultSet.getString("name") + "        "
                          + usersResultSet.getString("first_name") + "        "
                          + usersResultSet.getString("birth_date") + "        "
@@ -103,7 +133,7 @@ public class UsersPage extends VBox {
                     primaryStage.setScene(userProfile.getUserProfileScene());
                 });
                 VBox finalBox = new VBox(15);
-                finalBox.getChildren().addAll(topBox, hBox, userInfoBox);
+                finalBox.getChildren().addAll(topBox, hBox,legendBox, userInfoBox);
                 finalBox.setAlignment(Pos.CENTER);
                 root.setCenter(finalBox);
 
@@ -113,6 +143,10 @@ public class UsersPage extends VBox {
             e.printStackTrace();
         }
 
+    }
+
+    public String getTextFieldResearchBar() {
+        return textFieldResearchBar.getText();
     }
 
     public Scene getUsersPageScene() {

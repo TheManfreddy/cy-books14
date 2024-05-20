@@ -1,8 +1,7 @@
-package app;
+package methods;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Librarian {
@@ -49,7 +48,7 @@ public class Librarian {
                         System.out.println("Date of Birth: " + birth_date);
                         System.out.println("Address: " + address);
                         System.out.println("Phone Number: " + phone_number);
-                        System.out.println("Number Borrow: " + number_borrow);
+                        System.out.println("Number methods.Borrow: " + number_borrow);
                         System.out.println(" ");
                     }
                 }

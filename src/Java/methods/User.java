@@ -1,3 +1,5 @@
+package methods;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -68,7 +70,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "methods.User{" +
                 "mail='" + mail + '\'' +
                 ", name='" + name + '\'' +
                 ", first_name='" + first_name + '\'' +

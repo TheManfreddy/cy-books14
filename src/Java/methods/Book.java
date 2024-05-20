@@ -1,3 +1,5 @@
+package methods;
+
 import java.io.Serializable;
 
 public class Book implements Serializable {
@@ -81,7 +83,7 @@ public class Book implements Serializable {
 
     @Override
     public String toString() {
-        return "Book{" +
+        return "methods.Book{" +
                 "ISBN='" + ISBN + '\'' +
                 ", title='" + title + '\'' +
                 ", kind='" + kind + '\'' +
