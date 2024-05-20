@@ -135,52 +135,19 @@ public class System1{
         }
         return(listOfBorrows);
     }
-    public static void displayUser(String mail ) throws SQLException {
-        String query = "SELECT * FROM  user WHERE mail= ?";
+    public static List<List<String>> displayUser(String mail ) throws SQLException {
 
-        Librarian.searchUser(mail);
+        List<List<String>> user = new ArrayList<>();
+        user.add(Librarian.searchUser(mail));
         List<List<String>> listborrow = historyBorrow(mail);
-        for (List list : listborrow) {
-            String query1 = "bib.isbn all " + "\"" + list.get(0) + "\"";
-            try {
-                // URL de l'API BNF avec la requête
-                String encodedQuery = URLEncoder.encode(query1, "UTF-8");
-                String apiUrl = "http://catalogue.bnf.fr/api/SRU?version=1.2&operation=searchRetrieve&query=" + encodedQuery;
+        for (List<String> list : listborrow) {
+                List<List<String>> book = APIBNF.retrieveBook_isbn((String) list.getFirst());
+                list.remove(list.getFirst());
+                list.addFirst(String.valueOf(book.getFirst()));
 
-                // Création de l'URL
-                URL url = new URL(apiUrl);
-
-                // Ouverture de la connexion HTTP
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                // Configuration de la méthode de requête
-                conn.setRequestMethod("GET");
-
-                // Lecture de la réponse
-                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                // Texte extrait de l'API XML
-                String extractedText = response.toString();
-                List<String> titre = APIBNF.extractData(extractedText, "<mxc:datafield tag=\"200\" ind1=\"1\" ind2=\" \">", "<mxc:subfield code=\"a\">");
-
-                System.out.println("Titre" + titre);
-                System.out.println("Nombre de jours depuis l'emprunt : " + list.get(1));
-                System.out.println("Date d'emprunt : " + list.get(2));
-                System.out.println("Date de retour prévue : " + list.get(3));
-                System.out.println("Surligner le titre en " + list.get(4)); // à faire avec javafx
-                System.out.println(" ");
-                conn.disconnect();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                user.add(list);
         }
+        return(user);
     }
     public static List<List<String>> displayUserList() {
         List<List<String>> UserList = new ArrayList<>();
