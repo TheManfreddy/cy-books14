@@ -6,7 +6,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class APIBNF{
+public class APIBNF {
 
     //private changé en public pour utilisation dans displayUser
     public static List<String> extractData(String text, String parentTag, String subfieldTag) {
@@ -112,16 +112,12 @@ public class APIBNF{
             }
 
 
-
             bookList.add(isbn);
             bookList.add(langue);
             bookList.add(titre);
             bookList.add(auteur);
             bookList.add(editeur);
             bookList.add(date_parution);
-
-
-
 
 
             // Fermeture de la connexion
@@ -136,4 +132,51 @@ public class APIBNF{
     }
 
 
+    public static List<List<String>> retrieveBook_isbn(String isbn) {
+        List<List<String>> book = new ArrayList<>();
+
+        String query1 = "bib.isbn all " + "\"" + isbn + "\"";
+        try {
+            // URL de l'API BNF avec la requête
+            String encodedQuery = URLEncoder.encode(query1, "UTF-8");
+            String apiUrl = "http://catalogue.bnf.fr/api/SRU?version=1.2&operation=searchRetrieve&query=" + encodedQuery;
+
+            // Création de l'URL
+            URL url = new URL(apiUrl);
+
+            // Ouverture de la connexion HTTP
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            // Configuration de la méthode de requête
+            conn.setRequestMethod("GET");
+
+            // Lecture de la réponse
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // Texte extrait de l'API XML
+            String extractedText = response.toString();
+            List<String> titre = APIBNF.extractData(extractedText, "<mxc:datafield tag=\"200\" ind1=\"1\" ind2=\" \">", "<mxc:subfield code=\"a\">");
+            List<String> langue = extractData(extractedText, "<mxc:datafield tag=\"102\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"a\">");
+            List<String> auteur = extractData(extractedText, "<mxc:datafield tag=\"200\" ind1=\"1\" ind2=\" \">", "<mxc:subfield code=\"f\">");
+            List<String> editeur = extractData(extractedText, "<mxc:datafield tag=\"210\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"c\">");
+            List<String> date_parution = extractData(extractedText, "<mxc:datafield tag=\"210\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"d\">");
+
+            book.add(titre);
+            book.add(langue);
+            book.add(auteur);
+            book.add(editeur);
+            book.add(date_parution);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return (book);
+
+    }
 }

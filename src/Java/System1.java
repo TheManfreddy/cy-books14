@@ -182,13 +182,59 @@ public class System1{
             }
         }
     }
+    public static List<List<String>> displayUserList() {
+        List<List<String>> UserList = new ArrayList<>();
+        String query = "SELECT mail FROM  user";
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String mail = rs.getString("mail");
+                    List user = Librarian.searchUser(mail);
+                    System.out.println(" ");
+                    UserList.add(user);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (UserList);
+    }
+    public static List<String> displayBookList(String search) {
+        List<String> ListBook = new ArrayList<>();
+
+        String query = Librarian.searchBook(search);
+        List<List<String>> BookList = APIBNF.retrieveBookList(query);
+        List isbn = BookList.get(0);
+        for (int i = 0; i < isbn.size(); i++) {
+            ListBook.add(APIBNF.retrieveBook_isbn((String) isbn.get(i)).toString());
+
+        }
+        return(ListBook);
+    }
+    public static List<List<String> >displayBook(String isbn) {
+        List<List<String>> book = APIBNF.retrieveBook_isbn(isbn);
+        System.out.println("Titre : " + book.get(0));
+        System.out.println("Langue : " + book.get(1));
+        System.out.println("Auteur : " + book.get(2));
+        System.out.println("Editeur : " + book.get(3));
+        System.out.println("Date_parution " + book.get(4));
+        System.out.println(" ");
+        return(book);
+    }
 
     public static void main(String[] args) throws SQLException{
         //historyBorrow("albertroger@gmail.com");
         //System.out.println("liste" + historyBorrow("albertroger@gmail.com"));
-        displayUser("albertroger@gmail.com");
-
+        //displayUser("albertroger@gmail.com");
+        System.out.println("livre"+displayBook("2-7298-9646-5"));
+        //System.out.println("liste des usagers" + displayUserList());
+        //System.out.println("liste des livres " + displayBookList("La promesse de l'aube"));
     }
 }
 

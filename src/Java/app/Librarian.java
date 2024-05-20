@@ -1,7 +1,9 @@
 package app;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Librarian {
 
@@ -14,8 +16,8 @@ public class Librarian {
 
     }
 
-    public static void searchUser(String mail) throws SQLException{
-
+    public static List<String> searchUser(String mail) throws SQLException{
+            List<String> user =new ArrayList<>();
             String query = "SELECT * FROM  user WHERE mail = ?";
 
             try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
@@ -32,6 +34,13 @@ public class Librarian {
                         String address = rs.getString("address");
                         String phone_number = rs.getString("phone_number");
                         int number_borrow = rs.getInt("number_borrow");
+                        user.add(mail);
+                        user.add(name);
+                        user.add(first_name);
+                        user.add(birth_date);
+                        user.add(address);
+                        user.add(phone_number);
+                        user.add(String.valueOf(number_borrow));
 
                         // Print the results
                         System.out.println("Mail: " + mail);
@@ -50,7 +59,7 @@ public class Librarian {
         catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return(user);
     }
     public static void registerUser(String mail, String name, String first_name, String birth_date, String address, String phone_number, int number_borrow) throws SQLException {
 
