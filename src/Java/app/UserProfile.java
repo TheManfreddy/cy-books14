@@ -27,6 +27,10 @@ public class UserProfile extends VBox {
         titleBox.setStyle("-fx-padding: 20;");  // Ajoute du padding autour du titre
         root.setTop(titleBox);
 
+        // Create an eye button
+        Button eyeButton = new Button("Modifier informations");
+        eyeButton.getStyleClass().add("button");
+
         // Crée un bouton retour
         Button returnButton = new Button("Retour");
         returnButton.getStyleClass().add("button");
@@ -34,7 +38,7 @@ public class UserProfile extends VBox {
 
         // Crée un conteneur VBox pour le bouton Retour
         VBox returnBox = new VBox(15); // 15 est l'espacement entre les éléments
-        returnBox.getChildren().addAll(returnButton);
+        returnBox.getChildren().addAll(returnButton,eyeButton);
         returnBox.getStyleClass().add("container");
 
         // Place le VBox contenant le champ de texte et le bouton au centre du BorderPane
@@ -45,6 +49,14 @@ public class UserProfile extends VBox {
             UsersPage usersPage = new UsersPage(primaryStage,width, height);
             primaryStage.setScene(usersPage.getUsersPageScene());
         });
+
+        // Configure le bouton eye
+        eyeButton.setOnAction(e -> {
+            ModifyInformation modifyInformation = new ModifyInformation(primaryStage,width, height);
+            primaryStage.setScene(modifyInformation.getModifyInformationScene());
+        });
+
+
 
 
     }
