@@ -67,7 +67,12 @@ public class UsersPage extends VBox {
                 throw new RuntimeException(ex);
             }
 
-            UserProfile usersProfile = new UserProfile(primaryStage, width, height);
+            UserProfile usersProfile = null;
+            try {
+                usersProfile = new UserProfile(primaryStage, width, height, mail);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             primaryStage.setScene(usersProfile.getUserProfileScene());
         });
 
@@ -83,17 +88,17 @@ public class UsersPage extends VBox {
         HBox hBox = new HBox(100);
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setStyle("-fx-padding: 20;");
-        hBox.getChildren().addAll(textFieldResearchBar, searchButton,addUserButton, lateUserButton);
+        hBox.getChildren().addAll(textFieldResearchBar, searchButton, addUserButton, lateUserButton);
 
         // Configure le bouton usagers pour ouvrir la page usagers
         addUserButton.setOnAction(e -> {
-            RegisterUser registerUser = new RegisterUser(primaryStage,width,height);
+            RegisterUser registerUser = new RegisterUser(primaryStage, width, height);
             primaryStage.setScene(registerUser.getRegisterUserScene());
         });
 
         // Création des labels pour afficher les légendes
-        String legend =  "Mail" + "        " + "Prénom" + "        " + "Nom" + "        "
-                + "Date de naissance" + "        "  + "Adresse" + "        " + "téléphone" + "        "
+        String legend =  "Prénom" + "        " + "Nom" + "        " + "Mail" + "        "
+                + "Date de naissance" + "        " + "Adresse" + "        " + "Téléphone" + "        "
                 + "Emprunts" + "        ";
         Label legendLabel = new Label(legend);
         legendLabel.getStyleClass().add("label");
@@ -105,44 +110,63 @@ public class UsersPage extends VBox {
         legendBox.getChildren().add(legendLabel);
 
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
-             Statement stmt = conn.createStatement()) {
+        List<List<String>> userList = System1.displayUserList();
+        VBox usersInformationBox = new VBox(15);
+        for (List<String> user :userList) {
+            HBox userInformationBox = new HBox(15);
+            String mail = user.get(0);
+            String name = user.get(1);
+            String firstName = user.get(2);
+            String birthDate= user.get(3);
+            String address = user.get(4);
+            String phoneNumber = user.get(5);
+            String numberBorrow = user.get(6);
 
-            ResultSet usersResultSet = stmt.executeQuery("SELECT * FROM user");
-            VBox userInfoBox = new VBox(10);
-            while (usersResultSet.next()) {
-                // Création des labels pour afficher les informations des utilisateurs
-                String userInfo =  usersResultSet.getString("mail") + "        "
-                         + usersResultSet.getString("name") + "        "
-                         + usersResultSet.getString("first_name") + "        "
-                         + usersResultSet.getString("birth_date") + "        "
-                         + usersResultSet.getString("address") + "        "
-                         + usersResultSet.getString("phone_number") + "        "
-                         + usersResultSet.getInt("number_borrow") + "        ";
-                Label userInfoLabel = new Label(userInfo);
-                userInfoLabel.getStyleClass().add("label");
+            // Création des labels pour afficher les informations des utilisateurs
+            Label userMailLabel = new Label(mail);
+            userMailLabel.getStyleClass().add("label");
 
-                // Crée le bouton pour afficher l'oeil
-                Button eyeButton = new Button("Oeil");
-                eyeButton.getStyleClass().add("button");
+            Label userNameLabel = new Label(name);
+            userNameLabel.getStyleClass().add("label");
 
-                userInfoBox.getChildren().addAll(userInfoLabel, eyeButton);
+            Label userFirstNameLabel = new Label(firstName);
+            userFirstNameLabel.getStyleClass().add("label");
 
-                // Configure le bouton oeil pour ouvrir le profil usager
-                eyeButton.setOnAction(e -> {
-                    UserProfile userProfile = new UserProfile(primaryStage, width, height);
-                    primaryStage.setScene(userProfile.getUserProfileScene());
-                });
-                VBox finalBox = new VBox(15);
-                finalBox.getChildren().addAll(topBox, hBox,legendBox, userInfoBox);
-                finalBox.setAlignment(Pos.CENTER);
-                root.setCenter(finalBox);
+            Label userBirthDateLabel = new Label(birthDate);
+            userBirthDateLabel.getStyleClass().add("label");
 
-            }
+            Label userAddressLabel = new Label(address);
+            userAddressLabel.getStyleClass().add("label");
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+            Label userPhoneNumberLabel = new Label(phoneNumber);
+            userPhoneNumberLabel.getStyleClass().add("label");
+
+            Label userNumberBorrowLabel = new Label(numberBorrow);
+            userNumberBorrowLabel.getStyleClass().add("label");
+
+            // Crée le bouton pour afficher l'oeil
+            Button eyeButton = new Button("Oeil");
+            eyeButton.getStyleClass().add("button");
+
+
+            userInformationBox.getChildren().addAll(userNameLabel,userFirstNameLabel,userMailLabel,userBirthDateLabel,userAddressLabel,userPhoneNumberLabel,userNumberBorrowLabel,eyeButton);
+            usersInformationBox.getChildren().add(userInformationBox);
+            // Configure le bouton oeil pour ouvrir le profil usager
+            eyeButton.setOnAction(e -> {
+                UserProfile userProfile = null;
+                try {
+                    userProfile = new UserProfile(primaryStage, width, height,mail);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                primaryStage.setScene(userProfile.getUserProfileScene());
+            });
         }
+        VBox finalBox = new VBox(15);
+        finalBox.getChildren().addAll(topBox, hBox,legendBox, usersInformationBox);
+        finalBox.setAlignment(Pos.CENTER);
+        root.setLeft(finalBox);
+
 
     }
 

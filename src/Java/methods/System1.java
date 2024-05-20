@@ -141,9 +141,9 @@ public class System1{
         user.add(Librarian.searchUser(mail));
         List<List<String>> listborrow = historyBorrow(mail);
         for (List<String> list : listborrow) {
-                List<List<String>> book = APIBNF.retrieveBook_isbn((String) list.getFirst());
-                list.remove(list.getFirst());
-                list.addFirst(String.valueOf(book.getFirst()));
+                List<List<String>> book = APIBNF.retrieveBook_isbn((String) list.get(0));
+                list.remove(list.get(0));
+                list.add(0,String.valueOf(book.get(0)));
 
                 user.add(list);
         }
@@ -199,7 +199,7 @@ public class System1{
         //historyBorrow("albertroger@gmail.com");
         //System.out.println("liste" + historyBorrow("albertroger@gmail.com"));
         //displayUser("albertroger@gmail.com");
-        System.out.println("livre"+displayBook("2-7298-9646-5"));
+        //System.out.println("livre"+displayBook("2-7298-9646-5"));
         //System.out.println("liste des usagers" + displayUserList());
         //System.out.println("liste des livres " + displayBookList("La promesse de l'aube"));
     }

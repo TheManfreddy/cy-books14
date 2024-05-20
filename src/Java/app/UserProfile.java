@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import methods.System1;
@@ -19,31 +20,15 @@ public class UserProfile extends VBox {
         // Crée et configure la scène
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
-
+        scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
         // Crée un Label pour le titre
         Label titleLabel = new Label("Profil Usager");
         titleLabel.getStyleClass().add("title");
 
-        // Crée un conteneur pour le titre et le centre
-        VBox titleBox = new VBox(titleLabel);
-        titleBox.setAlignment(Pos.CENTER);
-        titleBox.setStyle("-fx-padding: 20;");  // Ajoute du padding autour du titre
-        root.setTop(titleBox);
-
-
         // Crée un bouton retour
         Button returnButton = new Button("Retour");
         returnButton.getStyleClass().add("button");
-
-
-        // Crée un conteneur VBox pour le bouton Retour
-        VBox returnBox = new VBox(15); // 15 est l'espacement entre les éléments
-        returnBox.getChildren().addAll(returnButton);
-        returnBox.getStyleClass().add("container");
-
-        // Place le VBox contenant le champ de texte et le bouton au centre du BorderPane
-        root.setTop(returnBox);
 
         // Configure le bouton retour
         returnButton.setOnAction(e -> {
@@ -82,9 +67,63 @@ public class UserProfile extends VBox {
         Label userNumberBorrowLabel = new Label(numberBorrow);
         userNumberBorrowLabel.getStyleClass().add("label");
 
+        // Crée un bouton modifications des informations
+        Button modifyButton = new Button("Modifications des informations");
+        modifyButton.getStyleClass().add("button");
+
+        //Configure le bouton modifier information
+        String finalMail = mail;
+        modifyButton.setOnAction(e -> {
+            ModifyInformation modifyInformation = new ModifyInformation(primaryStage,width, height,  finalMail, name, firstName, birthDate, address, phoneNumber);
+            primaryStage.setScene(modifyInformation.getModifyInformationScene());
+        });
+
+
+        HBox userInformationAndModifyButton = new HBox(15);
         VBox userInformationBox = new VBox();
         userInformationBox.getChildren().addAll(userNameLabel,userFirstNameLabel,userMailLabel,userBirthDateLabel,userAddressLabel,userPhoneNumberLabel,userNumberBorrowLabel);
-        root.setLeft(userInformationBox);
+        userInformationAndModifyButton.getChildren().addAll(userInformationBox,modifyButton);
+        //Affichage historique emprunts
+        userInformation.remove(0);
+        HBox borrowsInformationBox = new HBox(30);
+        for (List<String> borrow :userInformation){
+            VBox borrowInformationBox = new VBox(15);
+            String title = borrow.get(0);
+            String duration = borrow.get(1);
+            String startDate = borrow.get(2);
+            String endDate = borrow.get(3);
+            String color = borrow.get(4);
+
+            //Création des labels pour afficher l'historique des emprunts
+            Label borrowTitleLabel = new Label(title);
+            if(color=="red") {
+                borrowTitleLabel.getStyleClass().add("highlighted-label-red");
+            }
+            if(color=="green") {
+                borrowTitleLabel.getStyleClass().add("highlighted-label-green");
+            }
+            if(color=="gray") {
+                borrowTitleLabel.getStyleClass().add("highlighted-label-gray");
+            }
+
+            Label borrowDurationLabel = new Label(duration);
+            borrowDurationLabel.getStyleClass().add("label");
+
+            Label borrowStartDateLabel = new Label(startDate);
+            borrowStartDateLabel.getStyleClass().add("label");
+
+            Label borrowEndDateLabel = new Label(endDate);
+            borrowEndDateLabel.getStyleClass().add("label");
+
+
+            borrowInformationBox.getChildren().addAll(borrowTitleLabel,borrowDurationLabel,borrowStartDateLabel,borrowEndDateLabel);
+            borrowsInformationBox.getChildren().add(borrowInformationBox);
+
+        }
+        VBox finalBox = new VBox(15);
+        finalBox.getChildren().addAll(topBox,userInformationAndModifyButton, borrowsInformationBox);
+        finalBox.setAlignment(Pos.CENTER);
+        root.setLeft(finalBox);
     }
 
     public Scene getUserProfileScene() {
