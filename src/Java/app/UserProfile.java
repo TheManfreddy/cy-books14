@@ -36,6 +36,13 @@ public class UserProfile extends VBox {
             primaryStage.setScene(usersPage.getUsersPageScene());
         });
 
+        // Crée un conteneur HBox pour le bouton retour et le titre
+        HBox topBox = new HBox(100);
+        topBox.setAlignment(Pos.CENTER_LEFT);
+        topBox.setStyle("-fx-padding: 20;");
+        topBox.getChildren().addAll(returnButton, titleLabel);
+
+
         // Création du label pour afficher les informations des utilisateurs
         List<List<String>> userInformation = System1.displayUser(mail);
         mail = userInformation.get(0).get(0);

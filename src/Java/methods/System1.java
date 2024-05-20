@@ -108,13 +108,13 @@ public class System1{
 
 
                 if(status == 0 && duration>30){
-                    list1.add("rouge");
+                    list1.add("red");
                 }
                 if(status == 0 && duration<=30){
-                    list1.add("vert");
+                    list1.add("green");
                 }
                 if(status == 1){
-                    list1.add("gris");
+                    list1.add("gray");
                 }
 
                 listOfBorrows.add(list1);
@@ -186,12 +186,6 @@ public class System1{
     }
     public static List<List<String> >displayBook(String isbn) {
         List<List<String>> book = APIBNF.retrieveBook_isbn(isbn);
-        System.out.println("Titre : " + book.get(0));
-        System.out.println("Langue : " + book.get(1));
-        System.out.println("Auteur : " + book.get(2));
-        System.out.println("Editeur : " + book.get(3));
-        System.out.println("Date_parution " + book.get(4));
-        System.out.println(" ");
         return(book);
     }
 

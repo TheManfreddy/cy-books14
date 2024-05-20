@@ -52,3 +52,16 @@
 .button:hover {
     -fx-background-color: #660000;
 }
+
+.highlighted-label-green {
+    -fx-background-color: green;
+    -fx-padding: 5px;
+}
+.highlighted-label-red {
+    -fx-background-color: red;
+    -fx-padding: 5px;
+}
+.highlighted-label-gray {
+    -fx-background-color: gray;
+    -fx-padding: 5px;
+}
