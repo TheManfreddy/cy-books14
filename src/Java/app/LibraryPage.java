@@ -52,8 +52,12 @@ public class LibraryPage extends VBox  {
         textFieldSearch.setPromptText("Rechercher un livre");
         textFieldSearch.getStyleClass().add("text-field");
 
+        // Crée un bouton pour lancer la recherche
+        Button searchButton = new Button("\uD83D\uDD0E");
+        searchButton.getStyleClass().add("button");
 
-        // Crée un bouton pour sélectionner la langue des livres
+
+        /*// Crée un bouton pour sélectionner la langue des livres
         Button langageButton = new Button("Langue");
         langageButton.getStyleClass().add("button");
         MenuItem FR = new MenuItem("FR");
@@ -63,6 +67,17 @@ public class LibraryPage extends VBox  {
         contextMenu.getItems().addAll(FR, EN);
 
         langageButton.setOnAction(event -> contextMenu.show(langageButton, langageButton.getLayoutX() +20, langageButton.getLayoutY() +105 + langageButton.getHeight()));
+        */
+
+        // Crée une ComboBox pour sélectionner la langue des livres
+        ComboBox<String> langageComboBox = new ComboBox<>();
+        langageComboBox.getItems().addAll("FR", "EN","CHOISIR LANGUE");
+        langageComboBox.setValue("CHOISIR LANGUE"); // Valeur par défaut
+
+        // Ajoutez un ChangeListener pour détecter les changements de sélection
+        langageComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            onLanguageSelected(newValue);  // Appelez la méthode lorsque la sélection change
+        });
 
 
         // Crée un bouton pour voir les livres les plus empruntés
@@ -121,6 +136,26 @@ public class LibraryPage extends VBox  {
     public Scene getLibraryPageScene() {
         return scene;
     }
+
+
+    // Méthode appelée lorsque la langue est sélectionnée
+    private void onLanguageSelected(String language) {
+        if(language == "FR"){
+            String FR ="Victor Hugo";
+            String queryFR = "bib.author all " + "\"" + FR + "\"" ;
+            List<List<String>> listBooks = APIBNF.retrieveBookList(queryFR);
+                System.out.println("Liste : " + listBooks);
+
+            System.out.println("FR : " + queryFR );
+            //displayFirstFiveElements(listBooks);
+        }
+        if(language == "EN"){
+
+
+        }
+    }
+
+
 }
 
 
