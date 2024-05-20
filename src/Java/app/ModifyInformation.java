@@ -22,7 +22,7 @@ public class ModifyInformation {
     private TextField textFieldNumber;
     private TextField textFieldAddress;
 
-    public ModifyInformation(Stage primaryStage, double width, double height) {
+    public ModifyInformation(Stage primaryStage, double width, double height,String mail, String name, String firstName, String birthDate, String address, String phoneNumber) {
         // Create and configure the scene
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
@@ -51,7 +51,7 @@ public class ModifyInformation {
         labelName.getStyleClass().add("label");
 
         // Create a text field for the name
-        textFieldName = new TextField();
+        textFieldName = new TextField(name);
         textFieldName.setPromptText("Nom");
         textFieldName.getStyleClass().add("text-field");
 
@@ -63,7 +63,7 @@ public class ModifyInformation {
         labelFirstName.getStyleClass().add("label");
 
         // Create a text field for the first name
-        textFieldFirstName = new TextField();
+        textFieldFirstName = new TextField(firstName);
         textFieldFirstName.setPromptText("Prénom");
         textFieldFirstName.getStyleClass().add("text-field");
 
@@ -75,7 +75,7 @@ public class ModifyInformation {
         labelBirthDate.getStyleClass().add("label");
 
         // Create a text field for the birth date
-        textFieldBirthDate = new TextField();
+        textFieldBirthDate = new TextField(birthDate);
         textFieldBirthDate.setPromptText("Date de naissance");
         textFieldBirthDate.getStyleClass().add("text-field");
 
@@ -87,7 +87,7 @@ public class ModifyInformation {
         labelMail.getStyleClass().add("label");
 
         // Create a text field for the email
-        textFieldMail = new TextField();
+        textFieldMail = new TextField(mail);
         textFieldMail.setPromptText("Mail");
         textFieldMail.getStyleClass().add("text-field");
 
@@ -99,8 +99,8 @@ public class ModifyInformation {
         labelNumber.getStyleClass().add("label");
 
         // Create a text field for the phone number
-        textFieldNumber = new TextField();
-        textFieldNumber.setPromptText("Prénom");
+        textFieldNumber = new TextField(phoneNumber);
+        textFieldNumber.setPromptText("Téléphone");
         textFieldNumber.getStyleClass().add("text-field");
 
         // Create an HBox for the phone number and its text field
@@ -111,7 +111,7 @@ public class ModifyInformation {
         labelAddress.getStyleClass().add("label");
 
         // Create a text field for the address
-        textFieldAddress = new TextField();
+        textFieldAddress = new TextField(address);
         textFieldAddress.setPromptText("Adresse");
         textFieldAddress.getStyleClass().add("text-field");
 
@@ -133,15 +133,15 @@ public class ModifyInformation {
         // Configure the button to open the user page
         addUserButton.setOnAction(e -> {
             // Retrieve values from text fields
-            String name = getTextFieldName();
-            String firstName = getTextFieldFirstName();
-            String birthDate = getTextFieldBirthDate();
-            String mail = getTextFieldMail();
-            String phoneNumber = getTextFieldNumber();
-            String address = getTextFieldAddress();
+            String newName = textFieldName.getText();
+            String newFirstName = textFieldFirstName.getText();
+            String newBirthDate = textFieldBirthDate.getText();
+            String newMail = textFieldMail.getText();
+            String newPhoneNumber = textFieldNumber.getText();
+            String newAddress = textFieldAddress.getText();
 
             try {
-                Librarian.modifyInformation(mail,name, firstName, birthDate,address , phoneNumber);
+                Librarian.modifyInformation(newMail, newName, newFirstName, newBirthDate, newAddress, newPhoneNumber);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }

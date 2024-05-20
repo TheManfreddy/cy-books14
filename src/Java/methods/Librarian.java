@@ -159,6 +159,36 @@ public class Librarian {
         }
     }
 
+    public static boolean validateLogin(String login, String password) {
+        String url = "jdbc:mysql://localhost:3307/bibli";
+        String user = "root";  //
+        String pass = "";  //
+
+        String query = "SELECT * FROM library WHERE login = ? AND password = ?";
+
+        try (Connection conn = DriverManager.getConnection(url, user, pass);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+
+            stmt.setString(1, login);
+            stmt.setString(2, password);
+
+
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // User exists
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+
+        return false;
+    }
+
 
 
 }
