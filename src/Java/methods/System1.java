@@ -9,6 +9,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import static methods.APIBNF.retrieveBookList;
+import static methods.APIBNF.retrieveBook_isbn;
+
 public class System1{
 
     public static void addBorrow(String isbn, String idUser){
@@ -141,7 +144,7 @@ public class System1{
         user.add(Librarian.searchUser(mail));
         List<List<String>> listborrow = historyBorrow(mail);
         for (List<String> list : listborrow) {
-                List<List<String>> book = APIBNF.retrieveBook_isbn((String) list.get(0));
+                List<List<String>> book = retrieveBook_isbn((String) list.get(0));
                 list.remove(list.get(0));
                 list.add(0,String.valueOf(book.get(0)));
 
@@ -172,30 +175,40 @@ public class System1{
         }
         return (UserList);
     }
-    public static List<String> displayBookList(String search) {
-        List<String> ListBook = new ArrayList<>();
+    public static List<List<String>> displayBookList(String search) {
+        // Appeler la méthode retrieveBookList pour obtenir la liste des livres
+        List<List<String>> bookList = retrieveBookList(search);
 
-        String query = Librarian.searchBook(search);
-        List<List<String>> BookList = APIBNF.retrieveBookList(query);
-        List isbn = BookList.get(0);
-        for (int i = 0; i < isbn.size(); i++) {
-            ListBook.add(APIBNF.retrieveBook_isbn((String) isbn.get(i)).toString());
+        // Créer une liste pour stocker les informations formatées
+        List<List<String>> formattedList = new ArrayList<>();
 
+        // Déterminer la longueur de chaque sous-liste
+        int size = bookList.get(0).size();
+
+        // Parcourir chaque élément dans les sous-listes
+        for (int i = 0; i < size; i++) {
+            // Créer une nouvelle sous-liste pour stocker les informations d'un livre
+            List<String> bookInfo = new ArrayList<>();
+            // Ajouter les éléments correspondant à l'indice actuel à la sous-liste du livre
+            bookInfo.add(bookList.get(0).get(i));
+            bookInfo.add(bookList.get(1).get(i));
+            bookInfo.add(bookList.get(2).get(i));
+            bookInfo.add(bookList.get(3).get(i));
+            bookInfo.add(bookList.get(4).get(i));
+            bookInfo.add(bookList.get(5).get(i));
+            // Ajouter la sous-liste du livre à la liste formatée
+            formattedList.add(bookInfo);
         }
-        return(ListBook);
+
+        // Retourner la liste formatée
+        return formattedList;
+
     }
+
     public static List<List<String> >displayBook(String isbn) {
-        List<List<String>> book = APIBNF.retrieveBook_isbn(isbn);
+        List<List<String>> book = retrieveBook_isbn(isbn);
         return(book);
     }
 
-    public static void main(String[] args) throws SQLException{
-        //historyBorrow("albertroger@gmail.com");
-        //System.out.println("liste" + historyBorrow("albertroger@gmail.com"));
-        //displayUser("albertroger@gmail.com");
-        //System.out.println("livre"+displayBook("2-7298-9646-5"));
-        //System.out.println("liste des usagers" + displayUserList());
-        //System.out.println("liste des livres " + displayBookList("La promesse de l'aube"));
-    }
 }
 
