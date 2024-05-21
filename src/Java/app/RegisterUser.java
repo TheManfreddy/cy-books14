@@ -1,6 +1,7 @@
 package app;
 
 import methods.Librarian;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -44,6 +45,8 @@ public class RegisterUser {
 
         // Create a container for the title
         HBox titleBox = new HBox(titleLabel);
+        titleBox.setAlignment(Pos.CENTER);
+        titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
 
         // Create a Label for the name
@@ -124,7 +127,7 @@ public class RegisterUser {
 
         // Create a VBox and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(titleBox, nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton,returnButton);
+        vbox.getChildren().addAll(nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton,returnButton);
         vbox.getStyleClass().add("container");
 
         // Place the VBox containing the text fields and button in the center of the BorderPane
