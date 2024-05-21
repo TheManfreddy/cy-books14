@@ -41,7 +41,7 @@ public class Librarian {
                         user.add(phone_number);
                         user.add(String.valueOf(number_borrow));
 
-                        // Print the results
+                        /*// Print the results
                         System.out.println("Mail: " + mail);
                         System.out.println("Name: " + name);
                         System.out.println("First Name: " + first_name);
@@ -50,6 +50,8 @@ public class Librarian {
                         System.out.println("Phone Number: " + phone_number);
                         System.out.println("Number methods.Borrow: " + number_borrow);
                         System.out.println(" ");
+                        */
+
                     }
                 }
 

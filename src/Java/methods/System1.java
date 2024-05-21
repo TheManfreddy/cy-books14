@@ -175,6 +175,7 @@ public class System1{
         }
         return (UserList);
     }
+
     public static List<List<String>> displayBookList(String search) {
         // Appeler la méthode retrieveBookList pour obtenir la liste des livres
         List<List<String>> bookList = retrieveBookList(search);
@@ -182,33 +183,63 @@ public class System1{
         // Créer une liste pour stocker les informations formatées
         List<List<String>> formattedList = new ArrayList<>();
 
+        // Utiliser un Set pour suivre les ISBN déjà ajoutés
+        Set<String> seenIsbns = new HashSet<>();
+
         // Déterminer la longueur de chaque sous-liste
         int size = bookList.get(0).size();
 
         // Parcourir chaque élément dans les sous-listes
         for (int i = 0; i < size; i++) {
-            // Créer une nouvelle sous-liste pour stocker les informations d'un livre
-            List<String> bookInfo = new ArrayList<>();
-            // Ajouter les éléments correspondant à l'indice actuel à la sous-liste du livre
-            bookInfo.add(bookList.get(0).get(i));
-            bookInfo.add(bookList.get(1).get(i));
-            bookInfo.add(bookList.get(2).get(i));
-            bookInfo.add(bookList.get(3).get(i));
-            bookInfo.add(bookList.get(4).get(i));
-            bookInfo.add(bookList.get(5).get(i));
-            // Ajouter la sous-liste du livre à la liste formatée
-            formattedList.add(bookInfo);
+            // Obtenir l'ISBN du livre
+            String isbn = bookList.get(0).get(i);
+
+            // Vérifier si l'ISBN est déjà dans le Set
+            if (!seenIsbns.contains(isbn)) {
+                // Créer une nouvelle sous-liste pour stocker les informations d'un livre
+                List<String> bookInfo = new ArrayList<>();
+
+                // Ajouter les éléments correspondant à l'indice actuel à la sous-liste du livre
+                bookInfo.add(isbn);
+                bookInfo.add(bookList.get(1).get(i));
+                bookInfo.add(bookList.get(2).get(i));
+                bookInfo.add(bookList.get(3).get(i));
+                bookInfo.add(bookList.get(4).get(i));
+                bookInfo.add(bookList.get(5).get(i));
+
+                // Ajouter la sous-liste du livre à la liste formatée
+                formattedList.add(bookInfo);
+
+                // Ajouter l'ISBN au Set
+                seenIsbns.add(isbn);
+            }
         }
 
         // Retourner la liste formatée
+        System.out.println(formattedList);
         return formattedList;
-
     }
 
-    public static List<List<String> >displayBook(String isbn) {
-        List<List<String>> book = retrieveBook_isbn(isbn);
-        return(book);
+
+    public static List<String> displayBook(List<List<String>> bookList, String isbn) {
+        List<String> book = new ArrayList<>();
+
+        // Parcourir la liste de listes
+        for (List<String> sublist : bookList) {
+            // Vérifier si la première valeur de la sous-liste correspond à l'ISBN recherché
+            if (sublist.get(0).equals(isbn)) {
+                // Ajouter les cinq autres valeurs de la sous-liste dans la liste 'book'
+                for (int i = 1; i < sublist.size(); i++) {
+                    book.add(sublist.get(i));
+                }
+                // Sortir de la boucle car le livre a été trouvé
+                break;
+            }
+        }
+        System.out.println(book);
+        return book;
     }
+
     public static List<List<String>> displayUserBorrowLateList() {
         List<List<String>> UserList = new ArrayList<>();
         String query = "SELECT idUser FROM borrow WHERE duration>30 AND status=?";
@@ -233,5 +264,10 @@ public class System1{
         }
         return (UserList);
     }
+
+public static void main(String[] args){
+    List<List<String>> BookList = displayBookList("bib.title all \"Harry Potter\" and bib.doctype all \"a\"");
+    displayBook(BookList,"9782070541270");
+}
 }
 
