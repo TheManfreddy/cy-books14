@@ -217,37 +217,57 @@ public class Borrow implements Serializable {
     public static void returnBorrow(String isbn, String idUser){
 
         Connection conn = null;
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt1 = null;
+        PreparedStatement pstmt2 = null;
+        PreparedStatement pstmt3 = null;
+        ResultSet rs = null;
 
         try {
             // Connexion à la base de données
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
 
-            // Requête INSERT INTO avec un PreparedStatement
-            String sql = "UPDATE Borrow SET status = ? WHERE isbn = ? AND idUser=?";
-            pstmt = conn.prepareStatement(sql);
+            // Requête permettant de mettre à jour le statut de l'emprunt
+            String sql1 = "UPDATE Borrow SET status = ? WHERE isbn = ? AND idUser = ?";
+            pstmt1 = conn.prepareStatement(sql1);
+            pstmt1.setInt(1, 1);
+            pstmt1.setString(2, isbn);
+            pstmt1.setString(3, idUser);
+            pstmt1.executeUpdate();
 
-            // Attribution des valeurs aux paramètres
-            pstmt.setInt(1, 1);
-            pstmt.setString(2, isbn);
-            pstmt.setString(3,idUser);
+            // Requête permettant de récupérer le nombre d'emprunts de l'utilisateur
+            String sql2 = "SELECT number_borrow FROM user WHERE mail = ?";
+            pstmt2 = conn.prepareStatement(sql2);
+            pstmt2.setString(1, idUser);
+            rs = pstmt2.executeQuery();
 
-            // Exécution de la requête d'insertion
-            int rowsAffected = pstmt.executeUpdate();
-
-            // Vérification du succès de l'insertion
-            if (rowsAffected > 0) {
-                System.out.println("Retour réussi !");
-            } else {
-                System.out.println("Échec du retour !");
+            if (rs.next()) {
+                int numberBorrow = rs.getInt("number_borrow");
+                if(numberBorrow>0) {
+                    // Requête permettant de mettre à jour le nombre d'emprunts de l'utilisateur
+                    String sql3 = "UPDATE user SET number_borrow = ? WHERE mail = ?";
+                    pstmt3 = conn.prepareStatement(sql3);
+                    pstmt3.setInt(1, numberBorrow - 1);
+                    pstmt3.setString(2, idUser);
+                    pstmt3.executeUpdate();
+                }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             // Fermeture des ressources
             try {
-                if (pstmt != null) {
-                    pstmt.close();
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt1 != null) {
+                    pstmt1.close();
+                }
+                if (pstmt2 != null) {
+                    pstmt2.close();
+                }
+                if (pstmt3 != null) {
+                    pstmt3.close();
                 }
                 if (conn != null) {
                     conn.close();
@@ -257,9 +277,4 @@ public class Borrow implements Serializable {
             }
         }
     }
-
-
-
-
-
 }

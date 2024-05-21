@@ -209,6 +209,29 @@ public class System1{
         List<List<String>> book = retrieveBook_isbn(isbn);
         return(book);
     }
+    public static List<List<String>> displayUserBorrowLateList() {
+        List<List<String>> UserList = new ArrayList<>();
+        String query = "SELECT idUser FROM borrow WHERE duration>30 AND status=?";
 
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, 0);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String idUser = rs.getString("idUser");
+                    List user = Librarian.searchUser(idUser);
+                    System.out.println(" ");
+                    UserList.add(user);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (UserList);
+    }
 }
 
