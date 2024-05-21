@@ -113,6 +113,8 @@ public class LibraryPage extends VBox {
                 root.setCenter(new Label("Aucun résultat trouvé."));
             }
         });
+
+
     }
 
     public Scene getLibraryPageScene() {
@@ -164,6 +166,8 @@ public class LibraryPage extends VBox {
                 System.err.println("Invalid selection index: " + selectedIndex);
             }
         });
+
+
 
         // Créer une légende
         HBox legend = new HBox(10, new Label("ISBN"), new Label("Langue"), new Label("Titre"), new Label("Auteur"), new Label("Éditeur"), new Label("Année"));

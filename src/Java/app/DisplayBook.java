@@ -24,9 +24,6 @@ public class DisplayBook {
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-        // Crée un bouton "Emprunter"
-        Button borrowButton = new Button("Emprunter");
-        borrowButton.getStyleClass().add("button");
 
         // Crée un bouton retour pour revenir à la liste des livres
         Button returnButton = new Button("Retour");
@@ -115,13 +112,16 @@ public class DisplayBook {
         HBox parutionDateBox= new HBox(labelParutionDateV,labelParutionDateValue);
 
 
-        // Create a VBox and add the components
-        VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(titleBoxValue,authorBox,editionBox,parutionDateBox,languageBox,borrowButton,returnButton);
-        vbox.getStyleClass().add("container");
+        // Crée un bouton "Emprunter"
+        Button borrowButton = new Button("Emprunter");
+        borrowButton.getStyleClass().add("button");
+        borrowButton.setOnAction(e -> {
+            BorrowBook borrowBook = new BorrowBook(primaryStage, width, height,isbn,title);
+            primaryStage.setScene(borrowBook.getBorrowBookScene());
+        });
 
-        // Place the VBox containing the text fields and button in the center of the BorderPane
-        root.setCenter(vbox);
+
+
 
 
 

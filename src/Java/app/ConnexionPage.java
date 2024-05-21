@@ -84,7 +84,7 @@ public class ConnexionPage extends VBox {
     }
 
 
-    private void showErrorAlert(String message) {
+    private static void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur de connexion");
         alert.setHeaderText(null);
