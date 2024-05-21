@@ -3,12 +3,12 @@ package app;
 import methods.Server;
 
 import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.util.Scanner;
 
 public class MainApp extends Application {
 
@@ -35,16 +35,29 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
-        // Création d'une instance de XAMPPManager
+        // Création d'une instance de Server
         Server manager = new Server();
+        Scanner scanner = new Scanner(System.in);
 
         // Appel des méthodes nécessaires
         try {
+            String xamppPath = Server.findXamppPath();
+            if (xamppPath == null) {
+                System.out.println("Impossible de détecter automatiquement le chemin de XAMPP.");
+                System.out.println("Veuillez entrer le chemin de l'installation de XAMPP (chemin complet vers xampp_start.exe):");
+                xamppPath = scanner.nextLine();
+            }
+            Server.XAMPP_START = xamppPath;
+
             manager.startXAMPPServices(); // Démarrage d'Apache et MySQL
             manager.startPhpMyAdmin(); // Démarrage de PhpMyAdmin
-        } catch (IOException e) {
+
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            scanner.close();
         }
+
         launch(args);
     }
 }
