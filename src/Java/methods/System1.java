@@ -144,11 +144,12 @@ public class System1{
         user.add(Librarian.searchUser(mail));
         List<List<String>> listborrow = historyBorrow(mail);
         for (List<String> list : listborrow) {
-                List<List<String>> book = retrieveBook_isbn((String) list.get(0));
-                list.remove(list.get(0));
-                list.add(0,String.valueOf(book.get(0)));
-
-                user.add(list);
+            String isbn=list.get(0);
+            List<List<String>> book = retrieveBook_isbn((String) list.get(0));
+            list.remove(list.get(0));
+            list.add(0,String.valueOf(book.get(0)));
+            list.add(isbn);
+            user.add(list);
         }
         return(user);
     }
