@@ -48,7 +48,15 @@
     -fx-border-radius: 50;
     -fx-background-radius: 50;
 }
-
+.buttonLate {
+    -fx-background-color: #F92121;
+    -fx-text-fill: white;
+    -fx-font-size: 12pt;
+    -fx-padding: 10 20;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-opacity: 0.8;
+}
 .button:hover {
     -fx-background-color: #660000;
 }

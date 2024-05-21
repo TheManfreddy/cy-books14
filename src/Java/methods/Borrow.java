@@ -127,92 +127,63 @@ public class Borrow implements Serializable {
 
     }
 
-
-
-    public static void updateBorrow(String isbn, String idUser) {
-
+    public static void updateBorrow(String idUser) {
         LocalDate dateActuelle = LocalDate.now();
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
+        String url = "jdbc:mysql://localhost:3307/bibli";
+        String user = "root";
+        String password = "";
 
-        try {
-            // Connexion à la base de données
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
+        String statusSql = "SELECT isbn FROM Borrow WHERE idUser=?";
+        String selectSql = "SELECT start_date FROM Borrow WHERE idUser=? AND status=0 AND isbn=?";
+        String updateSql = "UPDATE Borrow SET duration = ? WHERE idUser=? AND status=0 AND isbn=?";
 
-            String statusSql = "SELECT status FROM Borrow WHERE isbn=? AND idUser=?";
-            pstmt = conn.prepareStatement(statusSql);
-            // Attribution des valeurs aux paramètres
-            pstmt.setString(1, isbn);
-            pstmt.setString(2,idUser);
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement isbnStmt = conn.prepareStatement(statusSql);
+             PreparedStatement selectStmt = conn.prepareStatement(selectSql);
+             PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
 
-            ResultSet r = pstmt.executeQuery();
-            if (r.next()) {  // Déplacer le curseur au premier enregistrement
-                int status = r.getInt("status");
+            // Vérifier le statut de l'utilisateur
+            isbnStmt.setString(1, idUser);
+            ResultSet statusRs = isbnStmt.executeQuery();
 
-                if(status == 0){
+            while (statusRs.next()) {
+                    String isbn = statusRs.getString("isbn");
+                    selectStmt.setString(1, idUser);
+                    selectStmt.setString(2, isbn);
 
-                    // Requête SELECT avec un PreparedStatement
-                    String sql = "SELECT start_date FROM Borrow WHERE isbn=? AND idUser=?";
-                    pstmt = conn.prepareStatement(sql);
+                    ResultSet selectRs = selectStmt.executeQuery();
 
-                    // Attribution des valeurs aux paramètres
-                    pstmt.setString(1, isbn);
-                    pstmt.setString(2,idUser);
-
-                    ResultSet rs = pstmt.executeQuery();
-
-                    // Vérifier si le ResultSet contient des lignes
-                    if (rs.next()) {
-                        // Récupération de la date de début
-                        LocalDate startDate = rs.getDate("start_date").toLocalDate();
-                        System.out.println("start_date: " + startDate);
+                    while (selectRs.next()) {
+                        LocalDate startDate = selectRs.getDate("start_date").toLocalDate();
+                        System.out.println("Start Date: " + startDate);
                         long differenceJours = ChronoUnit.DAYS.between(startDate, dateActuelle);
-                        System.out.println("Difference de jours: " + differenceJours);
+                        System.out.println("Difference in Days: " + differenceJours);
 
+                        updateStmt.setLong(1, differenceJours);
+                        updateStmt.setString(2, idUser);
+                        updateStmt.setString(3, isbn);
 
-                        String sql1 = "UPDATE Borrow SET duration = ? WHERE isbn = ? AND idUser=? ";
-                        pstmt = conn.prepareStatement(sql1);
+                        int rowsAffected = updateStmt.executeUpdate();
 
-                        // Attribution des valeurs aux paramètres
-                        pstmt.setLong(1, differenceJours);
-                        pstmt.setString(2, isbn);
-                        pstmt.setString(3,idUser);
-
-                        // Exécution de la requête d'insertion
-                        int rowsAffected = pstmt.executeUpdate();
-
-                        // Vérification du succès de l'insertion
                         if (rowsAffected > 0) {
                             System.out.println("Mise à jour réussie!");
                         } else {
-                            System.out.println("Échec de la mise à jour !");
+                            System.out.println("Échec de la mise à jour!");
                         }
-
-                    } else {
-                        System.out.println("Aucune date de début trouvée pour cet ISBN.");
                     }
-
                 }
-
-            }
-
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Fermeture des ressources
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
             } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            throw new RuntimeException(e);
         }
-
-
     }
+
+    public static void main(String[] args) {
+        // Test the method with a sample user ID
+        updateBorrow("sampleUserId");
+    }
+
+
 
     public static void returnBorrow(String isbn, String idUser){
 
