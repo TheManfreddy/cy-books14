@@ -216,9 +216,10 @@ public class System1{
         }
 
         // Retourner la liste formatée
-        System.out.println(formattedList);
         return formattedList;
+
     }
+
 
 
     public static List<String> displayBook(List<List<String>> bookList, String isbn) {

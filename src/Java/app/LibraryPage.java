@@ -17,6 +17,7 @@ import java.util.List;
 
 public class LibraryPage extends VBox {
     private Scene scene;
+    private static final int ITEMS_PER_PAGE = 10; // Nombre d'éléments par page
 
     public LibraryPage(Stage primaryStage, double width, double height) {
 
@@ -91,34 +92,26 @@ public class LibraryPage extends VBox {
 
         searchButton.setOnAction(e -> {
             String text = textFieldSearch.getText();
-            String query = "bib.title all " + "\"" + text + "\"";
+            String query = "bib.title all " + "\"" + text + "\"and (bib.doctype all \"a\")";
             List<List<String>> listBook = System1.displayBookList(query);
 
-            // Débogage : affiche le contenu de la liste
-            for (List<String> book : listBook) {
-                System.out.println(book);
-            }
-
-            // Convertir la liste en ObservableList pour qu'elle soit compatible avec ListView
-            ObservableList<String> items = FXCollections.observableArrayList();
-            for (List<String> book : listBook) {
-                items.add(String.join(", ", book)); // Convertir chaque liste de détails en une seule chaîne
-            }
-
-            // Créer un ListView et ajouter les éléments
-            ListView<String> listView = new ListView<>(items);
-
-            // Ajouter un écouteur d'événements pour chaque élément de la liste
-            listView.setOnMouseClicked(event -> {
-                String selectedItem = listView.getSelectionModel().getSelectedItem();
-                if (selectedItem != null) {
-                    showBookDetails(primaryStage, selectedItem);
+            if (listBook != null && !listBook.isEmpty()) {
+                // Convertir la liste en ObservableList pour qu'elle soit compatible avec ListView
+                ObservableList<String> items = FXCollections.observableArrayList();
+                for (List<String> book : listBook) {
+                    items.add(String.join(", ", book)); // Convertir chaque liste de détails en une seule chaîne
                 }
-            });
 
-            // Ajouter le ListView à un VBox
-            VBox vbox = new VBox(listView);
-            root.setCenter(vbox);
+                // Créer un Pagination pour gérer les pages
+                Pagination pagination = new Pagination((int) Math.ceil((double) items.size() / ITEMS_PER_PAGE), 0);
+                pagination.setPageFactory(pageIndex -> createPage(pageIndex, items, listBook));
+
+                // Ajouter le Pagination au centre du BorderPane
+                root.setCenter(pagination);
+            } else {
+                // Gérer le cas où la recherche ne retourne aucun résultat
+                root.setCenter(new Label("Aucun résultat trouvé."));
+            }
         });
     }
 
@@ -134,22 +127,53 @@ public class LibraryPage extends VBox {
             List<List<String>> listBooks = APIBNF.retrieveBookList(queryFR);
             System.out.println("Liste : " + listBooks);
             System.out.println("FR : " + queryFR);
-            // displayFirstFiveElements(listBooks);
         }
         if (language.equals("EN")) {
             // Ajoutez votre logique ici pour la langue EN
         }
     }
 
-    // Méthode pour afficher les détails du livre
-    private void showBookDetails(Stage primaryStage, String bookDetails) {
-        // Crée une nouvelle scène pour afficher les détails du livre
-        BorderPane root = new BorderPane();
-        Scene bookScene = new Scene(root, 400, 300);
+    private VBox createPage(int pageIndex, ObservableList<String> items, List<List<String>> listBook) {
+        int fromIndex = pageIndex * ITEMS_PER_PAGE;
+        int toIndex = Math.min(fromIndex + ITEMS_PER_PAGE, items.size());
+        ObservableList<String> subList = FXCollections.observableArrayList(items.subList(fromIndex, toIndex));
 
-        // Crée un label pour afficher les détails du livre
-        Label bookLabel = new Label(bookDetails);
-        bookLabel.setWrapText(true);
+        ListView<String> listView = new ListView<>(subList);
+        listView.setPrefHeight(subList.size() * 24 + 2); // 24 est la hauteur approximative d'une cellule
+
+        // Ajouter un écouteur d'événements pour chaque élément de la liste
+        listView.setOnMouseClicked(event -> {
+            int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+            if (selectedIndex >= 0) {
+                int actualIndex = fromIndex + selectedIndex; // Correction ici pour obtenir l'index réel
+                if (actualIndex < listBook.size()) {
+                    List<String> selectedBook = listBook.get(actualIndex);
+                    String isbn = selectedBook.get(0); // Récupérer l'ISBN
+                    System.out.println("Selected ISBN: " + isbn); // Log pour déboguer
+                    try {
+                        DisplayBook displayBook = new DisplayBook((Stage) listView.getScene().getWindow(), scene.getWidth(), scene.getHeight(), isbn);
+                        ((Stage) listView.getScene().getWindow()).setScene(displayBook.getDisplayBookScene());
+                    } catch (Exception e) {
+                        System.err.println("Failed to display book: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.err.println("Index out of bounds: " + actualIndex + " for list size: " + listBook.size());
+                }
+            } else {
+                System.err.println("Invalid selection index: " + selectedIndex);
+            }
+        });
+
+        // Créer une légende
+        HBox legend = new HBox(10, new Label("ISBN"), new Label("Langue"), new Label("Titre"), new Label("Auteur"), new Label("Éditeur"), new Label("Année"));
+        legend.setStyle("-fx-padding: 5; -fx-font-weight: bold;");
+
+        VBox vbox = new VBox(legend, listView);
+        vbox.setAlignment(Pos.TOP_CENTER);
+        return vbox;
+    }
+}
 
         // Crée un bouton "Emprunter"
         Button borrowButton = new Button("Emprunter");
