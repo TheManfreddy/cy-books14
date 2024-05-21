@@ -35,8 +35,13 @@ public class ModifyInformation {
 
         // Configure the button to open the user page
         returnButton.setOnAction(e -> {
-            UsersPage usersPage = new UsersPage(primaryStage, width, height);
-            primaryStage.setScene(usersPage.getUsersPageScene());
+            UserProfile userProfile = null;
+            try {
+                userProfile = new UserProfile(primaryStage, width, height,mail);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            primaryStage.setScene(userProfile.getUserProfileScene());
         });
 
         // Create a Label for the title

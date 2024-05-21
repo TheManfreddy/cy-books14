@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UsersPage extends VBox {
+public class UsersLate extends VBox {
     private Scene scene;
     private TextField textFieldResearchBar;
     private int currentPage = 0;
@@ -24,7 +24,7 @@ public class UsersPage extends VBox {
     private double width;
     private double height;
 
-    public UsersPage(Stage primaryStage, double width, double height) {
+    public UsersLate(Stage primaryStage, double width, double height) {
         this.primaryStage = primaryStage;
         this.width = width;
         this.height = height;
@@ -91,8 +91,8 @@ public class UsersPage extends VBox {
 
         // Configure le bouton afficher retardataire
         lateUserButton.setOnAction(e -> {
-            UsersLate usersLate = new UsersLate(primaryStage, width, height);
-            primaryStage.setScene(usersLate.getUsersLateScene());
+            UsersPage usersPage = new UsersPage(primaryStage, width, height);
+            primaryStage.setScene(usersPage.getUsersPageScene());
         });
 
         // Crée un conteneur HBox pour la barre de recherche, le bouton ajouter usager et le bouton afficher retardataire
@@ -148,7 +148,7 @@ public class UsersPage extends VBox {
         paginationBox.setStyle("-fx-padding: 20;");
 
         // Initialisation de la liste d'utilisateurs
-        List<List<String>> userList = System1.displayUserList();
+        List<List<String>> userList = System1.displayUserBorrowLateList();
         totalPages = (int) Math.ceil((double) userList.size() / itemsPerPage);
         updateUserList(usersInformationBox, userList);
 
@@ -221,7 +221,7 @@ public class UsersPage extends VBox {
     }
 
     private void updateUserList(VBox usersInformationBox) {
-        List<List<String>> userList = System1.displayUserList();
+        List<List<String>> userList = System1.displayUserBorrowLateList();
         updateUserList(usersInformationBox, userList);
     }
 
@@ -229,7 +229,7 @@ public class UsersPage extends VBox {
         return textFieldResearchBar.getText();
     }
 
-    public Scene getUsersPageScene() {
+    public Scene getUsersLateScene() {
         return scene;
     }
 }
