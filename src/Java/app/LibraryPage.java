@@ -175,25 +175,3 @@ public class LibraryPage extends VBox {
     }
 }
 
-        // Crée un bouton "Emprunter"
-        Button borrowButton = new Button("Emprunter");
-        borrowButton.getStyleClass().add("button");
-
-        // Crée un bouton retour pour revenir à la liste des livres
-        Button returnButton = new Button("Retour");
-        returnButton.getStyleClass().add("button");
-        returnButton.setOnAction(e -> {
-            primaryStage.setScene(scene);
-        });
-
-        // Crée un VBox pour contenir les détails du livre et le bouton "Emprunter"
-        VBox vbox = new VBox(20, bookLabel, borrowButton, returnButton);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setStyle("-fx-padding: 20;");
-
-        root.setCenter(vbox);
-
-        // Affiche la nouvelle scène
-        primaryStage.setScene(bookScene);
-    }
-}
