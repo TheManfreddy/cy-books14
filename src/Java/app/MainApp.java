@@ -50,7 +50,6 @@ public class MainApp extends Application {
             Server.XAMPP_START = xamppPath;
 
             manager.startXAMPPServices(); // Démarrage d'Apache et MySQL
-            manager.startPhpMyAdmin(); // Démarrage de PhpMyAdmin
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

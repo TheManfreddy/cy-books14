@@ -55,11 +55,7 @@ public class Server {
         }
     }
 
-    // Démarrage de PhpMyAdmin
-    public void startPhpMyAdmin() throws IOException {
-        System.out.println("Démarrage de PhpMyAdmin...");
-        Runtime.getRuntime().exec("cmd /c start http://localhost/phpmyadmin");
-    }
+
 
     // Méthode pour trouver le chemin de XAMPP automatiquement
     public static String findXamppPath() {
