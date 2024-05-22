@@ -38,15 +38,21 @@ public class UsersPage extends VBox {
         Label titleLabel = new Label("Usagers");
         titleLabel.getStyleClass().add("title");
 
+        // Crée un conteneur pour le titre et le centre
+        VBox titleBox = new VBox(titleLabel);
+        titleBox.setAlignment(Pos.CENTER);
+        titleBox.setStyle("-fx-padding: 20;");
+        root.setTop(titleBox);
+
         // Crée un bouton retour
         Button returnButton = new Button("Retour");
         returnButton.getStyleClass().add("button");
 
-        // Crée un conteneur HBox pour le bouton retour et le titre
+        // Crée un conteneur HBox pour le bouton retour
         HBox topBox = new HBox(100);
         topBox.setAlignment(Pos.CENTER_LEFT);
         topBox.setStyle("-fx-padding: 20;");
-        topBox.getChildren().addAll(returnButton, titleLabel);
+        topBox.getChildren().addAll(returnButton);
 
         // Configure le bouton retour
         returnButton.setOnAction(e -> {
@@ -57,11 +63,11 @@ public class UsersPage extends VBox {
         // Crée un champ de texte pour la barre de recherche
         textFieldResearchBar = new TextField();
         textFieldResearchBar.setPromptText("Rechercher un usager");
-        textFieldResearchBar.getStyleClass().add("text-field");
+        textFieldResearchBar.getStyleClass().add("text-fieldSearch");
 
         // Crée un bouton recherche
         Button searchButton = new Button("Rechercher");
-        searchButton.getStyleClass().add("button");
+        searchButton.getStyleClass().add("button-UsersPage");
 
         // Configure le bouton recherche
         searchButton.setOnAction(e -> {
@@ -83,11 +89,11 @@ public class UsersPage extends VBox {
 
         // Crée le bouton ajouter usager
         Button addUserButton = new Button("+");
-        addUserButton.getStyleClass().add("button");
+        addUserButton.getStyleClass().add("button-UsersPage");
 
         // Crée le bouton afficher retardataire
         Button lateUserButton = new Button("Afficher les retardataires");
-        lateUserButton.getStyleClass().add("button");
+        lateUserButton.getStyleClass().add("button-UsersPage");
 
         // Configure le bouton afficher retardataire
         lateUserButton.setOnAction(e -> {
@@ -119,15 +125,16 @@ public class UsersPage extends VBox {
         legendBox.setAlignment(Pos.CENTER_LEFT);
         legendBox.setStyle("-fx-padding: 20;");
         legendBox.getChildren().add(legendLabel);
+        legendBox.getStyleClass().add("data-box");
 
         // Affiche les utilisateurs
         VBox usersInformationBox = new VBox(15);
 
         // Crée des boutons pour la pagination
         Button prevButton = new Button("<");
-        prevButton.getStyleClass().add("button");
+        prevButton.getStyleClass().add("button-UsersPage");
         Button nextButton = new Button(">");
-        nextButton.getStyleClass().add("button");
+        nextButton.getStyleClass().add("button-UsersPage");
 
         prevButton.setOnAction(e -> {
             if (currentPage > 0) {
@@ -202,10 +209,11 @@ public class UsersPage extends VBox {
 
             // Crée le bouton pour afficher l'oeil
             Button eyeButton = new Button("Oeil");
-            eyeButton.getStyleClass().add("button");
+            eyeButton.getStyleClass().add("buttonEye");
 
             userInformationBox.getChildren().addAll(userNameLabel, userFirstNameLabel, userMailLabel, userBirthDateLabel, userAddressLabel, userPhoneNumberLabel, userNumberBorrowLabel, eyeButton);
             usersInformationBox.getChildren().add(userInformationBox);
+            userInformationBox.getStyleClass().add("data-box-value");
 
             // Configure le bouton oeil pour ouvrir le profil usager
             eyeButton.setOnAction(e -> {

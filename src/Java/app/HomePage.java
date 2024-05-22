@@ -20,7 +20,7 @@ public class HomePage extends VBox {
 
         // Crée un Label pour le titre
         Label titleLabel = new Label("CYBOOKS");
-        titleLabel.getStyleClass().add("title-container");
+        titleLabel.getStyleClass().add("titleConnexion");
 
         // Crée un conteneur pour le titre et le centre
         VBox titleBox = new VBox(titleLabel);

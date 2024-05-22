@@ -5,8 +5,8 @@
     -fx-padding: 20;
 }
 
-.title {
-    -fx-font-size: 100pt;
+.titleConnexion {
+    -fx-font-size: 30pt;
     -fx-font-family:  'Arial', monospace;
     -fx-font-weight: bold ;
     -fx-alignment: center;
@@ -93,6 +93,7 @@
     -fx-font-size: 32pt;
     -fx-padding: 10 20;
     -fx-border-radius: 50;
+    -fx-border-width: 3;
     -fx-background-radius: 50;
     -fx-border-color: #590824;
     -fx-min-width: 300px;
@@ -104,5 +105,131 @@
 .buttonHome:hover {
     -fx-background-color: rgb(247, 223, 223,0.8);
 }
+
+
+/* UsersPage */
+
+.title {
+    -fx-font-size: 19pt;
+    -fx-font-family:  'Arial', monospace;
+    -fx-font-weight: bold ;
+    -fx-alignment: center;
+    -fx-background-color: rgb(247, 223, 223,0.8);
+    -fx-text-fill: black;
+    -fx-padding: 10 20;
+    -fx-border-radius: 50;
+    -fx-border-width: 0.2;
+    -fx-background-radius: 50;
+    -fx-border-color: rgb(89, 8, 36,0.5);
+    -fx-min-width: 600px;
+    -fx-min-height: 51px;
+    -fx-max-width: 600px;
+    -fx-max-height: 51px;
+
+}
+
+.text-fieldSearch{
+    -fx-font-size: 12pt;
+    -fx-font-style: italic;
+    -fx-padding: 10;
+    -fx-border-color: #E57D7D;
+    -fx-border-width: 0.2;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-margin-bottom: 20px;
+    -fx-min-width: 500px;
+    -fx-min-height: 50px;
+    -fx-max-width: 500px;
+    -fx-max-height: 50px;
+}
+
+.button-UsersPage {
+    -fx-background-color: white;
+    -fx-border-color: #E57D7D;
+    -fx-text-fill: black;
+    -fx-font-size: 12pt;
+    -fx-border-width: 0.6;
+    -fx-padding: 10 20;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+
+}
+
+
+
+.buttonLate{
+    -fx-background-color: #F92121;
+    -fx-border-color: #E57D7D;
+    -fx-text-fill: black;
+    -fx-font-size: 12pt;
+    -fx-border-width: 0.6;
+    -fx-padding: 10 20;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+
+}
+
+.buttonLate:hover{
+    -fx-background-color: rgb(249, 33, 33,0.8);
+
+}
+
+.button-UsersPage:hover {
+    -fx-background-color: rgb(247, 223, 223,0.8);
+}
+
+
+.buttonEye {
+    -fx-background-color: white;
+    -fx-border-color: #E57D7D;
+    -fx-text-fill: black;
+    -fx-font-size: 12pt;
+    -fx-border-width: 0.6;
+    -fx-padding: 10 20;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+
+}
+.buttonEye:hover{
+    -fx-background-color: rgb(247, 223, 223,0.8);
+}
+
+.data-box{
+    -fx-font-size: 12pt;
+    -fx-font-family:  'Arial', monospace;
+    -fx-font-weight: bold ;
+    -fx-alignment: center;
+    -fx-background-color: rgb(247, 223, 223,0.5);
+    -fx-text-fill: black;
+    -fx-padding: 10 20;
+    -fx-border-radius: 50;
+    -fx-border-width: 0.2;
+    -fx-background-radius: 50;
+    -fx-border-color: rgb(89, 8, 36,0.5);
+    -fx-min-width: 950px;
+    -fx-min-height: 51px;
+    -fx-max-width: 950px;
+    -fx-max-height: 51px;
+
+}
+
+.data-box-value{
+    -fx-font-size: 12pt;
+    -fx-font-family:  'Arial', monospace;
+    -fx-font-weight: bold ;
+    -fx-alignment: center;
+    -fx-background-color: rgb(247, 223, 223);
+    -fx-text-fill: black;
+    -fx-padding: 10 20;
+    -fx-border-radius: 50;
+    -fx-border-width: 0.2;
+    -fx-background-radius: 50;
+    -fx-border-color: rgb(89, 8, 36,0.5);
+    -fx-min-width: 1000px;
+    -fx-min-height: 51px;
+    -fx-max-width: 1000px;
+    -fx-max-height: 51px;
+}
+
 
 

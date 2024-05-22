@@ -23,7 +23,7 @@ public class ConnexionPage extends VBox {
 
         // Create a Label for the title
         Label titleLabel = new Label("CYBOOKS");
-        titleLabel.getStyleClass().add("title");
+        titleLabel.getStyleClass().add("titleConnexion");
 
         // Create a container for the title and center it
         VBox titleBox = new VBox(titleLabel);
