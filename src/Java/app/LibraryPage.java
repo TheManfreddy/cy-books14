@@ -145,7 +145,72 @@ public class LibraryPage extends VBox {
             // Gérer le cas où la recherche ne retourne aucun résultat
             root.setCenter(new Label("Aucun résultat trouvé."));
         }
+    }*/
+
+    private void performSearch(Stage primaryStage, BorderPane root, String text) {
+        // ExecutorService pour gérer les tâches en arrière-plan
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+        // Tâche pour effectuer la recherche
+        Callable<List<List<String>>> searchTask = () -> {
+            String query = "bib.title all " + "\"" + text + "\"and (bib.doctype all \"a\")";
+            return System1.displayBookList(query);
+        };
+
+        // Future pour la recherche
+        Future<List<List<String>>> future = executor.submit(searchTask);
+
+        // Tâche pour arrêter la recherche si elle prend plus de 30 secondes
+        scheduler.schedule(() -> {
+            if (!future.isDone()) {
+                future.cancel(true); // Annuler la tâche
+                Platform.runLater(() -> {
+                    root.setCenter(new Label("Recherche arrêtée car elle a pris plus de 30 secondes."));
+                });
+            }
+        }, 30, TimeUnit.SECONDS);
+
+        // Exécuter la recherche et traiter les résultats
+        executor.execute(() -> {
+            try {
+                List<List<String>> listBook = future.get(); // Obtenir le résultat de la recherche
+
+                Platform.runLater(() -> {
+                    if (listBook != null && !listBook.isEmpty()) {
+                        // Convertir la liste en ObservableList pour qu'elle soit compatible avec ListView
+                        ObservableList<String> items = FXCollections.observableArrayList();
+                        for (List<String> book : listBook) {
+                            items.add(String.join(", ", book)); // Convertir chaque liste de détails en une seule chaîne
+                        }
+
+                        // Sauvegarder l'état actuel
+                        currentListBook = listBook;
+                        currentItems = items;
+
+                        // Créer un Pagination pour gérer les pages
+                        Pagination pagination = new Pagination((int) Math.ceil((double) items.size() / ITEMS_PER_PAGE), 0);
+                        pagination.setPageFactory(pageIndex -> createPage(pageIndex, items, listBook));
+
+                        // Ajouter le Pagination au centre du BorderPane
+                        root.setCenter(pagination);
+                    } else {
+                        // Gérer le cas où la recherche ne retourne aucun résultat
+                        root.setCenter(new Label("Aucun résultat trouvé."));
+                    }
+                });
+            } catch (CancellationException e) {
+                // La tâche a été annulée
+                System.out.println("La recherche a été annulée.");
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            } finally {
+                executor.shutdown();
+                scheduler.shutdown();
+            }
+        });
     }
+
 
     public Scene getLibraryPageScene() {
         return scene;
