@@ -253,6 +253,55 @@ public class System1{
         return (UserList);
     }
 
+    public static List<List<String>> mostBorrowedBooks() {
+
+        List<List<String>> mostBorrowedBooks = new ArrayList<>();
+
+        String url = "jdbc:mysql://localhost:3307/bibli";
+        String user = "root";
+        String password = "";
+
+        String query = "SELECT " +
+                "    isbn, " +
+                "    COUNT(*) AS borrow_count " +
+                "FROM " +
+                "    borrow " +
+                "WHERE " +
+                "    start_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) " +
+                "GROUP BY " +
+                "    isbn " +
+                "ORDER BY " +
+                "    borrow_count DESC";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String isbn = rs.getString("isbn");
+                int borrowCount = rs.getInt("borrow_count");
+                List<List<String>> book = retrieveBook_isbn(isbn);
+                List<String> book1 = new ArrayList<>();
+                book1.add(book.get(0).get(0));
+                book1.add(book.get(1).get(0));
+                book1.add(book.get(2).get(0));
+                book1.add(book.get(3).get(0));
+                book1.add(book.get(4).get(0));
+                book1.add(String.valueOf(borrowCount));
+                System.out.println("Nombre de fois emprunté " + book1);
+                mostBorrowedBooks.add(book1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mostBorrowedBooks;
+    }
+
+
+    public static void main(String[] args) {
+
+        System.out.println("liste des livres les plus empruntés " + mostBorrowedBooks());
+    }
 
 }
 
