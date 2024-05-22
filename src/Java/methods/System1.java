@@ -120,8 +120,11 @@ public class System1{
                     list1.add("gray");
                 }
 
+                list1.add(String.valueOf(status));
+
                 listOfBorrows.add(list1);
             }
+
 
 
 
