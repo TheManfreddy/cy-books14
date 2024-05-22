@@ -122,11 +122,13 @@ public class DisplayBook {
 
 
 
+        // Create a VBox and add the components
+        VBox vbox = new VBox(15); // 15 is the spacing between elements
+        vbox.getChildren().addAll(titleBoxValue,authorBox,editionBox,parutionDateBox,languageBox,borrowButton,returnButton);
+        vbox.getStyleClass().add("container");
 
-
-
-
-
+        // Place the VBox containing the text fields and button in the center of the BorderPane
+        root.setCenter(vbox);
 
 
 

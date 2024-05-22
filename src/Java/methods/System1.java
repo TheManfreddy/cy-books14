@@ -223,23 +223,9 @@ public class System1{
 
 
 
-    public static List<String> displayBook(List<List<String>> bookList, String isbn) {
-        List<String> book = new ArrayList<>();
-
-        // Parcourir la liste de listes
-        for (List<String> sublist : bookList) {
-            // Vérifier si la première valeur de la sous-liste correspond à l'ISBN recherché
-            if (sublist.get(0).equals(isbn)) {
-                // Ajouter les cinq autres valeurs de la sous-liste dans la liste 'book'
-                for (int i = 1; i < sublist.size(); i++) {
-                    book.add(sublist.get(i));
-                }
-                // Sortir de la boucle car le livre a été trouvé
-                break;
-            }
-        }
-        System.out.println(book);
-        return book;
+    public static List<List<String> >displayBook(String isbn) {
+        List<List<String>> book = retrieveBook_isbn(isbn);
+        return(book);
     }
 
     public static List<List<String>> displayUserBorrowLateList() {
@@ -267,9 +253,6 @@ public class System1{
         return (UserList);
     }
 
-public static void main(String[] args){
-    List<List<String>> BookList = displayBookList("bib.title all \"Harry Potter\" and bib.doctype all \"a\"");
-    displayBook(BookList,"9782070541270");
-}
+
 }
 
