@@ -15,7 +15,10 @@ import methods.System1;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+
+import static methods.Borrow.returnBorrow;
 
 public class UserProfileLate extends VBox {
     private Scene scene;
@@ -105,6 +108,20 @@ public class UserProfileLate extends VBox {
 
         // Affichage historique emprunts
         userInformation.remove(0);
+
+
+        // Trier les emprunts par couleur
+        userInformation.sort(Comparator.comparing(borrow -> {
+            String color = borrow.get(4);
+            switch (color) {
+                case "green": return 1;
+                case "red": return 2;
+                case "gray": return 3;
+                default: return 4;
+            }
+        }));
+
+
         GridPane borrowsInformationGrid = new GridPane();
         borrowsInformationGrid.setHgap(30);
         borrowsInformationGrid.setVgap(15);
@@ -117,6 +134,8 @@ public class UserProfileLate extends VBox {
             String startDate = borrow.get(2);
             String endDate = borrow.get(3);
             String color = borrow.get(4);
+            String status = borrow.get(5);
+            String isbn = borrow.get(6);
 
             if (title != null && title.length() > 1 && title.startsWith("[") && title.endsWith("]")) {
                 title = title.substring(1, title.length() - 1);
@@ -143,7 +162,31 @@ public class UserProfileLate extends VBox {
             Label borrowEndDateLabel = new Label("Date de retour prévue :    " + endDate);
             borrowEndDateLabel.getStyleClass().add("label");
 
-            borrowInformationBox.getChildren().addAll(borrowTitleLabel, borrowDurationLabel, borrowStartDateLabel, borrowEndDateLabel);
+            String queryStatus = "SELECT status FROM borrow WHERE duration>30 AND status=?";
+
+            if (status.equals("0")) {
+                // Crée un bouton pour retourner emprunt
+                Button returnBorrowButton = new Button("Retour Emprunt");
+                returnBorrowButton.getStyleClass().add("button");
+
+                // Configure le bouton retour
+                returnBorrowButton.setOnAction(e -> {
+                    returnBorrow(isbn, finalMail);
+
+                    UserProfile userProfile = null;
+                    try {
+                        userProfile = new UserProfile(primaryStage, width, height, finalMail);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    primaryStage.setScene(userProfile.getUserProfileScene());
+                });
+
+                borrowInformationBox.getChildren().addAll(borrowTitleLabel, borrowDurationLabel, borrowStartDateLabel, borrowEndDateLabel, returnBorrowButton);
+            } else {
+                borrowInformationBox.getChildren().addAll(borrowTitleLabel, borrowDurationLabel, borrowStartDateLabel, borrowEndDateLabel);
+            }
+
             borrowsInformationGrid.add(borrowInformationBox, col, row);
 
             col++;
