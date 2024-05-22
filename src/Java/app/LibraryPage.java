@@ -11,6 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import methods.APIBNF;
 import methods.System1;
+import java.util.concurrent.*;
+import javafx.application.Platform;
 
 import java.util.List;
 
@@ -65,9 +67,9 @@ public class LibraryPage extends VBox {
         langageComboBox.setValue("CHOISIR LANGUE"); // Valeur par défaut
 
         // Ajoutez un ChangeListener pour détecter les changements de sélection
-        langageComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+        /*langageComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             onLanguageSelected(newValue);  // Appelez la méthode lorsque la sélection change
-        });
+        });*/
 
         // Crée un bouton pour voir les livres les plus empruntés
         Button mostborrowedButton = new Button("Les plus empruntés");
@@ -117,7 +119,8 @@ public class LibraryPage extends VBox {
         searchButton.setOnAction(e -> performSearch(primaryStage, root, textFieldSearch.getText()));
     }
 
-    private void performSearch(Stage primaryStage, BorderPane root, String text) {
+
+/*private void performSearch(Stage primaryStage, BorderPane root, String text) {
         String query = "bib.title all " + "\"" + text + "\"and (bib.doctype all \"a\")";
         List<List<String>> listBook = System1.displayBookList(query);
 
@@ -149,7 +152,7 @@ public class LibraryPage extends VBox {
     }
 
     // Méthode appelée lorsque la langue est sélectionnée
-    private void onLanguageSelected(String language) {
+    /*private void onLanguageSelected(String language) {
         if (language.equals("FR")) {
             String FR = "Victor Hugo";
             String queryFR = "bib.author all " + "\"" + FR + "\"";
@@ -160,7 +163,7 @@ public class LibraryPage extends VBox {
         if (language.equals("EN")) {
             // Ajoutez votre logique ici pour la langue EN
         }
-    }
+    }*/
 
     private VBox createPage(int pageIndex, ObservableList<String> items, List<List<String>> listBook) {
         int fromIndex = pageIndex * ITEMS_PER_PAGE;
@@ -195,7 +198,7 @@ public class LibraryPage extends VBox {
         });
 
         // Créer une légende
-        HBox legend = new HBox(10, new Label("ISBN"), new Label("Langue"), new Label("Titre"), new Label("Auteur"), new Label("Éditeur"), new Label("Année"));
+        HBox legend = new HBox(80, new Label("ISBN"), new Label("Langue"), new Label("Titre"), new Label("Auteur"), new Label("Éditeur"), new Label("Année"));
         legend.setStyle("-fx-padding: 5; -fx-font-weight: bold;");
 
         VBox vbox = new VBox(legend, listView);
