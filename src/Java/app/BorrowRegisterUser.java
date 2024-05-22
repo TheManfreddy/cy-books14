@@ -2,6 +2,7 @@ package app;
 
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,8 +12,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import methods.Borrow;
 import methods.Librarian;
+import methods.System1;
 
 import java.sql.SQLException;
+
+import static app.BorrowBook.showErrorAlert;
 
 public class BorrowRegisterUser {
 
@@ -105,7 +109,7 @@ public class BorrowRegisterUser {
 
         // Create a text field for the phone number
         textFieldNumber = new TextField();
-        textFieldNumber.setPromptText("Prénom");
+        textFieldNumber.setPromptText("Téléphone");
         textFieldNumber.getStyleClass().add("text-field");
 
         // Create an HBox for the phone number and its text field
@@ -150,9 +154,15 @@ public class BorrowRegisterUser {
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-            Borrow.registerBorrow(isbn, mail);
-            LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
-            primaryStage.setScene(libraryPage.getLibraryPageScene());
+
+            if(System1.addBorrow(isbn, mail)==true) {
+                LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
+                primaryStage.setScene(libraryPage.getLibraryPageScene());
+                showSuccessAlert("Emprunt ajouté avec succès.");
+            }
+            else{
+                showErrorAlert("L'utilisateur a dépassé le nombre d'emprunts autorisés.");
+            }
         });
 
 
@@ -161,6 +171,20 @@ public class BorrowRegisterUser {
 
 
 
+    }
+    static void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    private static void showSuccessAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succès");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 

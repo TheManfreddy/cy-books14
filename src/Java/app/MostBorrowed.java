@@ -39,63 +39,11 @@ public class MostBorrowed extends VBox {
         root.setTop(titleBox);
         root.setLeft(returnButton);
 
-        // Crée un Label pour la recherche
-        Label labelSearch = new Label("Recherche :");
-        labelSearch.getStyleClass().add("label");
-
-        // Crée un champ de texte pour rechercher un livre
-        TextField textFieldSearch = new TextField();
-        textFieldSearch.setPromptText("Rechercher un livre");
-        textFieldSearch.getStyleClass().add("text-field");
-
-        // Crée un bouton pour lancer la recherche
-        Button searchButton = new Button("\uD83D\uDD0E");
-        searchButton.getStyleClass().add("button");
-
-        // Crée une ComboBox pour sélectionner la langue des livres
-        ComboBox<String> langageComboBox = new ComboBox<>();
-        langageComboBox.getItems().addAll("FR", "EN", "CHOISIR LANGUE");
-        langageComboBox.setValue("CHOISIR LANGUE"); // Valeur par défaut
-
-        // Ajoutez un ChangeListener pour détecter les changements de sélection
-        langageComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            onLanguageSelected(newValue);  // Appelez la méthode lorsque la sélection change
-        });
-
-        // Crée un bouton pour voir les livres les plus empruntés
-        Button mostborrowedButton = new Button("Les plus empruntés");
-        mostborrowedButton.getStyleClass().add("button");
-
-        // Crée un conteneur VBox pour l'identifiant et son champ de texte
-        HBox searchBox = new HBox(15, labelSearch, textFieldSearch, searchButton, langageComboBox);
-        searchBox.setAlignment(Pos.TOP_CENTER);
-
-        // Crée un conteneur HBox et y ajoute les composants
-        HBox hBox = new HBox(50); // 50 est l'espacement entre les éléments
-        hBox.getChildren().addAll(mostborrowedButton);
-        hBox.getStyleClass().add("container");
-        hBox.setAlignment(Pos.CENTER);
-
-        // Crée un VBox pour contenir le label, la barre de recherche et les boutons
-        VBox topBox = new VBox(15, titleBox, searchBox, hBox);
-        topBox.setAlignment(Pos.CENTER);
-
-        // Place le VBox topBox en haut du BorderPane
-        root.setTop(topBox);
-
         // Configure le bouton retour
         returnButton.setOnAction(e -> {
             LibraryPage librarypage = new LibraryPage(primaryStage, width, height);
             primaryStage.setScene(librarypage.getLibraryPageScene());
         });
-
-        mostborrowedButton.setOnAction(e -> {
-            LibraryPage librarypage = new LibraryPage(primaryStage, width, height);
-            primaryStage.setScene(librarypage.getLibraryPageScene());
-        });
-
-
-            String text = textFieldSearch.getText();
             List<List<String>> listBook = System1.mostBorrowedBooks() ;
 
             if (listBook != null && !listBook.isEmpty()) {

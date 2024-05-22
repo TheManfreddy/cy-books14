@@ -103,7 +103,7 @@ public class RegisterUser {
 
         // Create a text field for the phone number
         textFieldNumber = new TextField();
-        textFieldNumber.setPromptText("Prénom");
+        textFieldNumber.setPromptText("Téléphone");
         textFieldNumber.getStyleClass().add("text-field");
 
         // Create an HBox for the phone number and its text field

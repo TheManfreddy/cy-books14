@@ -14,7 +14,7 @@ import static methods.APIBNF.retrieveBook_isbn;
 
 public class System1{
 
-    public static void addBorrow(String isbn, String idUser){
+    public static boolean addBorrow(String isbn, String idUser){
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -36,13 +36,12 @@ public class System1{
                 System.out.println("Nombre d'emprunts actuels: " + numberBorrow);
             } else {
                 System.out.println("Utilisateur non trouvé.");
-                return;
             }
 
             // Vérifier si l'utilisateur peut emprunter plus de livres
             if (numberBorrow >= 5) {
                 System.out.println("L'utilisateur a atteint le nombre maximal d'emprunts.");
-                return;
+                return(false);
             } else {
                 // Ajouter un nouvel emprunt
                 Borrow.registerBorrow(isbn, idUser);
@@ -54,7 +53,7 @@ public class System1{
 
                 int updateRows = pstmt.executeUpdate();
                 if (updateRows > 0) {
-                    System.out.println("Nombre d'emprunts mis à jour avec succès!");
+                    return(true);
                 } else {
                     System.out.println("Échec de la mise à jour du nombre d'emprunts.");
                 }
@@ -71,7 +70,7 @@ public class System1{
                 e.printStackTrace();
             }
         }
-
+    return(true);
     }
 
 
@@ -274,7 +273,8 @@ public class System1{
                 "GROUP BY " +
                 "    isbn " +
                 "ORDER BY " +
-                "    borrow_count DESC";
+                " borrow_count DESC " +
+                "LIMIT 20";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(query);
@@ -300,12 +300,5 @@ public class System1{
         }
         return mostBorrowedBooks;
     }
-
-
-    public static void main(String[] args) {
-
-        System.out.println("liste des livres les plus empruntés " + mostBorrowedBooks());
-    }
-
 }
 

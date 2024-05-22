@@ -74,9 +74,14 @@ public class BorrowBook {
             String mail = textFieldMail.getText();
             if (isUserEmailExists(mail)) {
                 // Appelle la méthode registerBorrow
-                System1.addBorrow(isbn, mail);
-                LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
-                primaryStage.setScene(libraryPage.getLibraryPageScene());
+                if(System1.addBorrow(isbn, mail)==true) {
+                    LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
+                    primaryStage.setScene(libraryPage.getLibraryPageScene());
+                    showSuccessAlert("Emprunt ajouté avec succès.");
+                }
+                else{
+                    showErrorAlert("L'utilisateur a dépassé le nombre d'emprunts autorisés.");
+                }
             }
             // Vérifiez dans le cas où le champ du mail saisi est null, créée Exception
             else {
@@ -101,9 +106,16 @@ public class BorrowBook {
 
     }
 
-    private static void showErrorAlert(String message) {
+    static void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    private static void showSuccessAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succès");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
