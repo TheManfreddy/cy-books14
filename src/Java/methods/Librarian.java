@@ -41,16 +41,6 @@ public class Librarian {
                         user.add(phone_number);
                         user.add(String.valueOf(number_borrow));
 
-                        /*// Print the results
-                        System.out.println("Mail: " + mail);
-                        System.out.println("Name: " + name);
-                        System.out.println("First Name: " + first_name);
-                        System.out.println("Date of Birth: " + birth_date);
-                        System.out.println("Address: " + address);
-                        System.out.println("Phone Number: " + phone_number);
-                        System.out.println("Number methods.Borrow: " + number_borrow);
-                        System.out.println(" ");
-                        */
 
                     }
                 }
@@ -163,35 +153,33 @@ public class Librarian {
 
     public static boolean validateLogin(String login, String password) {
         String url = "jdbc:mysql://localhost:3307/bibli";
-        String user = "root";  //
-        String pass = "";  //
+        String user = "root";  // Nom d'utilisateur de la base de données
+        String pass = "";  // Mot de passe de la base de données
 
         String query = "SELECT * FROM library WHERE login = ? AND password = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-
+            // Définir les paramètres de la requête
             stmt.setString(1, login);
             stmt.setString(2, password);
 
-
-
+            // Exécuter la requête
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    // User exists
+                    // L'utilisateur existe
                     return true;
                 }
             }
         } catch (SQLException e) {
+            // Gestion des erreurs de connexion et d'exécution de la requête
             e.printStackTrace();
-
+            // Vous pouvez également utiliser un journal de bord (logger) pour enregistrer les erreurs
         }
 
+        // Retourner false si l'utilisateur n'existe pas ou en cas d'erreur
         return false;
     }
-
-
-
 }
 

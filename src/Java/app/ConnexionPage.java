@@ -83,7 +83,6 @@ public class ConnexionPage extends VBox {
         });
     }
 
-
     private static void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur de connexion");
@@ -96,5 +95,3 @@ public class ConnexionPage extends VBox {
         return scene;
     }
 }
-
-
