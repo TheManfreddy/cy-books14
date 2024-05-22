@@ -12,7 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import methods.Borrow;
+import methods.System1;
 
 public class BorrowBook {
     private Scene scene;
@@ -74,7 +74,7 @@ public class BorrowBook {
             String mail = textFieldMail.getText();
             if (isUserEmailExists(mail)) {
                 // Appelle la méthode registerBorrow
-                Borrow.registerBorrow(isbn, mail);
+                System1.addBorrow(isbn, mail);
                 LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
                 primaryStage.setScene(libraryPage.getLibraryPageScene());
             }
