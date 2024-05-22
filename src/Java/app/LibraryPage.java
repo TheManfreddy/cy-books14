@@ -108,7 +108,12 @@ public class LibraryPage extends VBox {
             HomePage homePage = new HomePage(primaryStage, width, height);
             primaryStage.setScene(homePage.getHomePageScene());
         });
-
+        // Configure le bouton les plus empruntés
+        mostborrowedButton.setOnAction(e -> {
+            MostBorrowed mostborrowed = new MostBorrowed(primaryStage, width, height);
+            primaryStage.setScene(mostborrowed.getMostBorrowedScene());
+        });
+        // Configure le bouton rechercher
         searchButton.setOnAction(e -> performSearch(primaryStage, root, textFieldSearch.getText()));
     }
 
