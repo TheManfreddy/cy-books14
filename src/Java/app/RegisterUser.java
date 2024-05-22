@@ -3,6 +3,7 @@ package app;
 import methods.Librarian;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -10,8 +11,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import methods.System1;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
 
 public class RegisterUser {
 
@@ -29,7 +34,7 @@ public class RegisterUser {
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-        //Create an return button
+        //Create a return button
         Button returnButton = new Button("Retour");
         returnButton.getStyleClass().add("button");
 
@@ -127,7 +132,7 @@ public class RegisterUser {
 
         // Create a VBox and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton,returnButton);
+        vbox.getChildren().addAll(nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton, returnButton);
         vbox.getStyleClass().add("container");
 
         // Place the VBox containing the text fields and button in the center of the BorderPane
@@ -138,25 +143,75 @@ public class RegisterUser {
             // Retrieve values from text fields
             String name = getTextFieldName();
             String firstName = getTextFieldFirstName();
-            String birthDate = getTextFieldBirthDate();
+            String birthDateStr = getTextFieldBirthDate(); // Obtenez la chaîne de la date de naissance
+
+            // Validate date of birth format
+            if (!isValidDateFormat(birthDateStr)) {
+                showErrorAlert("Le format de la date de naissance est incorrect. Utilisez YYYY-MM-JJ.");
+                return;
+            }
+
+            // Convert the birthDateStr to a LocalDate object
+            LocalDate birthDate = LocalDate.parse(birthDateStr);
+
             String mail = getTextFieldMail();
             String phoneNumber = getTextFieldNumber();
             String address = getTextFieldAddress();
 
+            // Validate email and phone number
+            if (!isValidEmail(mail)) {
+                showErrorAlert("Le format de l'adresse mail est incorrect.");
+                return;
+            }
+            if (!isValidPhoneNumber(phoneNumber)) {
+                showErrorAlert("Le format du numéro de téléphone est incorrect.");
+                return;
+            }
+
             try {
-                Librarian.registerUser(mail,name, firstName, birthDate,address , phoneNumber,0 );
+                // Check if user already exists
+                if (System1.isUserEmailExists(mail)) {
+                    showErrorAlert("L'utilisateur existe déjà dans la base de données.");
+                } else {
+                    Librarian.registerUser(mail, name, firstName, birthDate.toString(), address, phoneNumber, 0);
+                    UsersPage usersPage = new UsersPage(primaryStage, width, height);
+                    primaryStage.setScene(usersPage.getUsersPageScene());
+                }
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-
-            UsersPage usersPage = new UsersPage(primaryStage, width, height);
-            primaryStage.setScene(usersPage.getUsersPageScene());
         });
-
-
-
-
     }
+
+    private boolean isValidDateFormat(String dateStr) {
+        // Utilisez le format spécifié pour vérifier la validité de la date
+        try {
+            LocalDate.parse(dateStr);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return Pattern.matches(emailRegex, email);
+    }
+
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        String phoneRegex = "^(\\+\\d{1,3}[- ]?)?\\d{10}$";
+        return Pattern.matches(phoneRegex, phoneNumber);
+    }
+
+    private void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur de validation");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     public String getTextFieldName() {
         return textFieldName.getText();
     }
@@ -180,8 +235,6 @@ public class RegisterUser {
     public String getTextFieldAddress() {
         return textFieldAddress.getText();
     }
-
-
 
     public Scene getRegisterUserScene() {
         return scene;

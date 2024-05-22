@@ -300,5 +300,27 @@ public class System1{
         }
         return mostBorrowedBooks;
     }
+
+    public static boolean isUserEmailExists(String mail) {
+        boolean exists = false;
+        String url = "jdbc:mysql://localhost:3307/bibli";
+        String user = "root";
+        String password = "";
+
+        String query = "SELECT COUNT(*) FROM user WHERE mail = ?";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, mail);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                exists = rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return exists;
+    }
 }
 

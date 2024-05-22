@@ -2,6 +2,7 @@ package app;
 
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,6 +13,9 @@ import javafx.stage.Stage;
 import methods.Librarian;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
 
 public class ModifyInformation {
 
@@ -23,7 +27,7 @@ public class ModifyInformation {
     private TextField textFieldNumber;
     private TextField textFieldAddress;
 
-    public ModifyInformation(Stage primaryStage, double width, double height,String mail, String name, String firstName, String birthDate, String address, String phoneNumber) {
+    public ModifyInformation(Stage primaryStage, double width, double height, String mail, String name, String firstName, String birthDate, String address, String phoneNumber) {
         // Create and configure the scene
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
@@ -37,7 +41,7 @@ public class ModifyInformation {
         returnButton.setOnAction(e -> {
             UserProfile userProfile = null;
             try {
-                userProfile = new UserProfile(primaryStage, width, height,mail);
+                userProfile = new UserProfile(primaryStage, width, height, mail);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
@@ -132,7 +136,7 @@ public class ModifyInformation {
 
         // Create a VBox and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton,returnButton);
+        vbox.getChildren().addAll(nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton, returnButton);
         vbox.getStyleClass().add("container");
 
         // Place the VBox containing the text fields and button in the center of the BorderPane
@@ -148,6 +152,22 @@ public class ModifyInformation {
             String newPhoneNumber = textFieldNumber.getText();
             String newAddress = textFieldAddress.getText();
 
+            // Validate new birth date format
+            if (!isValidDateFormat(newBirthDate)) {
+                showErrorAlert("Le format de la date de naissance est incorrect. Utilisez YYYY-MM-JJ.");
+                return;
+            }
+
+            // Validate new email and phone number
+            if (!isValidEmail(newMail)) {
+                showErrorAlert("Le format de l'adresse mail est incorrect.");
+                return;
+            }
+            if (!isValidPhoneNumber(newPhoneNumber)) {
+                showErrorAlert("Le format du numéro de téléphone est incorrect.");
+                return;
+            }
+
             try {
                 Librarian.modifyInformation(newMail, newName, newFirstName, newBirthDate, newAddress, newPhoneNumber);
             } catch (SQLException ex) {
@@ -157,11 +177,35 @@ public class ModifyInformation {
             UsersPage usersPage = new UsersPage(primaryStage, width, height);
             primaryStage.setScene(usersPage.getUsersPageScene());
         });
-
-
-
-
     }
+
+    private boolean isValidDateFormat(String dateStr) {
+        try {
+            LocalDate.parse(dateStr);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return Pattern.matches(emailRegex, email);
+    }
+
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        String phoneRegex = "^(\\+\\d{1,3}[- ]?)?\\d{10}$";
+        return Pattern.matches(phoneRegex, phoneNumber);
+    }
+
+    private void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur de validation");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     public String getTextFieldName() {
         return textFieldName.getText();
     }
@@ -186,14 +230,9 @@ public class ModifyInformation {
         return textFieldAddress.getText();
     }
 
-
-
     public Scene getModifyInformationScene() {
         return scene;
     }
 }
-
-
-
 
 

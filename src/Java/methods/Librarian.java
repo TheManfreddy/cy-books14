@@ -181,5 +181,7 @@ public class Librarian {
         // Retourner false si l'utilisateur n'existe pas ou en cas d'erreur
         return false;
     }
+
+
 }
 
