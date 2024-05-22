@@ -282,6 +282,7 @@ public class System1{
                 int borrowCount = rs.getInt("borrow_count");
                 List<List<String>> book = retrieveBook_isbn(isbn);
                 List<String> book1 = new ArrayList<>();
+                book1.add(isbn);
                 book1.add(book.get(0).get(0));
                 book1.add(book.get(1).get(0));
                 book1.add(book.get(2).get(0));
