@@ -10,7 +10,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import methods.APIBNF;
-import methods.Librarian;
 import methods.System1;
 
 import java.util.List;
@@ -18,9 +17,16 @@ import java.util.List;
 public class LibraryPage extends VBox {
     private Scene scene;
     private static final int ITEMS_PER_PAGE = 10; // Nombre d'éléments par page
+    private TextField textFieldSearch;
+    private ComboBox<String> langageComboBox;
+    private List<List<String>> currentListBook;
+    private ObservableList<String> currentItems;
 
     public LibraryPage(Stage primaryStage, double width, double height) {
+        this(primaryStage, width, height, "", FXCollections.observableArrayList(), FXCollections.observableArrayList());
+    }
 
+    public LibraryPage(Stage primaryStage, double width, double height, String searchQuery, List<List<String>> listBook, ObservableList<String> items) {
         // Crée et configure la scène
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
@@ -45,7 +51,7 @@ public class LibraryPage extends VBox {
         labelSearch.getStyleClass().add("label");
 
         // Crée un champ de texte pour rechercher un livre
-        TextField textFieldSearch = new TextField();
+        textFieldSearch = new TextField(searchQuery);
         textFieldSearch.setPromptText("Rechercher un livre");
         textFieldSearch.getStyleClass().add("text-field");
 
@@ -54,7 +60,7 @@ public class LibraryPage extends VBox {
         searchButton.getStyleClass().add("button");
 
         // Crée une ComboBox pour sélectionner la langue des livres
-        ComboBox<String> langageComboBox = new ComboBox<>();
+        langageComboBox = new ComboBox<>();
         langageComboBox.getItems().addAll("FR", "EN", "CHOISIR LANGUE");
         langageComboBox.setValue("CHOISIR LANGUE"); // Valeur par défaut
 
@@ -84,37 +90,53 @@ public class LibraryPage extends VBox {
         // Place le VBox topBox en haut du BorderPane
         root.setTop(topBox);
 
+        // Initialiser l'état actuel si disponible
+        if (items != null && !items.isEmpty()) {
+            currentListBook = listBook;
+            currentItems = items;
+
+            // Créer un Pagination pour gérer les pages
+            Pagination pagination = new Pagination((int) Math.ceil((double) items.size() / ITEMS_PER_PAGE), 0);
+            pagination.setPageFactory(pageIndex -> createPage(pageIndex, items, listBook));
+
+            // Ajouter le Pagination au centre du BorderPane
+            root.setCenter(pagination);
+        }
+
         // Configure le bouton retour
         returnButton.setOnAction(e -> {
             HomePage homePage = new HomePage(primaryStage, width, height);
             primaryStage.setScene(homePage.getHomePageScene());
         });
 
-        searchButton.setOnAction(e -> {
-            String text = textFieldSearch.getText();
-            String query = "bib.title all " + "\"" + text + "\"and (bib.doctype all \"a\")";
-            List<List<String>> listBook = System1.displayBookList(query);
+        searchButton.setOnAction(e -> performSearch(primaryStage, root, textFieldSearch.getText()));
+    }
 
-            if (listBook != null && !listBook.isEmpty()) {
-                // Convertir la liste en ObservableList pour qu'elle soit compatible avec ListView
-                ObservableList<String> items = FXCollections.observableArrayList();
-                for (List<String> book : listBook) {
-                    items.add(String.join(", ", book)); // Convertir chaque liste de détails en une seule chaîne
-                }
+    private void performSearch(Stage primaryStage, BorderPane root, String text) {
+        String query = "bib.title all " + "\"" + text + "\"and (bib.doctype all \"a\")";
+        List<List<String>> listBook = System1.displayBookList(query);
 
-                // Créer un Pagination pour gérer les pages
-                Pagination pagination = new Pagination((int) Math.ceil((double) items.size() / ITEMS_PER_PAGE), 0);
-                pagination.setPageFactory(pageIndex -> createPage(pageIndex, items, listBook));
-
-                // Ajouter le Pagination au centre du BorderPane
-                root.setCenter(pagination);
-            } else {
-                // Gérer le cas où la recherche ne retourne aucun résultat
-                root.setCenter(new Label("Aucun résultat trouvé."));
+        if (listBook != null && !listBook.isEmpty()) {
+            // Convertir la liste en ObservableList pour qu'elle soit compatible avec ListView
+            ObservableList<String> items = FXCollections.observableArrayList();
+            for (List<String> book : listBook) {
+                items.add(String.join(", ", book)); // Convertir chaque liste de détails en une seule chaîne
             }
-        });
 
+            // Sauvegarder l'état actuel
+            currentListBook = listBook;
+            currentItems = items;
 
+            // Créer un Pagination pour gérer les pages
+            Pagination pagination = new Pagination((int) Math.ceil((double) items.size() / ITEMS_PER_PAGE), 0);
+            pagination.setPageFactory(pageIndex -> createPage(pageIndex, items, listBook));
+
+            // Ajouter le Pagination au centre du BorderPane
+            root.setCenter(pagination);
+        } else {
+            // Gérer le cas où la recherche ne retourne aucun résultat
+            root.setCenter(new Label("Aucun résultat trouvé."));
+        }
     }
 
     public Scene getLibraryPageScene() {
@@ -153,7 +175,7 @@ public class LibraryPage extends VBox {
                     String isbn = selectedBook.get(0); // Récupérer l'ISBN
                     System.out.println("Selected ISBN: " + isbn); // Log pour déboguer
                     try {
-                        DisplayBook displayBook = new DisplayBook((Stage) listView.getScene().getWindow(), scene.getWidth(), scene.getHeight(), isbn);
+                        DisplayBook displayBook = new DisplayBook((Stage) listView.getScene().getWindow(), scene.getWidth(), scene.getHeight(), isbn, textFieldSearch.getText(), currentListBook, currentItems);
                         ((Stage) listView.getScene().getWindow()).setScene(displayBook.getDisplayBookScene());
                     } catch (Exception e) {
                         System.err.println("Failed to display book: " + e.getMessage());
@@ -167,8 +189,6 @@ public class LibraryPage extends VBox {
             }
         });
 
-
-
         // Créer une légende
         HBox legend = new HBox(10, new Label("ISBN"), new Label("Langue"), new Label("Titre"), new Label("Auteur"), new Label("Éditeur"), new Label("Année"));
         legend.setStyle("-fx-padding: 5; -fx-font-weight: bold;");
@@ -178,4 +198,3 @@ public class LibraryPage extends VBox {
         return vbox;
     }
 }
-
