@@ -1,34 +1,39 @@
-/*  Page inscrition */
-
+/*  Page de connexion */
 
 .root {
     -fx-background-color: white;
     -fx-padding: 20;
 }
+
 .title {
-    -fx-font-size: 24pt;
-    -fx-font-family: 'Courier New', Courier, monospace;
-    -fx-font-weight: bold;
-    -fx-text-fill: #000000;
+    -fx-font-size: 100pt;
+    -fx-font-family:  'Arial', monospace;
+    -fx-font-weight: bold ;
     -fx-alignment: center;
+    -fx-font-style: italic;
 }
+
+
 
 .container {
-    -fx-background-color: #EBDEDE;
-    -fx-padding: 20;
+    -fx-background-color: rgba(255, 237, 237, 0.59);
+    -fx-padding: 40;
     -fx-border-color: #590824;
-    -fx-border-width: 2;
+    -fx-border-width: 3;
     -fx-border-radius: 50;
     -fx-background-radius: 50;
+    -fx-min-width: 700px;
+    -fx-min-height: 480px;
+    -fx-max-width: 700px;
+    -fx-max-height: 480px;
 }
 
-/* app.Style pour le label "Identifiant" */
+
 .label {
     -fx-font-size: 14pt;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
 }
-
 
 .text-field, .password-field {
     -fx-font-size: 12pt;
@@ -37,8 +42,8 @@
     -fx-border-width: 1;
     -fx-border-radius: 50;
     -fx-background-radius: 50;
+    -fx-margin-bottom: 20px;
 }
-
 
 .button {
     -fx-background-color: #590824;
@@ -48,6 +53,7 @@
     -fx-border-radius: 50;
     -fx-background-radius: 50;
 }
+
 .buttonLate {
     -fx-background-color: #F92121;
     -fx-text-fill: white;
@@ -57,19 +63,46 @@
     -fx-background-radius: 50;
     -fx-opacity: 0.8;
 }
+
 .button:hover {
     -fx-background-color: #660000;
 }
+
+/* UserProfil */
 
 .highlighted-label-green {
     -fx-background-color: green;
     -fx-padding: 5px;
 }
+
 .highlighted-label-red {
     -fx-background-color: red;
     -fx-padding: 5px;
 }
+
 .highlighted-label-gray {
     -fx-background-color: gray;
     -fx-padding: 5px;
 }
+
+/* HomePage */
+
+.buttonHome {
+    -fx-background-color: rgb(247, 223, 223,0.5);
+    -fx-text-fill: black;
+    -fx-font-size: 32pt;
+    -fx-padding: 10 20;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-border-color: #590824;
+    -fx-min-width: 300px;
+    -fx-min-height: 200px;
+    -fx-max-width: 300px;
+    -fx-max-height: 200px;
+}
+
+.buttonHome:hover {
+    -fx-background-color: rgb(247, 223, 223,0.8);
+}
+
+

@@ -56,6 +56,7 @@ public class ConnexionPage extends VBox {
         // Create a VBox container for the password label and password field
         VBox passwordBox = new VBox(5, labelPassword, passwordField);
         passwordBox.setAlignment(Pos.CENTER_LEFT);
+        passwordBox.setStyle("-fx-padding: 0 0 30 0;");
 
         // Create a button to log in
         Button loginButton = new Button("Se connecter");
@@ -63,9 +64,10 @@ public class ConnexionPage extends VBox {
 
         // Create a VBox container and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(identifiantBox, passwordBox, loginButton);
+        vbox.getChildren().addAll(titleBox,identifiantBox, passwordBox, loginButton);
         vbox.getStyleClass().add("container");
         vbox.setAlignment(Pos.CENTER);
+
 
         // Place the VBox containing the text fields and button in the center of the BorderPane
         root.setCenter(vbox);
