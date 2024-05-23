@@ -47,7 +47,7 @@ public class UsersPage extends VBox {
         root.setTop(titleBox);
 
         // Crée un bouton retour
-        Button returnButton = new Button("Retour");
+        Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button");
 
         // Crée un conteneur HBox pour le bouton retour
@@ -90,7 +90,7 @@ public class UsersPage extends VBox {
         });
 
         // Crée le bouton ajouter usager
-        Button addUserButton = new Button("+");
+        Button addUserButton = new Button("➕");
         addUserButton.getStyleClass().add("button-UsersPage");
 
         // Crée le bouton afficher retardataire
@@ -210,7 +210,7 @@ public class UsersPage extends VBox {
             userNumberBorrowLabel.getStyleClass().add("label");
 
             // Crée le bouton pour afficher l'oeil
-            Button eyeButton = new Button("Oeil");
+            Button eyeButton = new Button("\uD83D\uDC40");
             eyeButton.getStyleClass().add("buttonEye");
 
             userInformationBox.getChildren().addAll(userNameLabel, userFirstNameLabel, userMailLabel, userBirthDateLabel, userAddressLabel, userPhoneNumberLabel, userNumberBorrowLabel, eyeButton);

@@ -34,7 +34,7 @@ public class RegisterUser {
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
         //Create a return button
-        Button returnButton = new Button("Retour");
+        Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button");
 
         // Configure the button to open the user page

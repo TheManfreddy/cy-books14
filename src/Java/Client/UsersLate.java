@@ -47,7 +47,7 @@ public class UsersLate extends VBox {
         root.setTop(titleBox);
 
         // Crée un bouton retour
-        Button returnButton = new Button("Retour");
+        Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button");
 
         // Crée un conteneur HBox pour le bouton retour et le titre
@@ -210,7 +210,7 @@ public class UsersLate extends VBox {
             userNumberBorrowLabel.getStyleClass().add("label");
 
             // Crée le bouton pour afficher l'oeil
-            Button eyeButton = new Button("Oeil");
+            Button eyeButton = new Button("\uD83D\uDC40");
             eyeButton.getStyleClass().add("button");
 
             userInformationBox.getChildren().addAll(userNameLabel, userFirstNameLabel, userMailLabel, userBirthDateLabel, userAddressLabel, userPhoneNumberLabel, userNumberBorrowLabel, eyeButton);

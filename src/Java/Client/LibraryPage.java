@@ -39,7 +39,7 @@ public class LibraryPage extends VBox {
         titleLabel.getStyleClass().add("title");
 
         // Crée un bouton retour
-        Button returnButton = new Button("Retour");
+        Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button");
 
         // Crée un conteneur pour le titre et le centre

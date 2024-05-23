@@ -40,7 +40,7 @@ public class UserProfile extends VBox {
         titleLabel.getStyleClass().add("title");
 
         // Crée un bouton retour
-        Button returnButton = new Button("Retour");
+        Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button");
 
         // Configure le bouton retour
