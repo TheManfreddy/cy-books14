@@ -1,9 +1,11 @@
 package Server.Manager;
 
+import Server.Models.Library;
+
 import java.sql.*;
 
 public class LibraryManager {
-    public static boolean validateLogin(String login, String password) {
+    public static boolean validateLogin(Library library) {
         String url = "jdbc:mysql://localhost:3307/bibli";
         String user = "root";  // Nom d'utilisateur de la base de données
         String pass = "";  // Mot de passe de la base de données
@@ -14,8 +16,8 @@ public class LibraryManager {
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Définir les paramètres de la requête
-            stmt.setString(1, login);
-            stmt.setString(2, password);
+            stmt.setString(1, library.getLogin());
+            stmt.setString(2, library.getPassword());
 
             // Exécuter la requête
             try (ResultSet rs = stmt.executeQuery()) {

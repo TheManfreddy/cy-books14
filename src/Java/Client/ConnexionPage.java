@@ -1,6 +1,7 @@
 package Client;
 
 import Server.Manager.LibraryManager;
+import Server.Models.Library;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -76,7 +77,8 @@ public class ConnexionPage extends VBox {
         loginButton.setOnAction(e -> {
             String login = textFieldIdentifiant.getText();
             String password = passwordField.getText();
-            if (LibraryManager.validateLogin(login, password)) {
+            Library library = new Library(login, password);
+            if (LibraryManager.validateLogin(library)) {
                 HomePage homePage = new HomePage(primaryStage, width, height);
                 primaryStage.setScene(homePage.getHomePageScene());
             } else {
