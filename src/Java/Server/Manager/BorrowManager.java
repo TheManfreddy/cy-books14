@@ -1,5 +1,7 @@
 package Server.Manager;
 
+import Server.Models.Borrow;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -202,7 +204,7 @@ public class BorrowManager {
                 return(false);
             } else {
                 // Ajouter un nouvel emprunt
-               registerBorrow(isbn, idUser);
+                registerBorrow(isbn, idUser);
 
                 // Mettre à jour le nombre d'emprunts de l'utilisateur
                 String updateUserBorrowCountSql = "UPDATE user SET number_borrow = number_borrow + 1 WHERE mail = ?";
@@ -231,9 +233,9 @@ public class BorrowManager {
         return(true);
     }
 
-    public static List<List<String>> historyBorrow(String idUser){
+    public static List<Borrow> historyBorrow(String idUser){
 
-        List<List<String>> listOfBorrows = new ArrayList<>();
+        List<Borrow> listOfBorrows = new ArrayList<>();
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -242,7 +244,7 @@ public class BorrowManager {
             // Connexion à la base de données
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
 
-            String statusSql = "SELECT isbn,duration,start_date,end_date,status FROM borrow WHERE idUser=?";
+            String statusSql = "SELECT idBorrow,isbn,duration,start_date,end_date,status FROM borrow WHERE idUser=?";
             pstmt = conn.prepareStatement(statusSql);
             // Attribution des valeurs aux paramètres
             pstmt.setString(1,idUser);
@@ -250,37 +252,41 @@ public class BorrowManager {
             ResultSet r = pstmt.executeQuery();
             while (r.next()) {  // Déplacer le curseur au premier enregistrement
 
-                List<String> list1 = new ArrayList<>();
+                //List<String> list1 = new ArrayList<>();
 
+                int idBorrow = r.getInt("idBorrow");
                 String isbn = r.getString("isbn");
                 int duration = r.getInt("duration");
                 Date start_date = r.getDate("start_date");
                 Date end_date = r.getDate("end_date");
                 int status = r.getInt("status");
 
-                list1.add(isbn);
+                Borrow borrow = new Borrow(idBorrow,isbn,idUser,duration,start_date,end_date,status);
+
+                /*list1.add(isbn);
                 list1.add(String.valueOf(duration));
                 list1.add(String.valueOf(start_date));
-                list1.add(String.valueOf(end_date));
+                list1.add(String.valueOf(end_date));*/
 
 
 
                 if(status == 0 && duration>30){
-                    list1.add("red");
+                    //list1.add("red");
+                    borrow.setColor("red");
                 }
                 if(status == 0 && duration<=30){
-                    list1.add("green");
+                    //list1.add("green");
+                    borrow.setColor("green");
                 }
                 if(status == 1){
-                    list1.add("gray");
+                    //list1.add("gray");
+                    borrow.setColor("gray");
                 }
 
-                list1.add(String.valueOf(status));
+                //list1.add(String.valueOf(status));
 
-                listOfBorrows.add(list1);
+                listOfBorrows.add(borrow);
             }
-
-
 
 
         } catch (SQLException e) {

@@ -15,7 +15,10 @@ public class Borrow implements Serializable {
     private Date end_date ;
     private int status;
 
-    public Borrow(int idBorrow, String isbn, String idUser, int duration,Date start_date,Date end_date,int status)  {
+    private String color;
+
+
+    public Borrow(int idBorrow, String isbn, String idUser, int duration, Date start_date, Date end_date, int status)  {
         this.idBorrow = idBorrow;
         this.isbn = isbn;
         this.idUser = idUser;
@@ -23,6 +26,7 @@ public class Borrow implements Serializable {
         this.start_date = start_date;
         this.end_date = end_date;
         this.status =status;
+        this.color = null;
     }
 
     public int getIdBorrow() {
@@ -65,5 +69,14 @@ public class Borrow implements Serializable {
     public int getStatus(){return status;}
 
     public void setStatus(int status){this.status =status;}
+
+
+    public String getColor() {
+        return this.color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 
 }
