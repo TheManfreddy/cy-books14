@@ -146,9 +146,7 @@ public class UserManager {
         userBorrows.add(user);
         List<Borrow> listborrow = historyBorrow(mail);
         for (Borrow borrow : listborrow) {
-            String isbn= borrow.getIsbn();
-            Book book = retrieveBook_isbn(isbn);
-            userBorrows.add(book);
+            userBorrows.add(borrow);
         }
         return(userBorrows);
     }

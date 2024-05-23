@@ -115,12 +115,33 @@ public class UserProfile extends VBox {
         GridPane borrowsInformationGrid = new GridPane();
         borrowsInformationGrid.setHgap(30);
         borrowsInformationGrid.setVgap(15);
-        int col = 0;
-        int row = 0;
+
         List<Borrow> borrows=new ArrayList<>();
-        for (int i=1; i<userInformation.size();i++) {
+
+        for (int i = 0; i < userInformation.size(); i++) {
             Borrow borrow = (Borrow) userInformation.get(i);
             borrows.add(borrow);
+        }
+
+        borrows.sort(Comparator.comparing(borrow1 -> {
+            String color1 = borrow1.getColor();
+            switch (color1) {
+                case "green": return 1;
+                case "red": return 2;
+                case "gray": return 3;
+                default: return 4;
+            }
+        }));
+
+        GridPane borrowsInformationGrid = new GridPane();
+        borrowsInformationGrid.setHgap(30);
+        borrowsInformationGrid.setVgap(15);
+        int col = 0;
+        int row = 0;
+
+
+
+        for (Borrow borrow : borrows) {
             VBox borrowInformationBox = new VBox(15);
 
             String isbn = borrow.getIsbn();
@@ -132,9 +153,10 @@ public class UserProfile extends VBox {
             String color = borrow.getColor();
             int status = borrow.getStatus();
 
-            if (title != null && title.length() > 1 && title.startsWith("[") && title.endsWith("]")) {
+
+            /*if (title != null && title.length() > 1 && title.startsWith("[") && title.endsWith("]")) {
                 title = title.substring(1, title.length() - 1);
-            }
+            }*/
 
             // Création des labels pour afficher l'historique des emprunts
             Label borrowTitleLabel = new Label("Titre :    " + title);
@@ -191,15 +213,7 @@ public class UserProfile extends VBox {
             }
         }
 
-        borrows.sort(Comparator.comparing(borrow -> {
-            String color = borrow.getColor();
-            switch (color) {
-                case "green": return 1;
-                case "red": return 2;
-                case "gray": return 3;
-                default: return 4;
-            }
-        }));
+
 
         VBox finalBox = new VBox(15);
         finalBox.getChildren().addAll(topBox, userInformationAndModifyButton, borrowsInformationGrid);

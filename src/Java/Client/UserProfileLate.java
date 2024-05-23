@@ -129,6 +129,20 @@ public class UserProfileLate extends VBox {
         for (int i=1; i<userInformation.size();i++) {
             Borrow borrow = (Borrow) userInformation.get(i);
             borrows.add(borrow);
+        }
+        // Trier les emprunts par couleur
+        borrows.sort(Comparator.comparing(borrow -> {
+            String color = borrow.getColor();
+            switch (color) {
+                case "green": return 1;
+                case "red": return 2;
+                case "gray": return 3;
+                default: return 4;
+            }
+        }));
+        for (int i=1; i<userInformation.size();i++) {
+            Borrow borrow = (Borrow) userInformation.get(i);
+
             VBox borrowInformationBox = new VBox(15);
 
             String isbn = borrow.getIsbn();
@@ -141,11 +155,9 @@ public class UserProfileLate extends VBox {
             int status = borrow.getStatus();
 
 
-
-
-            if (title != null && title.length() > 1 && title.startsWith("[") && title.endsWith("]")) {
+            /*if (title != null && title.length() > 1 && title.startsWith("[") && title.endsWith("]")) {
                 title = title.substring(1, title.length() - 1);
-            }
+            }*/
 
             // Création des labels pour afficher l'historique des emprunts
             Label borrowTitleLabel = new Label("Titre :    " + title);
@@ -202,16 +214,6 @@ public class UserProfileLate extends VBox {
             }
         }
 
-        // Trier les emprunts par couleur
-        borrows.sort(Comparator.comparing(borrow -> {
-            String color = borrow.getColor();
-            switch (color) {
-                case "green": return 1;
-                case "red": return 2;
-                case "gray": return 3;
-                default: return 4;
-            }
-        }));
 
         VBox finalBox = new VBox(15);
         finalBox.getChildren().addAll(topBox, userInformationAndModifyButton, borrowsInformationGrid);
