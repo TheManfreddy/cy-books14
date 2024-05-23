@@ -18,8 +18,12 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+
+import static Server.Data.APIBNF.retrieveBook_isbn;
 
 public class UserProfileLate extends VBox {
     private Scene scene;
@@ -113,15 +117,7 @@ public class UserProfileLate extends VBox {
 
 
         // Trier les emprunts par couleur
-        userInformation.sort(Comparator.comparing(borrow -> {
-            String color = borrow.get(4);
-            switch (color) {
-                case "green": return 1;
-                case "red": return 2;
-                case "gray": return 3;
-                default: return 4;
-            }
-        }));
+
 
 
         GridPane borrowsInformationGrid = new GridPane();
@@ -134,13 +130,18 @@ public class UserProfileLate extends VBox {
             Borrow borrow = (Borrow) userInformation.get(i);
             borrows.add(borrow);
             VBox borrowInformationBox = new VBox(15);
-            String title = borrow.get(0);
-            String duration = borrow.get(1);
-            String startDate = borrow.get(2);
-            String endDate = borrow.get(3);
-            String color = borrow.get(4);
-            String status = borrow.get(5);
-            String isbn = borrow.get(6);
+
+            String isbn = borrow.getIsbn();
+            Book book = retrieveBook_isbn(isbn);
+            String title = book.getTitle();
+            int duration = borrow.getDuration();
+            Date startDate = borrow.getStart_date();
+            Date endDate = borrow.getEnd_date();
+            String color = borrow.getColor();
+            int status = borrow.getStatus();
+
+
+
 
             if (title != null && title.length() > 1 && title.startsWith("[") && title.endsWith("]")) {
                 title = title.substring(1, title.length() - 1);
@@ -169,7 +170,7 @@ public class UserProfileLate extends VBox {
 
             String queryStatus = "SELECT status FROM borrow WHERE duration>30 AND status=?";
 
-            if (status.equals("0")) {
+            if (status==0) {
                 // Crée un bouton pour retourner emprunt
                 Button returnBorrowButton = new Button("Retour Emprunt");
                 returnBorrowButton.getStyleClass().add("button");

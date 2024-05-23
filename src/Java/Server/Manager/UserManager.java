@@ -1,5 +1,9 @@
 package Server.Manager;
 
+import Server.Models.Book;
+import Server.Models.Borrow;
+import Server.Models.User;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -106,9 +110,10 @@ public class UserManager {
             e.printStackTrace();
         }
     }
-    public static List<String> searchUser(String mail) throws SQLException{
-        List<String> user =new ArrayList<>();
+    public static User searchUser(String mail) throws SQLException{
+
         String query = "SELECT * FROM  user WHERE mail = ?";
+        User user = new User();
 
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -145,7 +150,7 @@ public class UserManager {
             Book book = retrieveBook_isbn(isbn);
             userBorrows.add(book);
         }
-        return(user);
+        return(userBorrows);
     }
     public static List<User> displayUserList() {
         List<User> UserList = new ArrayList<>();
@@ -169,8 +174,8 @@ public class UserManager {
         }
         return (UserList);
     }
-    public static List<List<String>> displayUserBorrowLateList() {
-        List<List<String>> UserList = new ArrayList<>();
+    public static List<User> displayUserBorrowLateList() {
+        List<User> UserList = new ArrayList<>();
         String query = "SELECT idUser FROM borrow WHERE duration>30 AND status=?";
 
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
@@ -180,7 +185,7 @@ public class UserManager {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     String idUser = rs.getString("idUser");
-                    List user = searchUser(idUser);
+                    User user = searchUser(idUser);
                     System.out.println(" ");
                     UserList.add(user);
                 }

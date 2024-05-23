@@ -9,8 +9,10 @@ public class User implements Serializable {
     private String first_name;
     private String birth_date;
     private String address;
-    private int phone_number;
-    private int number_borrow;
+    private String phone_number;
+    private String number_borrow;
+
+    public User(){}
 
     public User(String mail, String name, String first_name,String birth_date,String address,String phone_number,String number_borrow)  {
         this.mail = mail;

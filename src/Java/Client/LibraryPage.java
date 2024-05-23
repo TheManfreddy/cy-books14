@@ -220,7 +220,7 @@ public class LibraryPage extends VBox {
                 int actualIndex = fromIndex + selectedIndex; // Correction ici pour obtenir l'index réel
                 if (actualIndex < listBook.size()) {
                     Book selectedBook = listBook.get(actualIndex);
-                    String isbn = Book.getISBN(); // Récupérer l'ISBN
+                    String isbn = selectedBook.getISBN(); // Récupérer l'ISBN
                     System.out.println("Selected ISBN: " + isbn); // Log pour déboguer
                     try {
                         DisplayBook displayBook = new DisplayBook((Stage) listView.getScene().getWindow(), scene.getWidth(), scene.getHeight(), isbn, textFieldSearch.getText(), currentListBook, currentItems);

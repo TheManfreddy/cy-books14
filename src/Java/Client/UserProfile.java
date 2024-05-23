@@ -62,14 +62,15 @@ public class UserProfile extends VBox {
         topBox.getChildren().addAll(returnButton, titleLabel, dateLabel);
 
         // Création du label pour afficher les informations des utilisateurs
-        List<List<String>> userInformation = UserManager.displayUser(mail);
-        mail = userInformation.get(0).get(0);
-        String name = userInformation.get(0).get(1);
-        String firstName = userInformation.get(0).get(2);
-        String birthDate = userInformation.get(0).get(3);
-        String address = userInformation.get(0).get(4);
-        String phoneNumber = userInformation.get(0).get(5);
-        String numberBorrow = userInformation.get(0).get(6);
+        List<Object> userInformation = UserManager.displayUser(mail);
+        User user = (User) userInformation.get(0);
+        mail = user.getMail();
+        String name = user.getName();
+        String firstName = user.getFirst_name();
+        String birthDate= user.getBirth_date();
+        String address = user.getAddress();
+        String phoneNumber = user.getNumber();
+        String numberBorrow = user.getNumber_borrow();
 
         Label userMailLabel = new Label("Mail :    " + mail);
         userMailLabel.getStyleClass().add("label");
@@ -189,6 +190,16 @@ public class UserProfile extends VBox {
                 row++;
             }
         }
+
+        borrows.sort(Comparator.comparing(borrow -> {
+            String color = borrow.getColor();
+            switch (color) {
+                case "green": return 1;
+                case "red": return 2;
+                case "gray": return 3;
+                default: return 4;
+            }
+        }));
 
         VBox finalBox = new VBox(15);
         finalBox.getChildren().addAll(topBox, userInformationAndModifyButton, borrowsInformationGrid);
