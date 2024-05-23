@@ -2,6 +2,9 @@ package Client;
 
 import Server.Manager.BorrowManager;
 import Server.Manager.UserManager;
+import Server.Models.Book;
+import Server.Models.Borrow;
+import Server.Models.User;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -57,14 +60,15 @@ public class UserProfileLate extends VBox {
 
 
         // Création du label pour afficher les informations des utilisateurs
-        List<List<String>> userInformation = UserManager.displayUser(mail);
-        mail = userInformation.get(0).get(0);
-        String name = userInformation.get(0).get(1);
-        String firstName = userInformation.get(0).get(2);
-        String birthDate= userInformation.get(0).get(3);
-        String address = userInformation.get(0).get(4);
-        String phoneNumber = userInformation.get(0).get(5);
-        String numberBorrow = userInformation.get(0).get(6);
+        List<Object> userInformation = UserManager.displayUser(mail);
+        User user = (User) userInformation.get(0);
+        mail = user.getMail();
+        String name = user.getName();
+        String firstName = user.getFirst_name();
+        String birthDate= user.getBirth_date();
+        String address = user.getAddress();
+        String phoneNumber = user.getNumber();
+        String numberBorrow = user.getNumber_borrow();
 
         Label userMailLabel = new Label("Mail :    " + mail);
         userMailLabel.getStyleClass().add("label");
@@ -125,7 +129,10 @@ public class UserProfileLate extends VBox {
         borrowsInformationGrid.setVgap(15);
         int col = 0;
         int row = 0;
-        for (List<String> borrow : userInformation) {
+        List<Borrow> borrows=new ArrayList<>();
+        for (int i=1; i<userInformation.size();i++) {
+            Borrow borrow = (Borrow) userInformation.get(i);
+            borrows.add(borrow);
             VBox borrowInformationBox = new VBox(15);
             String title = borrow.get(0);
             String duration = borrow.get(1);
@@ -193,6 +200,17 @@ public class UserProfileLate extends VBox {
                 row++;
             }
         }
+
+        // Trier les emprunts par couleur
+        borrows.sort(Comparator.comparing(borrow -> {
+            String color = borrow.getColor();
+            switch (color) {
+                case "green": return 1;
+                case "red": return 2;
+                case "gray": return 3;
+                default: return 4;
+            }
+        }));
 
         VBox finalBox = new VBox(15);
         finalBox.getChildren().addAll(topBox, userInformationAndModifyButton, borrowsInformationGrid);

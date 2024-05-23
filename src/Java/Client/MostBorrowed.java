@@ -52,7 +52,7 @@ public class MostBorrowed extends VBox {
                 // Convertir la liste en ObservableList pour qu'elle soit compatible avec ListView
                 ObservableList<String> items = FXCollections.observableArrayList();
                 for (Book book : listBook) {
-                    items.addAll(book.getISBN(),book.getLanguage(),book.getTitle(),book.getAuthor(), book.getEditor(), book.getRelease_year(); // Convertir chaque liste de détails en une seule chaîne
+                    items.addAll(book.getISBN(),book.getLanguage(),book.getTitle(),book.getAuthor(), book.getEditor(), book.getRelease_year()); // Convertir chaque liste de détails en une seule chaîne
                 }
 
                 // Créer un Pagination pour gérer les pages

@@ -3,6 +3,7 @@ package Client;
 import Server.Manager.BorrowManager;
 import Server.Manager.UserManager;
 import Server.Models.Borrow;
+import Server.Models.User;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -156,7 +157,7 @@ public class UsersLate extends VBox {
         paginationBox.setStyle("-fx-padding: 20;");
 
         // Initialisation de la liste d'utilisateurs
-        List<List<String>> userList = UserManager.displayUserBorrowLateList();
+        List<User> userList = UserManager.displayUserBorrowLateList();
         totalPages = (int) Math.ceil((double) userList.size() / itemsPerPage);
         updateUserList(usersInformationBox, userList);
 
@@ -166,22 +167,22 @@ public class UsersLate extends VBox {
         root.setLeft(finalBox);
     }
 
-    private void updateUserList(VBox usersInformationBox, List<List<String>> userList) {
+    private void updateUserList(VBox usersInformationBox, List<User> userList) {
         usersInformationBox.getChildren().clear();
 
         int start = currentPage * itemsPerPage;
         int end = Math.min(start + itemsPerPage, userList.size());
 
         for (int i = start; i < end; i++) {
-            List<String> user = userList.get(i);
+            User user = userList.get(i);
             HBox userInformationBox = new HBox(15);
-            String mail = user.get(0);
-            String name = user.get(1);
-            String firstName = user.get(2);
-            String birthDate = user.get(3);
-            String address = user.get(4);
-            String phoneNumber = user.get(5);
-            String numberBorrow = user.get(6);
+            String mail = user.getMail();
+            String name = user.getName();
+            String firstName = user.getFirst_name();
+            String birthDate = user.getBirth_date();
+            String address = user.getAddress();
+            String phoneNumber = user.getNumber();
+            String numberBorrow = user.getNumber_borrow();
 
             // Mise à jour de la durée des emprunts
             BorrowManager.updateBorrow(mail);
@@ -230,7 +231,7 @@ public class UsersLate extends VBox {
     }
 
     private void updateUserList(VBox usersInformationBox) {
-        List<List<String>> userList = UserManager.displayUserBorrowLateList();
+        List<User> userList = UserManager.displayUserBorrowLateList();
         updateUserList(usersInformationBox, userList);
     }
 

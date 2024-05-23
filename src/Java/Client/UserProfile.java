@@ -2,6 +2,9 @@ package Client;
 
 import Server.Manager.BorrowManager;
 import Server.Manager.UserManager;
+import Server.Models.Book;
+import Server.Models.Borrow;
+import Server.Models.User;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,8 +18,12 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+
+import static Server.Data.APIBNF.retrieveBook_isbn;
 
 
 public class UserProfile extends VBox {
@@ -104,31 +111,25 @@ public class UserProfile extends VBox {
         // Affichage historique emprunts
         userInformation.remove(0);
 
-        // Trier les emprunts par couleur
-        userInformation.sort(Comparator.comparing(borrow -> {
-            String color = borrow.get(4);
-            switch (color) {
-                case "green": return 1;
-                case "red": return 2;
-                case "gray": return 3;
-                default: return 4;
-            }
-        }));
-
         GridPane borrowsInformationGrid = new GridPane();
         borrowsInformationGrid.setHgap(30);
         borrowsInformationGrid.setVgap(15);
         int col = 0;
         int row = 0;
-        for (List<String> borrow : userInformation) {
+        List<Borrow> borrows=new ArrayList<>();
+        for (int i=1; i<userInformation.size();i++) {
+            Borrow borrow = (Borrow) userInformation.get(i);
+            borrows.add(borrow);
             VBox borrowInformationBox = new VBox(15);
-            String title = borrow.get(0);
-            String duration = borrow.get(1);
-            String startDate = borrow.get(2);
-            String endDate = borrow.get(3);
-            String color = borrow.get(4);
-            String status = borrow.get(5);
-            String isbn = borrow.get(6);
+
+            String isbn = borrow.getIsbn();
+            Book book = retrieveBook_isbn(isbn);
+            String title = book.getTitle();
+            int duration = borrow.getDuration();
+            Date startDate = borrow.getStart_date();
+            Date endDate = borrow.getEnd_date();
+            String color = borrow.getColor();
+            int status = borrow.getStatus();
 
             if (title != null && title.length() > 1 && title.startsWith("[") && title.endsWith("]")) {
                 title = title.substring(1, title.length() - 1);
@@ -157,7 +158,7 @@ public class UserProfile extends VBox {
 
             String queryStatus = "SELECT status FROM borrow WHERE duration>30 AND status=?";
 
-            if (status.equals("0")) {
+            if (status==0) {
                 // Crée un bouton pour retourner emprunt
                 Button returnBorrowButton = new Button("Retour Emprunt");
                 returnBorrowButton.getStyleClass().add("button");

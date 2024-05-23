@@ -2,6 +2,7 @@ package Server.Manager;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static Server.Data.APIBNF.retrieveBook_isbn;
@@ -122,14 +123,9 @@ public class UserManager {
                     String birth_date = rs.getString("birth_date");
                     String address = rs.getString("address");
                     String phone_number = rs.getString("phone_number");
-                    int number_borrow = rs.getInt("number_borrow");
-                    user.add(mail);
-                    user.add(name);
-                    user.add(first_name);
-                    user.add(birth_date);
-                    user.add(address);
-                    user.add(phone_number);
-                    user.add(String.valueOf(number_borrow));
+                    String number_borrow = String.valueOf(rs.getInt("number_borrow"));
+
+                    user= new User(mail,name,first_name,birth_date,address,phone_number,number_borrow);
                 }
             }
         }
@@ -138,32 +134,29 @@ public class UserManager {
         }
         return(user);
     }
-    public static List<List<String>> displayUser(String mail ) throws SQLException {
+    public static List<Object> displayUser(String mail) throws SQLException {
 
-        List<List<String>> user = new ArrayList<>();
-        user.add(searchUser(mail));
-        List<List<String>> listborrow = historyBorrow(mail);
-        for (List<String> list : listborrow) {
-            String isbn=list.get(0);
-            List<List<String>> book = retrieveBook_isbn((String) list.get(0));
-            list.remove(list.get(0));
-            list.add(0,String.valueOf(book.get(0)));
-            list.add(isbn);
-            user.add(list);
+        List<Object> userBorrows = new ArrayList<>();
+        User user= UserManager.searchUser(mail);
+        userBorrows.add(user);
+        List<Borrow> listborrow = historyBorrow(mail);
+        for (Borrow borrow : listborrow) {
+            String isbn= borrow.getIsbn();
+            Book book = retrieveBook_isbn(isbn);
+            userBorrows.add(book);
         }
         return(user);
     }
-    public static List<List<String>> displayUserList() {
-        List<List<String>> UserList = new ArrayList<>();
+    public static List<User> displayUserList() {
+        List<User> UserList = new ArrayList<>();
         String query = "SELECT mail FROM  user";
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     String mail = rs.getString("mail");
-                    List user = searchUser(mail);
+                    User user = searchUser(mail);
                     System.out.println(" ");
                     UserList.add(user);
                 }

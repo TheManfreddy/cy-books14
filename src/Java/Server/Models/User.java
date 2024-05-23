@@ -7,12 +7,12 @@ public class User implements Serializable {
     private String mail;
     private String name;
     private String first_name;
-    private Date birth_date;
+    private String birth_date;
     private String address;
     private int phone_number;
     private int number_borrow;
 
-    public User(String mail, String name, String first_name, Date birth_date, int phone_number,int number_borrow,String address)  {
+    public User(String mail, String name, String first_name,String birth_date,String address,String phone_number,String number_borrow)  {
         this.mail = mail;
         this.name = name;
         this.first_name = first_name;
@@ -43,10 +43,10 @@ public class User implements Serializable {
         this.first_name = first_name;
     }
 
-    public Date getBirth_date() {
+    public String getBirth_date() {
         return birth_date;
     }
-    public void setBirth_date(Date birth_date) {
+    public void setBirth_date(String birth_date) {
         this.birth_date = birth_date;
     }
     public String getAddress() {
@@ -56,13 +56,13 @@ public class User implements Serializable {
         this.address = address;
     }
 
-    public int getNumber() {return phone_number;}
-    public void setNumber(int number) {this.phone_number = number; }
+    public String getNumber() {return phone_number;}
+    public void setNumber(String number) {this.phone_number = number; }
 
-    public int getNumber_borrow() {
+    public String getNumber_borrow() {
         return number_borrow;
     }
-    public void setNumber_borrow(int number_borrow) {
+    public void setNumber_borrow(String number_borrow) {
         this.number_borrow = number_borrow;
     }
 
