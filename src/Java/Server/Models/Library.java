@@ -1,4 +1,4 @@
-package methods;
+package Server.Models;
 
 import java.io.Serializable;
 
@@ -26,17 +26,5 @@ public class Library implements Serializable {
     }
     public void setPassword(String password) {
         this.password = password;
-    }
-
-
-
-
-
-    @Override
-    public String toString() {
-        return "methods.Library{" +
-                "login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }

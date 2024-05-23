@@ -1,4 +1,14 @@
-package methods;
+package Server.Data;
+
+import Client.LibraryPage;
+import Server.Manager.BookManager;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -7,8 +17,14 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 public class APIBNF {
+    public static String searchBook (String search) {
+
+        String query = "((bib.author all " + "\"" + search + "\"" + ") or (bib.title all " + "\"" + search + "\"" + ")) and (bib.doctype all \"a\")";
+        return query;
+    }
 
     public static List<String> extractData(String text, String parentTag, String subfieldTag) {
         List<String> dataList = new ArrayList<>();

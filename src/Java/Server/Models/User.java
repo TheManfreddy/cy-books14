@@ -1,4 +1,4 @@
-package methods;
+package Server.Models;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -57,7 +57,7 @@ public class User implements Serializable {
     }
 
     public int getNumber() {return phone_number;}
-    public void setMail(int number) {this.phone_number = number; }
+    public void setNumber(int number) {this.phone_number = number; }
 
     public int getNumber_borrow() {
         return number_borrow;
@@ -66,18 +66,4 @@ public class User implements Serializable {
         this.number_borrow = number_borrow;
     }
 
-
-
-    @Override
-    public String toString() {
-        return "methods.User{" +
-                "mail='" + mail + '\'' +
-                ", name='" + name + '\'' +
-                ", first_name='" + first_name + '\'' +
-                ", birth_date='" + birth_date + '\'' +
-                "address='" + address + '\'' +
-                "phone_number='" + phone_number + '\'' +
-                "number_borrow='" + number_borrow + '\'' +
-                '}';
-    }
 }

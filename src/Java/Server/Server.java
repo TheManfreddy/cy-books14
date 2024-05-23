@@ -1,4 +1,4 @@
-package methods;
+package Server;
 
 import java.io.*;
 import java.nio.file.*;
@@ -54,9 +54,6 @@ public class Server {
             System.out.println("MySQL est déjà en cours d'exécution.");
         }
     }
-
-
-
     // Méthode pour trouver le chemin de XAMPP automatiquement
     public static String findXamppPath() {
         for (String path : COMMON_PATHS) {

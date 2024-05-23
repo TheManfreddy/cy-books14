@@ -1,4 +1,4 @@
-package app;
+package Client;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

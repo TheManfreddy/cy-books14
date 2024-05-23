@@ -1,7 +1,7 @@
-package app;
+package Client;
 
-import java.sql.*;
-import javafx.scene.Scene;
+import Server.Manager.BorrowManager;
+import Server.Manager.UserManager;
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -12,7 +12,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import methods.System1;
 
 public class BorrowBook {
     private Scene scene;
@@ -72,9 +71,9 @@ public class BorrowBook {
         validateButton.getStyleClass().add("button");
         validateButton.setOnAction(e -> {
             String mail = textFieldMail.getText();
-            if (System1.isUserEmailExists(mail)) {
+            if (UserManager.isUserEmailExists(mail)) {
                 // Appelle la méthode registerBorrow
-                if(System1.addBorrow(isbn, mail)==true) {
+                if(BorrowManager.addBorrow(isbn, mail)==true) {
                     LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
                     primaryStage.setScene(libraryPage.getLibraryPageScene());
                     showSuccessAlert("Emprunt ajouté avec succès.");

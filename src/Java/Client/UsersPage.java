@@ -1,7 +1,8 @@
-package app;
+package Client;
 
-import methods.System1;
-import methods.Borrow;
+import Server.Manager.BorrowManager;
+import Server.Manager.UserManager;
+import Server.Models.Borrow;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,7 +18,7 @@ public class UsersPage extends VBox {
     private Scene scene;
     private TextField textFieldResearchBar;
     private int currentPage = 0;
-    private final int itemsPerPage = 6;
+    private final int itemsPerPage = 5;
     private int totalPages;
 
     private Stage primaryStage;
@@ -73,7 +74,7 @@ public class UsersPage extends VBox {
         searchButton.setOnAction(e -> {
             String mail = getTextFieldResearchBar();
             try {
-                System1.displayUser(mail);
+                UserManager.displayUser(mail);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
@@ -155,7 +156,7 @@ public class UsersPage extends VBox {
         paginationBox.setStyle("-fx-padding: 20;");
 
         // Initialisation de la liste d'utilisateurs
-        List<List<String>> userList = System1.displayUserList();
+        List<List<String>> userList = UserManager.displayUserList();
         totalPages = (int) Math.ceil((double) userList.size() / itemsPerPage);
         updateUserList(usersInformationBox, userList);
 
@@ -183,7 +184,7 @@ public class UsersPage extends VBox {
             String numberBorrow = user.get(6);
 
             // Mise à jour de la durée des emprunts
-            Borrow.updateBorrow(mail);
+            BorrowManager.updateBorrow(mail);
 
             // Création des labels pour afficher les informations des utilisateurs
             Label userMailLabel = new Label(mail);
@@ -229,7 +230,7 @@ public class UsersPage extends VBox {
     }
 
     private void updateUserList(VBox usersInformationBox) {
-        List<List<String>> userList = System1.displayUserList();
+        List<List<String>> userList = UserManager.displayUserList();
         updateUserList(usersInformationBox, userList);
     }
 

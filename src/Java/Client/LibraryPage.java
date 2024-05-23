@@ -1,5 +1,6 @@
-package app;
+package Client;
 
+import Server.Manager.BookManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -9,8 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import methods.APIBNF;
-import methods.System1;
+import Server.Data.APIBNF;
 import java.util.concurrent.*;
 import javafx.application.Platform;
 
@@ -120,33 +120,6 @@ public class LibraryPage extends VBox {
     }
 
 
-/*private void performSearch(Stage primaryStage, BorderPane root, String text) {
-        String query = "bib.title all " + "\"" + text + "\"and (bib.doctype all \"a\")";
-        List<List<String>> listBook = System1.displayBookList(query);
-
-        if (listBook != null && !listBook.isEmpty()) {
-            // Convertir la liste en ObservableList pour qu'elle soit compatible avec ListView
-            ObservableList<String> items = FXCollections.observableArrayList();
-            for (List<String> book : listBook) {
-                items.add(String.join(", ", book)); // Convertir chaque liste de détails en une seule chaîne
-            }
-
-            // Sauvegarder l'état actuel
-            currentListBook = listBook;
-            currentItems = items;
-
-            // Créer un Pagination pour gérer les pages
-            Pagination pagination = new Pagination((int) Math.ceil((double) items.size() / ITEMS_PER_PAGE), 0);
-            pagination.setPageFactory(pageIndex -> createPage(pageIndex, items, listBook));
-
-            // Ajouter le Pagination au centre du BorderPane
-            root.setCenter(pagination);
-        } else {
-            // Gérer le cas où la recherche ne retourne aucun résultat
-            root.setCenter(new Label("Aucun résultat trouvé."));
-        }
-    }*/
-
     private void performSearch(Stage primaryStage, BorderPane root, String text) {
         // ExecutorService pour gérer les tâches en arrière-plan
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -155,7 +128,7 @@ public class LibraryPage extends VBox {
         // Tâche pour effectuer la recherche
         Callable<List<List<String>>> searchTask = () -> {
             String query = "bib.title all " + "\"" + text + "\"and (bib.doctype all \"a\")";
-            return System1.displayBookList(query);
+            return BookManager.displayBookList(query);
         };
 
         // Future pour la recherche

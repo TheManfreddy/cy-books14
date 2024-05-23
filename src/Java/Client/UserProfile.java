@@ -1,6 +1,7 @@
-package app;
+package Client;
 
-import methods.Borrow;
+import Server.Manager.BorrowManager;
+import Server.Manager.UserManager;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,19 +12,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
-import methods.System1;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
-import static methods.Borrow.returnBorrow;
 
-public class UserProfileLate extends VBox {
+public class UserProfile extends VBox {
     private Scene scene;
 
-    public UserProfileLate(Stage primaryStage,double width, double height,String mail) throws SQLException {
+    public UserProfile(Stage primaryStage, double width, double height, String mail) throws SQLException {
         // Crée et configure la scène
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
@@ -39,31 +38,28 @@ public class UserProfileLate extends VBox {
 
         // Configure le bouton retour
         returnButton.setOnAction(e -> {
-            UsersLate usersLate = new UsersLate(primaryStage,width, height);
-            primaryStage.setScene(usersLate.getUsersLateScene());
+            UsersPage usersPage = new UsersPage(primaryStage, width, height);
+            primaryStage.setScene(usersPage.getUsersPageScene());
         });
 
-
-
-        //Crée un Label pour la date du jour
+        // Crée un Label pour la date du jour
         LocalDate localDate = LocalDate.now();
         String date = localDate.toString();
         Label dateLabel = new Label(date);
         dateLabel.getStyleClass().add("label");
 
-        // Crée un conteneur HBox pour le bouton retour et le titre
+        // Crée un conteneur HBox pour le bouton retour, le titre et la date
         HBox topBox = new HBox(100);
         topBox.setAlignment(Pos.CENTER_LEFT);
         topBox.setStyle("-fx-padding: 20;");
         topBox.getChildren().addAll(returnButton, titleLabel, dateLabel);
 
-
         // Création du label pour afficher les informations des utilisateurs
-        List<List<String>> userInformation = System1.displayUser(mail);
+        List<List<String>> userInformation = UserManager.displayUser(mail);
         mail = userInformation.get(0).get(0);
         String name = userInformation.get(0).get(1);
         String firstName = userInformation.get(0).get(2);
-        String birthDate= userInformation.get(0).get(3);
+        String birthDate = userInformation.get(0).get(3);
         String address = userInformation.get(0).get(4);
         String phoneNumber = userInformation.get(0).get(5);
         String numberBorrow = userInformation.get(0).get(6);
@@ -80,7 +76,7 @@ public class UserProfileLate extends VBox {
         Label userBirthDateLabel = new Label("Date de naissance :    " + birthDate);
         userBirthDateLabel.getStyleClass().add("label");
 
-        Label userAddressLabel = new Label("Adresse :    " +address);
+        Label userAddressLabel = new Label("Adresse :    " + address);
         userAddressLabel.getStyleClass().add("label");
 
         Label userPhoneNumberLabel = new Label("Téléphone :    " + phoneNumber);
@@ -93,22 +89,20 @@ public class UserProfileLate extends VBox {
         Button modifyButton = new Button("Modifications des informations");
         modifyButton.getStyleClass().add("button");
 
-        //Configure le bouton modifier information
+        // Configure le bouton modifier information
         String finalMail = mail;
         modifyButton.setOnAction(e -> {
-            ModifyInformation modifyInformation = new ModifyInformation(primaryStage,width, height,  finalMail, name, firstName, birthDate, address, phoneNumber);
+            ModifyInformation modifyInformation = new ModifyInformation(primaryStage, width, height, finalMail, name, firstName, birthDate, address, phoneNumber);
             primaryStage.setScene(modifyInformation.getModifyInformationScene());
         });
 
-
         HBox userInformationAndModifyButton = new HBox(15);
         VBox userInformationBox = new VBox();
-        userInformationBox.getChildren().addAll(userNameLabel,userFirstNameLabel,userMailLabel,userBirthDateLabel,userAddressLabel,userPhoneNumberLabel,userNumberBorrowLabel);
-        userInformationAndModifyButton.getChildren().addAll(userInformationBox,modifyButton);
+        userInformationBox.getChildren().addAll(userNameLabel, userFirstNameLabel, userMailLabel, userBirthDateLabel, userAddressLabel, userPhoneNumberLabel, userNumberBorrowLabel);
+        userInformationAndModifyButton.getChildren().addAll(userInformationBox, modifyButton);
 
         // Affichage historique emprunts
         userInformation.remove(0);
-
 
         // Trier les emprunts par couleur
         userInformation.sort(Comparator.comparing(borrow -> {
@@ -120,7 +114,6 @@ public class UserProfileLate extends VBox {
                 default: return 4;
             }
         }));
-
 
         GridPane borrowsInformationGrid = new GridPane();
         borrowsInformationGrid.setHgap(30);
@@ -171,7 +164,7 @@ public class UserProfileLate extends VBox {
 
                 // Configure le bouton retour
                 returnBorrowButton.setOnAction(e -> {
-                    returnBorrow(isbn, finalMail);
+                    BorrowManager.returnBorrow(isbn, finalMail);
 
                     UserProfile userProfile = null;
                     try {
@@ -207,7 +200,7 @@ public class UserProfileLate extends VBox {
         root.setCenter(scrollPane);
     }
 
-    public Scene getUserProfileLateScene() {
+    public Scene getUserProfileScene() {
         return scene;
     }
 }

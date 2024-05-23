@@ -1,5 +1,6 @@
-package app;
+package Client;
 
+import Server.Manager.LibraryManager;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -10,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import methods.Librarian;
 
 public class ConnexionPage extends VBox {
     private Scene scene;
@@ -76,7 +76,7 @@ public class ConnexionPage extends VBox {
         loginButton.setOnAction(e -> {
             String login = textFieldIdentifiant.getText();
             String password = passwordField.getText();
-            if (Librarian.validateLogin(login, password)) {
+            if (LibraryManager.validateLogin(login, password)) {
                 HomePage homePage = new HomePage(primaryStage, width, height);
                 primaryStage.setScene(homePage.getHomePageScene());
             } else {

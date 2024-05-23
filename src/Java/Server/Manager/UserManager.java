@@ -1,57 +1,13 @@
-package methods;
+package Server.Manager;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Librarian {
+import static Server.Data.APIBNF.retrieveBook_isbn;
+import static Server.Manager.BorrowManager.historyBorrow;
 
-    public static String searchBook (String search) {
-
-
-        String query = "((bib.author all " + "\"" + search + "\"" + ") or (bib.title all " + "\"" + search + "\"" + ")) and (bib.doctype all \"a\")";
-        return query;
-
-
-    }
-
-    public static List<String> searchUser(String mail) throws SQLException{
-            List<String> user =new ArrayList<>();
-            String query = "SELECT * FROM  user WHERE mail = ?";
-
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
-                PreparedStatement stmt = conn.prepareStatement(query)) {
-
-                stmt.setString(1, mail);
-
-                try (ResultSet rs = stmt.executeQuery()) {
-                    while (rs.next()) {
-                        mail = rs.getString("mail");
-                        String name = rs.getString("name");
-                        String first_name = rs.getString("first_name");
-                        String birth_date = rs.getString("birth_date");
-                        String address = rs.getString("address");
-                        String phone_number = rs.getString("phone_number");
-                        int number_borrow = rs.getInt("number_borrow");
-                        user.add(mail);
-                        user.add(name);
-                        user.add(first_name);
-                        user.add(birth_date);
-                        user.add(address);
-                        user.add(phone_number);
-                        user.add(String.valueOf(number_borrow));
-
-
-                    }
-                }
-
-
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return(user);
-    }
+public class UserManager {
     public static void registerUser(String mail, String name, String first_name, String birth_date, String address, String phone_number, int number_borrow) throws SQLException {
 
         try {
@@ -82,7 +38,6 @@ public class Librarian {
             e.printStackTrace();
         }
     }
-
     public static void modifyInformation(String mail, String name, String first_name,String birth_date, String address,String phone_number) throws SQLException {
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
@@ -150,38 +105,120 @@ public class Librarian {
             e.printStackTrace();
         }
     }
+    public static List<String> searchUser(String mail) throws SQLException{
+        List<String> user =new ArrayList<>();
+        String query = "SELECT * FROM  user WHERE mail = ?";
 
-    public static boolean validateLogin(String login, String password) {
-        String url = "jdbc:mysql://localhost:3307/bibli";
-        String user = "root";  // Nom d'utilisateur de la base de données
-        String pass = "";  // Mot de passe de la base de données
-
-        String query = "SELECT * FROM library WHERE login = ? AND password = ?";
-
-        try (Connection conn = DriverManager.getConnection(url, user, pass);
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            // Définir les paramètres de la requête
-            stmt.setString(1, login);
-            stmt.setString(2, password);
+            stmt.setString(1, mail);
 
-            // Exécuter la requête
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    // L'utilisateur existe
-                    return true;
+                while (rs.next()) {
+                    mail = rs.getString("mail");
+                    String name = rs.getString("name");
+                    String first_name = rs.getString("first_name");
+                    String birth_date = rs.getString("birth_date");
+                    String address = rs.getString("address");
+                    String phone_number = rs.getString("phone_number");
+                    int number_borrow = rs.getInt("number_borrow");
+                    user.add(mail);
+                    user.add(name);
+                    user.add(first_name);
+                    user.add(birth_date);
+                    user.add(address);
+                    user.add(phone_number);
+                    user.add(String.valueOf(number_borrow));
                 }
             }
-        } catch (SQLException e) {
-            // Gestion des erreurs de connexion et d'exécution de la requête
+        }
+        catch (SQLException e) {
             e.printStackTrace();
-            // Vous pouvez également utiliser un journal de bord (logger) pour enregistrer les erreurs
+        }
+        return(user);
+    }
+    public static List<List<String>> displayUser(String mail ) throws SQLException {
+
+        List<List<String>> user = new ArrayList<>();
+        user.add(searchUser(mail));
+        List<List<String>> listborrow = historyBorrow(mail);
+        for (List<String> list : listborrow) {
+            String isbn=list.get(0);
+            List<List<String>> book = retrieveBook_isbn((String) list.get(0));
+            list.remove(list.get(0));
+            list.add(0,String.valueOf(book.get(0)));
+            list.add(isbn);
+            user.add(list);
+        }
+        return(user);
+    }
+    public static List<List<String>> displayUserList() {
+        List<List<String>> UserList = new ArrayList<>();
+        String query = "SELECT mail FROM  user";
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String mail = rs.getString("mail");
+                    List user = searchUser(mail);
+                    System.out.println(" ");
+                    UserList.add(user);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (UserList);
+    }
+    public static List<List<String>> displayUserBorrowLateList() {
+        List<List<String>> UserList = new ArrayList<>();
+        String query = "SELECT idUser FROM borrow WHERE duration>30 AND status=?";
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, 0);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String idUser = rs.getString("idUser");
+                    List user = searchUser(idUser);
+                    System.out.println(" ");
+                    UserList.add(user);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (UserList);
+    }
+    public static boolean isUserEmailExists(String mail) {
+        boolean exists = false;
+        String url = "jdbc:mysql://localhost:3307/bibli";
+        String user = "root";
+        String password = "";
+
+        String query = "SELECT COUNT(*) FROM user WHERE mail = ?";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, mail);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                exists = rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        // Retourner false si l'utilisateur n'existe pas ou en cas d'erreur
-        return false;
+        return exists;
     }
-
-
 }
-

@@ -1,5 +1,7 @@
-package app;
+package Client;
 
+import Server.Manager.BorrowManager;
+import Server.Manager.UserManager;
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -10,13 +12,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import methods.Borrow;
-import methods.Librarian;
-import methods.System1;
 
 import java.sql.SQLException;
-
-import static app.BorrowBook.showErrorAlert;
 
 public class BorrowRegisterUser {
 
@@ -150,12 +147,12 @@ public class BorrowRegisterUser {
             String address = getTextFieldAddress();
 
             try {
-                Librarian.registerUser(mail,name, firstName, birthDate,address , phoneNumber,0 );
+                UserManager.registerUser(mail,name, firstName, birthDate,address , phoneNumber,0 );
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
 
-            if(System1.addBorrow(isbn, mail)==true) {
+            if(BorrowManager.addBorrow(isbn, mail)==true) {
                 LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
                 primaryStage.setScene(libraryPage.getLibraryPageScene());
                 showSuccessAlert("Emprunt ajouté avec succès.");
@@ -164,13 +161,6 @@ public class BorrowRegisterUser {
                 showErrorAlert("L'utilisateur a dépassé le nombre d'emprunts autorisés.");
             }
         });
-
-
-
-
-
-
-
     }
     static void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

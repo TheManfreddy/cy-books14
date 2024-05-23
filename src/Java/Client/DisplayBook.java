@@ -1,4 +1,6 @@
-package app;
+package Client;
+
+import Server.Manager.BookManager;
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -7,39 +9,42 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import methods.System1;
 
+import javafx.collections.ObservableList;
 import java.util.List;
-public class DisplayMostBorrowed extends VBox {
-    private Scene scene;
 
-    public DisplayMostBorrowed(Stage primaryStage, double width, double height, String isbn){
+public class DisplayBook {
+
+    private Scene scene;
+    private String searchQuery;
+    private List<List<String>> currentListBook;
+    private ObservableList<String> currentItems;
+
+    public DisplayBook(Stage primaryStage, double width, double height, String isbn, String searchQuery, List<List<String>> listBook, ObservableList<String> items) {
+        this.searchQuery = searchQuery;
+        this.currentListBook = listBook;
+        this.currentItems = items;
+
         // Create and configure the scene
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-
         // Crée un bouton retour pour revenir à la liste des livres
         Button returnButton = new Button("Retour");
         returnButton.getStyleClass().add("button");
         returnButton.setOnAction(e -> {
-            MostBorrowed mostborrowed = new MostBorrowed(primaryStage, width, height);
-            primaryStage.setScene(mostborrowed.getMostBorrowedScene());
+            LibraryPage libraryPage = new LibraryPage(primaryStage, width, height, searchQuery, currentListBook, currentItems);
+            primaryStage.setScene(libraryPage.getLibraryPageScene());
         });
 
+        List<List<String>> bookDetails = BookManager.displayBook(isbn);
 
-
-        List<List<String>> listBook = System1.displayBook(isbn);
-
-        String title = listBook.get(0).get(0);
-        String language = listBook.get(1).get(0);
-        String author = listBook.get(2).get(0);
-        String edition = listBook.get(3).get(0);
-        String publicationDate = listBook.get(4).get(0);
-
-
-
+        String title = bookDetails.get(0).get(0);
+        String language = bookDetails.get(1).get(0);
+        String author = bookDetails.get(2).get(0);
+        String edition = bookDetails.get(3).get(0);
+        String publicationDate = bookDetails.get(4).get(0);
 
         // Create a Label for the title
         Label labelTitle = new Label(title);
@@ -60,7 +65,7 @@ public class DisplayMostBorrowed extends VBox {
         labelTitleValue.getStyleClass().add("label");
 
         // Create a container for the title
-        HBox titleBoxValue = new HBox(labelTitleV,labelTitleValue);
+        HBox titleBoxValue = new HBox(labelTitleV, labelTitleValue);
 
         // Create a Label for the language
         Label labelLanguageV = new Label("Langue : ");
@@ -71,7 +76,7 @@ public class DisplayMostBorrowed extends VBox {
         labelLanguageValue.getStyleClass().add("label");
 
         // Create a container for the language
-        HBox languageBox= new HBox(labelLanguageV,labelLanguageValue);
+        HBox languageBox = new HBox(labelLanguageV, labelLanguageValue);
 
         // Create a Label for the author
         Label labelAuthorV = new Label("Auteur : ");
@@ -82,7 +87,7 @@ public class DisplayMostBorrowed extends VBox {
         labelAuthorValue.getStyleClass().add("label");
 
         // Create a container for the author
-        HBox authorBox= new HBox(labelAuthorV,labelAuthorValue);
+        HBox authorBox = new HBox(labelAuthorV, labelAuthorValue);
 
         // Create a Label for the edition
         Label labelEditionV = new Label("Edition : ");
@@ -93,7 +98,7 @@ public class DisplayMostBorrowed extends VBox {
         labelEditionValue.getStyleClass().add("label");
 
         // Create a container for the edition
-        HBox editionBox= new HBox(labelEditionV,labelEditionValue);
+        HBox editionBox = new HBox(labelEditionV, labelEditionValue);
 
         // Create a Label for the parution date
         Label labelParutionDateV = new Label("Date de parution : ");
@@ -104,35 +109,26 @@ public class DisplayMostBorrowed extends VBox {
         labelParutionDateValue.getStyleClass().add("label");
 
         // Create a container for the parution date
-        HBox parutionDateBox= new HBox(labelParutionDateV,labelParutionDateValue);
-
+        HBox parutionDateBox = new HBox(labelParutionDateV, labelParutionDateValue);
 
         // Crée un bouton "Emprunter"
         Button borrowButton = new Button("Emprunter");
         borrowButton.getStyleClass().add("button");
         borrowButton.setOnAction(e -> {
-            BorrowBook borrowBook = new BorrowBook(primaryStage, width, height,isbn,title);
+            BorrowBook borrowBook = new BorrowBook(primaryStage, width, height, isbn, title);
             primaryStage.setScene(borrowBook.getBorrowBookScene());
         });
 
-
-
         // Create a VBox and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(titleBoxValue,authorBox,editionBox,parutionDateBox,languageBox,borrowButton,returnButton);
+        vbox.getChildren().addAll(titleBoxValue, authorBox, editionBox, parutionDateBox, languageBox, borrowButton, returnButton);
         vbox.getStyleClass().add("container");
 
         // Place the VBox containing the text fields and button in the center of the BorderPane
         root.setCenter(vbox);
-
-
-
-
     }
 
-
-    public Scene getDisplayMostBorrowedScene() {
+    public Scene getDisplayBookScene() {
         return scene;
     }
-
 }

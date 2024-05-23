@@ -1,5 +1,6 @@
-package app;
+package Client;
 
+import Server.Manager.BookManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -9,9 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import methods.APIBNF;
-import methods.Librarian;
-import methods.System1;
+import Server.Data.APIBNF;
+
 import java.util.List;
 
 public class MostBorrowed extends VBox {
@@ -23,6 +23,7 @@ public class MostBorrowed extends VBox {
         // Crée et configure la scène
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
+        /*scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());*/
 
         // Crée un Label pour le titre
         Label titleLabel = new Label("Les livres les plus empruntés durant les 30 derniers jours");
@@ -44,7 +45,7 @@ public class MostBorrowed extends VBox {
             LibraryPage librarypage = new LibraryPage(primaryStage, width, height);
             primaryStage.setScene(librarypage.getLibraryPageScene());
         });
-            List<List<String>> listBook = System1.mostBorrowedBooks() ;
+            List<List<String>> listBook = BookManager.mostBorrowedBooks() ;
 
             if (listBook != null && !listBook.isEmpty()) {
                 // Convertir la liste en ObservableList pour qu'elle soit compatible avec ListView

@@ -1,8 +1,8 @@
-package app;
+package Client;
 
-import methods.Librarian;
-import javafx.geometry.Pos;
+import Server.Manager.UserManager;
 import javafx.scene.Scene;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,14 +11,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import methods.System1;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
-public class RegisterUser {
+public class ModifyInformation {
 
     private Scene scene;
     private TextField textFieldName;
@@ -28,7 +27,7 @@ public class RegisterUser {
     private TextField textFieldNumber;
     private TextField textFieldAddress;
 
-    public RegisterUser(Stage primaryStage, double width, double height) {
+    public ModifyInformation(Stage primaryStage, double width, double height, String mail, String name, String firstName, String birthDate, String address, String phoneNumber) {
         // Create and configure the scene
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
@@ -40,18 +39,23 @@ public class RegisterUser {
 
         // Configure the button to open the user page
         returnButton.setOnAction(e -> {
-            UsersPage usersPage = new UsersPage(primaryStage, width, height);
-            primaryStage.setScene(usersPage.getUsersPageScene());
+            UserProfile userProfile = null;
+            try {
+                userProfile = new UserProfile(primaryStage, width, height, mail);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            primaryStage.setScene(userProfile.getUserProfileScene());
         });
 
         // Create a Label for the title
-        Label titleLabel = new Label("Inscrire un usager");
+        Label titleLabel = new Label("Modifications des informations");
         titleLabel.getStyleClass().add("title");
 
         // Create a container for the title
         HBox titleBox = new HBox(titleLabel);
         titleBox.setAlignment(Pos.CENTER);
-        titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
+        titleBox.setStyle("-fx-padding: 20;");
         root.setTop(titleBox);
 
         // Create a Label for the name
@@ -59,7 +63,7 @@ public class RegisterUser {
         labelName.getStyleClass().add("label");
 
         // Create a text field for the name
-        textFieldName = new TextField();
+        textFieldName = new TextField(name);
         textFieldName.setPromptText("Nom");
         textFieldName.getStyleClass().add("text-field");
 
@@ -71,7 +75,7 @@ public class RegisterUser {
         labelFirstName.getStyleClass().add("label");
 
         // Create a text field for the first name
-        textFieldFirstName = new TextField();
+        textFieldFirstName = new TextField(firstName);
         textFieldFirstName.setPromptText("Prénom");
         textFieldFirstName.getStyleClass().add("text-field");
 
@@ -83,7 +87,7 @@ public class RegisterUser {
         labelBirthDate.getStyleClass().add("label");
 
         // Create a text field for the birth date
-        textFieldBirthDate = new TextField();
+        textFieldBirthDate = new TextField(birthDate);
         textFieldBirthDate.setPromptText("Date de naissance");
         textFieldBirthDate.getStyleClass().add("text-field");
 
@@ -95,7 +99,7 @@ public class RegisterUser {
         labelMail.getStyleClass().add("label");
 
         // Create a text field for the email
-        textFieldMail = new TextField();
+        textFieldMail = new TextField(mail);
         textFieldMail.setPromptText("Mail");
         textFieldMail.getStyleClass().add("text-field");
 
@@ -107,7 +111,7 @@ public class RegisterUser {
         labelNumber.getStyleClass().add("label");
 
         // Create a text field for the phone number
-        textFieldNumber = new TextField();
+        textFieldNumber = new TextField(phoneNumber);
         textFieldNumber.setPromptText("Téléphone");
         textFieldNumber.getStyleClass().add("text-field");
 
@@ -119,7 +123,7 @@ public class RegisterUser {
         labelAddress.getStyleClass().add("label");
 
         // Create a text field for the address
-        textFieldAddress = new TextField();
+        textFieldAddress = new TextField(address);
         textFieldAddress.setPromptText("Adresse");
         textFieldAddress.getStyleClass().add("text-field");
 
@@ -127,7 +131,7 @@ public class RegisterUser {
         HBox addressBox = new HBox(5, labelAddress, textFieldAddress);
 
         // Create an add button
-        Button addUserButton = new Button("Ajouter");
+        Button addUserButton = new Button("Valider");
         addUserButton.getStyleClass().add("button");
 
         // Create a VBox and add the components
@@ -141,50 +145,41 @@ public class RegisterUser {
         // Configure the button to open the user page
         addUserButton.setOnAction(e -> {
             // Retrieve values from text fields
-            String name = getTextFieldName();
-            String firstName = getTextFieldFirstName();
-            String birthDateStr = getTextFieldBirthDate(); // Obtenez la chaîne de la date de naissance
+            String newName = textFieldName.getText();
+            String newFirstName = textFieldFirstName.getText();
+            String newBirthDate = textFieldBirthDate.getText();
+            String newMail = textFieldMail.getText();
+            String newPhoneNumber = textFieldNumber.getText();
+            String newAddress = textFieldAddress.getText();
 
-            // Validate date of birth format
-            if (!isValidDateFormat(birthDateStr)) {
+            // Validate new birth date format
+            if (!isValidDateFormat(newBirthDate)) {
                 showErrorAlert("Le format de la date de naissance est incorrect. Utilisez YYYY-MM-JJ.");
                 return;
             }
 
-            // Convert the birthDateStr to a LocalDate object
-            LocalDate birthDate = LocalDate.parse(birthDateStr);
-
-            String mail = getTextFieldMail();
-            String phoneNumber = getTextFieldNumber();
-            String address = getTextFieldAddress();
-
-            // Validate email and phone number
-            if (!isValidEmail(mail)) {
+            // Validate new email and phone number
+            if (!isValidEmail(newMail)) {
                 showErrorAlert("Le format de l'adresse mail est incorrect.");
                 return;
             }
-            if (!isValidPhoneNumber(phoneNumber)) {
+            if (!isValidPhoneNumber(newPhoneNumber)) {
                 showErrorAlert("Le format du numéro de téléphone est incorrect.");
                 return;
             }
 
             try {
-                // Check if user already exists
-                if (System1.isUserEmailExists(mail)) {
-                    showErrorAlert("L'utilisateur existe déjà dans la base de données.");
-                } else {
-                    Librarian.registerUser(mail, name, firstName, birthDate.toString(), address, phoneNumber, 0);
-                    UsersPage usersPage = new UsersPage(primaryStage, width, height);
-                    primaryStage.setScene(usersPage.getUsersPageScene());
-                }
+                UserManager.modifyInformation(newMail, newName, newFirstName, newBirthDate, newAddress, newPhoneNumber);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
+
+            UsersPage usersPage = new UsersPage(primaryStage, width, height);
+            primaryStage.setScene(usersPage.getUsersPageScene());
         });
     }
 
     private boolean isValidDateFormat(String dateStr) {
-        // Utilisez le format spécifié pour vérifier la validité de la date
         try {
             LocalDate.parse(dateStr);
             return true;
@@ -192,7 +187,6 @@ public class RegisterUser {
             return false;
         }
     }
-
 
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
@@ -236,11 +230,9 @@ public class RegisterUser {
         return textFieldAddress.getText();
     }
 
-    public Scene getRegisterUserScene() {
+    public Scene getModifyInformationScene() {
         return scene;
     }
 }
-
-
 
 

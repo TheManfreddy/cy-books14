@@ -1,6 +1,6 @@
-package app;
+package Client;
 
-import methods.Server;
+import Server.Server;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
