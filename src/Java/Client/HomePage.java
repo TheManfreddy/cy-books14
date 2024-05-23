@@ -12,6 +12,11 @@ import javafx.stage.Stage;
 public class HomePage extends VBox {
     private Scene scene;
 
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     */
     public HomePage(Stage primaryStage,double width, double height) {
         // Crée et configure la scène
         BorderPane root = new BorderPane();
@@ -62,7 +67,9 @@ public class HomePage extends VBox {
     }
 
 
-
+    /**
+     * @return
+     */
     public Scene getHomePageScene() {
         return scene;
     }

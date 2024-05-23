@@ -17,7 +17,13 @@ public class BorrowBook {
     private Scene scene;
 
 
-
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     * @param isbn
+     * @param title
+     */
     public BorrowBook(Stage primaryStage, double width, double height, String isbn,String title){
 
         // Create and configure the scene
@@ -105,6 +111,9 @@ public class BorrowBook {
 
     }
 
+    /**
+     * @param message
+     */
     static void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
@@ -112,6 +121,10 @@ public class BorrowBook {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    /**
+     * @param message
+     */
     private static void showSuccessAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Succès");
@@ -120,6 +133,9 @@ public class BorrowBook {
         alert.showAndWait();
     }
 
+    /**
+     * @return
+     */
     public Scene getBorrowBookScene() {
         return scene;
     }

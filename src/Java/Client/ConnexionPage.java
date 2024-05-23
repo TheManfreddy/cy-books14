@@ -16,6 +16,11 @@ import javafx.stage.Stage;
 public class ConnexionPage extends VBox {
     private Scene scene;
 
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     */
     public ConnexionPage(Stage primaryStage, double width, double height) {
         // Create and configure the scene
         BorderPane root = new BorderPane();
@@ -87,6 +92,9 @@ public class ConnexionPage extends VBox {
         });
     }
 
+    /**
+     * @param message
+     */
     private static void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur de connexion");
@@ -95,6 +103,9 @@ public class ConnexionPage extends VBox {
         alert.showAndWait();
     }
 
+    /**
+     * @return
+     */
     public Scene getConnexionPageScene() {
         return scene;
     }

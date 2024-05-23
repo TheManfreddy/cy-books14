@@ -27,6 +27,17 @@ public class ModifyInformation {
     private TextField textFieldNumber;
     private TextField textFieldAddress;
 
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     * @param mail
+     * @param name
+     * @param firstName
+     * @param birthDate
+     * @param address
+     * @param phoneNumber
+     */
     public ModifyInformation(Stage primaryStage, double width, double height, String mail, String name, String firstName, String birthDate, String address, String phoneNumber) {
         // Create and configure the scene
         BorderPane root = new BorderPane();
@@ -179,6 +190,10 @@ public class ModifyInformation {
         });
     }
 
+    /**
+     * @param dateStr
+     * @return
+     */
     private boolean isValidDateFormat(String dateStr) {
         try {
             LocalDate.parse(dateStr);
@@ -188,16 +203,27 @@ public class ModifyInformation {
         }
     }
 
+    /**
+     * @param email
+     * @return
+     */
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
         return Pattern.matches(emailRegex, email);
     }
 
+    /**
+     * @param phoneNumber
+     * @return
+     */
     private boolean isValidPhoneNumber(String phoneNumber) {
         String phoneRegex = "^(\\+\\d{1,3}[- ]?)?\\d{10}$";
         return Pattern.matches(phoneRegex, phoneNumber);
     }
 
+    /**
+     * @param message
+     */
     private void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur de validation");
@@ -206,30 +232,51 @@ public class ModifyInformation {
         alert.showAndWait();
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldName() {
         return textFieldName.getText();
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldFirstName() {
         return textFieldFirstName.getText();
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldBirthDate() {
         return textFieldBirthDate.getText();
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldMail() {
         return textFieldMail.getText();
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldNumber() {
         return textFieldNumber.getText();
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldAddress() {
         return textFieldAddress.getText();
     }
 
+    /**
+     * @return
+     */
     public Scene getModifyInformationScene() {
         return scene;
     }

@@ -25,10 +25,23 @@ public class LibraryPage extends VBox {
     private List<Book> currentListBook;
     private ObservableList<Book> currentItems;
 
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     */
     public LibraryPage(Stage primaryStage, double width, double height) {
         this(primaryStage, width, height, "", FXCollections.observableArrayList(), FXCollections.observableArrayList());
     }
 
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     * @param searchQuery
+     * @param listBook
+     * @param items
+     */
     public LibraryPage(Stage primaryStage, double width, double height, String searchQuery, List<Book> listBook, ObservableList<Book> items) {
         // Crée et configure la scène
         BorderPane root = new BorderPane();
@@ -114,6 +127,11 @@ public class LibraryPage extends VBox {
         searchButton.setOnAction(e -> performSearch(primaryStage, root, textFieldSearch.getText()));
     }
 
+    /**
+     * @param primaryStage
+     * @param root
+     * @param text
+     */
     private void performSearch(Stage primaryStage, BorderPane root, String text) {
         // ExecutorService pour gérer les tâches en arrière-plan
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -175,10 +193,19 @@ public class LibraryPage extends VBox {
         });
     }
 
+    /**
+     * @return
+     */
     public Scene getLibraryPageScene() {
         return scene;
     }
 
+    /**
+     * @param pageIndex
+     * @param items
+     * @param listBook
+     * @return
+     */
     private VBox createPage(int pageIndex, ObservableList<Book> items, List<Book> listBook) {
         int fromIndex = pageIndex * ITEMS_PER_PAGE;
         int toIndex = Math.min(fromIndex + ITEMS_PER_PAGE, items.size());

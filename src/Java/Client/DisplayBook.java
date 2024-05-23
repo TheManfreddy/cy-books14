@@ -21,6 +21,15 @@ public class DisplayBook {
     private List<Book> currentListBook;
     private ObservableList<Book> currentItems;
 
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     * @param isbn
+     * @param searchQuery
+     * @param listBook
+     * @param items
+     */
     public DisplayBook(Stage primaryStage, double width, double height, String isbn, String searchQuery, List<Book> listBook, ObservableList<Book> items) {
         this.searchQuery = searchQuery;
         this.currentListBook = listBook;
@@ -129,6 +138,9 @@ public class DisplayBook {
         root.setCenter(vbox);
     }
 
+    /**
+     * @return
+     */
     public Scene getDisplayBookScene() {
         return scene;
     }

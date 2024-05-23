@@ -25,6 +25,12 @@ public class BorrowRegisterUser {
     private TextField textFieldNumber;
     private TextField textFieldAddress;
 
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     * @param isbn
+     */
     public BorrowRegisterUser(Stage primaryStage, double width, double height,String isbn){
 
         // Create and configure the scene
@@ -162,6 +168,10 @@ public class BorrowRegisterUser {
             }
         });
     }
+
+    /**
+     * @param message
+     */
     static void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
@@ -169,6 +179,10 @@ public class BorrowRegisterUser {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    /**
+     * @param message
+     */
     private static void showSuccessAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Succès");
@@ -178,31 +192,51 @@ public class BorrowRegisterUser {
     }
 
 
-
+    /**
+     * @return
+     */
     public Scene getBorrowRegisterUserScene() {
         return scene;
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldName() {
         return textFieldName.getText();
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldFirstName() {
         return textFieldFirstName.getText();
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldBirthDate() {
         return textFieldBirthDate.getText();
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldMail() {
         return textFieldMail.getText();
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldNumber() {
         return textFieldNumber.getText();
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldAddress() {
         return textFieldAddress.getText();
     }

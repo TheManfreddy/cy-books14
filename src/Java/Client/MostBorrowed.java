@@ -19,6 +19,11 @@ public class MostBorrowed extends VBox {
     private Scene scene;
     private static final int ITEMS_PER_PAGE = 10; // Nombre d'éléments par page
 
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     */
     public MostBorrowed(Stage primaryStage, double width, double height) {
 
         // Crée et configure la scène
@@ -69,10 +74,16 @@ public class MostBorrowed extends VBox {
 
     }
 
+    /**
+     * @return
+     */
     public Scene getMostBorrowedScene() {
         return scene;
     }
 
+    /**
+     * @param language
+     */
     // Méthode appelée lorsque la langue est sélectionnée
     private void onLanguageSelected(String language) {
         if (language.equals("FR")) {
@@ -87,6 +98,12 @@ public class MostBorrowed extends VBox {
         }
     }
 
+    /**
+     * @param pageIndex
+     * @param items
+     * @param listBook
+     * @return
+     */
     private VBox createPage(int pageIndex, ObservableList<String> items, List<Book> listBook) {
         int fromIndex = pageIndex * ITEMS_PER_PAGE;
         int toIndex = Math.min(fromIndex + ITEMS_PER_PAGE, items.size());

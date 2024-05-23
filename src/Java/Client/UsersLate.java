@@ -26,6 +26,11 @@ public class UsersLate extends VBox {
     private double width;
     private double height;
 
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     */
     public UsersLate(Stage primaryStage, double width, double height) {
         this.primaryStage = primaryStage;
         this.width = width;
@@ -167,6 +172,10 @@ public class UsersLate extends VBox {
         root.setLeft(finalBox);
     }
 
+    /**
+     * @param usersInformationBox
+     * @param userList
+     */
     private void updateUserList(VBox usersInformationBox, List<User> userList) {
         usersInformationBox.getChildren().clear();
 
@@ -230,15 +239,24 @@ public class UsersLate extends VBox {
         }
     }
 
+    /**
+     * @param usersInformationBox
+     */
     private void updateUserList(VBox usersInformationBox) {
         List<User> userList = UserManager.displayUserBorrowLateList();
         updateUserList(usersInformationBox, userList);
     }
 
+    /**
+     * @return
+     */
     public String getTextFieldResearchBar() {
         return textFieldResearchBar.getText();
     }
 
+    /**
+     * @return
+     */
     public Scene getUsersLateScene() {
         return scene;
     }

@@ -9,6 +9,10 @@ import java.util.*;
 import java.util.Date;
 
 public class BorrowManager {
+    /**
+     * @param isbn
+     * @param idUser
+     */
     public static void registerBorrow(String isbn, String idUser){
 
 
@@ -61,6 +65,9 @@ public class BorrowManager {
         }
     }
 
+    /**
+     * @param idUser
+     */
     public static void updateBorrow(String idUser) {
         LocalDate dateActuelle = LocalDate.now();
 
@@ -111,6 +118,11 @@ public class BorrowManager {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * @param isbn
+     * @param idUser
+     */
     public static void returnBorrow(String isbn, String idUser){
 
         Connection conn = null;
@@ -174,6 +186,12 @@ public class BorrowManager {
             }
         }
     }
+
+    /**
+     * @param isbn
+     * @param idUser
+     * @return
+     */
     public static boolean addBorrow(String isbn, String idUser){
 
         Connection conn = null;
@@ -233,6 +251,10 @@ public class BorrowManager {
         return(true);
     }
 
+    /**
+     * @param idUser
+     * @return
+     */
     public static List<Borrow> historyBorrow(String idUser){
 
         List<Borrow> listOfBorrows = new ArrayList<>();

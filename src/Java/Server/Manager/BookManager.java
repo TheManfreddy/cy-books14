@@ -13,6 +13,10 @@ import static Server.Data.APIBNF.retrieveBookList;
 import static Server.Data.APIBNF.retrieveBook_isbn;
 
 public class BookManager {
+    /**
+     * @param search
+     * @return
+     */
     public static List<Book> displayBookList(String search) {
         // Appeler la méthode retrieveBookList pour obtenir la liste des livres
         List<List<String>> bookList = retrieveBookList(search);
@@ -48,10 +52,19 @@ public class BookManager {
         return formattedList;
 
     }
+
+    /**
+     * @param isbn
+     * @return
+     */
     public static Book displayBook(String isbn) {
         Book book = retrieveBook_isbn(isbn);
         return(book);
     }
+
+    /**
+     * @return
+     */
     public static List<Book> mostBorrowedBooks() {
 
         List<Book> mostBorrowedBooks = new ArrayList<>();

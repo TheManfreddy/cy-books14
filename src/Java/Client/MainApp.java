@@ -12,6 +12,9 @@ import java.util.Scanner;
 
 public class MainApp extends Application {
 
+    /**
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         // Obtenir les dimensions de l'écran
@@ -34,6 +37,9 @@ public class MainApp extends Application {
         primaryStage.show();
     }
 
+    /**
+     * @param args
+     */
     public static void main(String[] args) {
         // Création d'une instance de Server
         Server manager = new Server();

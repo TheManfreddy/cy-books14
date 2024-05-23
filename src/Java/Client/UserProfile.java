@@ -29,6 +29,13 @@ import static Server.Data.APIBNF.retrieveBook_isbn;
 public class UserProfile extends VBox {
     private Scene scene;
 
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     * @param mail
+     * @throws SQLException
+     */
     public UserProfile(Stage primaryStage, double width, double height, String mail) throws SQLException {
         // Crée et configure la scène
         BorderPane root = new BorderPane();
@@ -224,6 +231,9 @@ public class UserProfile extends VBox {
         root.setCenter(scrollPane);
     }
 
+    /**
+     * @return
+     */
     public Scene getUserProfileScene() {
         return scene;
     }

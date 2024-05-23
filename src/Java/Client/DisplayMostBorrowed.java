@@ -14,6 +14,12 @@ import java.util.List;
 public class DisplayMostBorrowed extends VBox {
     private Scene scene;
 
+    /**
+     * @param primaryStage
+     * @param width
+     * @param height
+     * @param isbn
+     */
     public DisplayMostBorrowed(Stage primaryStage, double width, double height, String isbn){
         // Create and configure the scene
         BorderPane root = new BorderPane();
@@ -116,13 +122,11 @@ public class DisplayMostBorrowed extends VBox {
 
         // Place the VBox containing the text fields and button in the center of the BorderPane
         root.setCenter(vbox);
-
-
-
-
     }
 
-
+    /**
+     * @return
+     */
     public Scene getDisplayMostBorrowedScene() {
         return scene;
     }
