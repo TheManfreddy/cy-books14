@@ -133,9 +133,7 @@ public class UserProfile extends VBox {
             }
         }));
 
-        GridPane borrowsInformationGrid = new GridPane();
-        borrowsInformationGrid.setHgap(30);
-        borrowsInformationGrid.setVgap(15);
+
         int col = 0;
         int row = 0;
 
