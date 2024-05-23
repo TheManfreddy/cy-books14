@@ -21,22 +21,12 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public class APIBNF {
-    /**
-     * @param search
-     * @return
-     */
     public static String searchBook (String search) {
 
         String query = "((bib.author all " + "\"" + search + "\"" + ") or (bib.title all " + "\"" + search + "\"" + ")) and (bib.doctype all \"a\")";
         return query;
     }
 
-    /**
-     * @param text
-     * @param parentTag
-     * @param subfieldTag
-     * @return
-     */
     public static List<String> extractData(String text, String parentTag, String subfieldTag) {
         List<String> dataList = new ArrayList<>();
 
@@ -77,10 +67,6 @@ public class APIBNF {
         return dataList;
     }
 
-    /**
-     * @param query
-     * @return
-     */
     public static List<List<String>> retrieveBookList(String query) {
         List<List<String>> bookList = new ArrayList<>();
         List<String> isbnList = new ArrayList<>();
@@ -128,10 +114,10 @@ public class APIBNF {
                 List<String> datesParution = extractData(extractedText, "<mxc:datafield tag=\"210\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"d\">");
 
                 isbnList.addAll(isbns);
-                langueList.addAll(langues);
                 titreList.addAll(titres);
                 auteurList.addAll(auteurs);
                 editeurList.addAll(editeurs);
+                langueList.addAll(langues);
                 dateParutionList.addAll(datesParution);
 
                 if (isbns.size() < maximumRecords) {
@@ -155,10 +141,10 @@ public class APIBNF {
             }
 
             bookList.add(isbnList);
-            bookList.add(langueList);
             bookList.add(titreList);
             bookList.add(auteurList);
             bookList.add(editeurList);
+            bookList.add(langueList);
             bookList.add(dateParutionList);
 
         } catch (Exception e) {
@@ -167,10 +153,6 @@ public class APIBNF {
         return bookList;
     }
 
-    /**
-     * @param isbn
-     * @return
-     */
     public static Book retrieveBook_isbn(String isbn) {
         String query1 = "bib.isbn all " + "\"" + isbn + "\"";
         try {
@@ -214,3 +196,4 @@ public class APIBNF {
         return null;
     }
 }
+

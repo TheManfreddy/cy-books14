@@ -19,9 +19,9 @@ public class DisplayBook {
     private Scene scene;
     private String searchQuery;
     private List<Book> currentListBook;
-    private ObservableList<String> currentItems;
+    private ObservableList<Book> currentItems;
 
-    public DisplayBook(Stage primaryStage, double width, double height, String isbn, String searchQuery, List<Book> listBook, ObservableList<String> items) {
+    public DisplayBook(Stage primaryStage, double width, double height, String isbn, String searchQuery, List<Book> listBook, ObservableList<Book> items) {
         this.searchQuery = searchQuery;
         this.currentListBook = listBook;
         this.currentItems = items;
