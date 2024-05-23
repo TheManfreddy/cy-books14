@@ -1,5 +1,6 @@
 package Client;
 import Server.Manager.BookManager;
+import Server.Models.Book;
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -30,19 +31,10 @@ public class DisplayMostBorrowed extends VBox {
 
 
 
-        List<List<String>> listBook = BookManager.displayBook(isbn);
-
-        String title = listBook.get(0).get(0);
-        String language = listBook.get(1).get(0);
-        String author = listBook.get(2).get(0);
-        String edition = listBook.get(3).get(0);
-        String publicationDate = listBook.get(4).get(0);
-
-
-
+        Book book = BookManager.displayBook(isbn);
 
         // Create a Label for the title
-        Label labelTitle = new Label(title);
+        Label labelTitle = new Label(book.getTitle());
         labelTitle.getStyleClass().add("title");
 
         // Create a container for the title
@@ -56,7 +48,7 @@ public class DisplayMostBorrowed extends VBox {
         labelTitleV.getStyleClass().add("label");
 
         // Create a Label for the value of the book title
-        Label labelTitleValue = new Label(title);
+        Label labelTitleValue = new Label(book.getTitle());
         labelTitleValue.getStyleClass().add("label");
 
         // Create a container for the title
@@ -67,7 +59,7 @@ public class DisplayMostBorrowed extends VBox {
         labelLanguageV.getStyleClass().add("label");
 
         // Create a Label for the value of the book language
-        Label labelLanguageValue = new Label(language);
+        Label labelLanguageValue = new Label(book.getLanguage());
         labelLanguageValue.getStyleClass().add("label");
 
         // Create a container for the language
@@ -78,7 +70,7 @@ public class DisplayMostBorrowed extends VBox {
         labelAuthorV.getStyleClass().add("label");
 
         // Create a Label for the value of the book author
-        Label labelAuthorValue = new Label(author);
+        Label labelAuthorValue = new Label(book.getAuthor());
         labelAuthorValue.getStyleClass().add("label");
 
         // Create a container for the author
@@ -89,7 +81,7 @@ public class DisplayMostBorrowed extends VBox {
         labelEditionV.getStyleClass().add("label");
 
         // Create a Label for the value of the book edition
-        Label labelEditionValue = new Label(edition);
+        Label labelEditionValue = new Label(book.getEditor());
         labelEditionValue.getStyleClass().add("label");
 
         // Create a container for the edition
@@ -100,7 +92,7 @@ public class DisplayMostBorrowed extends VBox {
         labelParutionDateV.getStyleClass().add("label");
 
         // Create a Label for the value of the book parution date
-        Label labelParutionDateValue = new Label(publicationDate);
+        Label labelParutionDateValue = new Label(book.getRelease_year());
         labelParutionDateValue.getStyleClass().add("label");
 
         // Create a container for the parution date
@@ -111,7 +103,7 @@ public class DisplayMostBorrowed extends VBox {
         Button borrowButton = new Button("Emprunter");
         borrowButton.getStyleClass().add("button");
         borrowButton.setOnAction(e -> {
-            BorrowBook borrowBook = new BorrowBook(primaryStage, width, height,isbn,title);
+            BorrowBook borrowBook = new BorrowBook(primaryStage, width, height,isbn, book.getTitle());
             primaryStage.setScene(borrowBook.getBorrowBookScene());
         });
 
