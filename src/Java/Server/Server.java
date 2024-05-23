@@ -12,6 +12,11 @@ public class Server {
     );
     public static String XAMPP_START;
 
+    /**
+     * @param serviceName
+     * @return
+     * @throws IOException
+     */
     // Vérifie si un processus est en cours d'exécution
     private boolean isServiceRunning(String serviceName) throws IOException {
         String line;
@@ -28,6 +33,10 @@ public class Server {
         return pidInfo.contains(serviceName);
     }
 
+    /**
+     * @throws IOException
+     * @throws InterruptedException
+     */
     // Démarre les services Apache et MySQL
     public void startXAMPPServices() throws IOException, InterruptedException {
         if (XAMPP_START == null) {
@@ -54,6 +63,10 @@ public class Server {
             System.out.println("MySQL est déjà en cours d'exécution.");
         }
     }
+
+    /**
+     * @return
+     */
     // Méthode pour trouver le chemin de XAMPP automatiquement
     public static String findXamppPath() {
         for (String path : COMMON_PATHS) {

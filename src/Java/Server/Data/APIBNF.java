@@ -21,12 +21,22 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public class APIBNF {
+    /**
+     * @param search
+     * @return
+     */
     public static String searchBook (String search) {
 
         String query = "((bib.author all " + "\"" + search + "\"" + ") or (bib.title all " + "\"" + search + "\"" + ")) and (bib.doctype all \"a\")";
         return query;
     }
 
+    /**
+     * @param text
+     * @param parentTag
+     * @param subfieldTag
+     * @return
+     */
     public static List<String> extractData(String text, String parentTag, String subfieldTag) {
         List<String> dataList = new ArrayList<>();
 
@@ -67,6 +77,10 @@ public class APIBNF {
         return dataList;
     }
 
+    /**
+     * @param query
+     * @return
+     */
     public static List<List<String>> retrieveBookList(String query) {
         List<List<String>> bookList = new ArrayList<>();
         List<String> isbnList = new ArrayList<>();
@@ -153,6 +167,10 @@ public class APIBNF {
         return bookList;
     }
 
+    /**
+     * @param isbn
+     * @return
+     */
     public static Book retrieveBook_isbn(String isbn) {
         String query1 = "bib.isbn all " + "\"" + isbn + "\"";
         try {

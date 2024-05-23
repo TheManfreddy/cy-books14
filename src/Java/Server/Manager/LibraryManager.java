@@ -5,6 +5,10 @@ import Server.Models.Library;
 import java.sql.*;
 
 public class LibraryManager {
+    /**
+     * @param library
+     * @return
+     */
     public static boolean validateLogin(Library library) {
         String url = "jdbc:mysql://localhost:3307/bibli";
         String user = "root";  // Nom d'utilisateur de la base de données

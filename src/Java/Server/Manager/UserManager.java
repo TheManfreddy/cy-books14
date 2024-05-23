@@ -13,6 +13,16 @@ import static Server.Data.APIBNF.retrieveBook_isbn;
 import static Server.Manager.BorrowManager.historyBorrow;
 
 public class UserManager {
+    /**
+     * @param mail
+     * @param name
+     * @param first_name
+     * @param birth_date
+     * @param address
+     * @param phone_number
+     * @param number_borrow
+     * @throws SQLException
+     */
     public static void registerUser(String mail, String name, String first_name, String birth_date, String address, String phone_number, int number_borrow) throws SQLException {
 
         try {
@@ -43,6 +53,16 @@ public class UserManager {
             e.printStackTrace();
         }
     }
+
+    /**
+     * @param mail
+     * @param name
+     * @param first_name
+     * @param birth_date
+     * @param address
+     * @param phone_number
+     * @throws SQLException
+     */
     public static void modifyInformation(String mail, String name, String first_name,String birth_date, String address,String phone_number) throws SQLException {
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
@@ -110,6 +130,12 @@ public class UserManager {
             e.printStackTrace();
         }
     }
+
+    /**
+     * @param mail
+     * @return
+     * @throws SQLException
+     */
     public static User searchUser(String mail) throws SQLException{
 
         String query = "SELECT * FROM  user WHERE mail = ?";
@@ -139,6 +165,12 @@ public class UserManager {
         }
         return(user);
     }
+
+    /**
+     * @param mail
+     * @return
+     * @throws SQLException
+     */
     public static List<Object> displayUser(String mail) throws SQLException {
 
         List<Object> userBorrows = new ArrayList<>();
@@ -150,6 +182,10 @@ public class UserManager {
         }
         return(userBorrows);
     }
+
+    /**
+     * @return
+     */
     public static List<User> displayUserList() {
         List<User> UserList = new ArrayList<>();
         String query = "SELECT mail FROM  user";
@@ -172,6 +208,10 @@ public class UserManager {
         }
         return (UserList);
     }
+
+    /**
+     * @return
+     */
     public static List<User> displayUserBorrowLateList() {
         List<User> UserList = new ArrayList<>();
         String query = "SELECT idUser FROM borrow WHERE duration>30 AND status=?";
@@ -196,6 +236,11 @@ public class UserManager {
         }
         return (UserList);
     }
+
+    /**
+     * @param mail
+     * @return
+     */
     public static boolean isUserEmailExists(String mail) {
         boolean exists = false;
         String url = "jdbc:mysql://localhost:3307/bibli";
