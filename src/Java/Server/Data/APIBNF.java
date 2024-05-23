@@ -2,6 +2,7 @@ package Server.Data;
 
 import Client.LibraryPage;
 import Server.Manager.BookManager;
+import Server.Models.Book;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -152,9 +153,7 @@ public class APIBNF {
         return bookList;
     }
 
-    public static List<List<String>> retrieveBook_isbn(String isbn) {
-        List<List<String>> book = new ArrayList<>();
-
+    public static Book retrieveBook_isbn(String isbn) {
         String query1 = "bib.isbn all " + "\"" + isbn + "\"";
         try {
             // URL de l'API BNF avec la requête
@@ -187,16 +186,13 @@ public class APIBNF {
             List<String> editeur = extractData(extractedText, "<mxc:datafield tag=\"210\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"c\">");
             List<String> date_parution = extractData(extractedText, "<mxc:datafield tag=\"210\" ind1=\" \" ind2=\" \">", "<mxc:subfield code=\"d\">");
 
-            book.add(titre);
-            book.add(langue);
-            book.add(auteur);
-            book.add(editeur);
-            book.add(date_parution);
+            Book book = new Book(isbn, titre.get(0), auteur.get(0), editeur.get(0), langue.get(0),date_parution.get(0));
+            return book;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return (book);
 
+        return null;
     }
 }

@@ -1,6 +1,7 @@
 package Client;
 
 import Server.Manager.BookManager;
+import Server.Models.Book;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -45,13 +46,13 @@ public class MostBorrowed extends VBox {
             LibraryPage librarypage = new LibraryPage(primaryStage, width, height);
             primaryStage.setScene(librarypage.getLibraryPageScene());
         });
-            List<List<String>> listBook = BookManager.mostBorrowedBooks() ;
+            List<Book> listBook = BookManager.mostBorrowedBooks() ;
 
             if (listBook != null && !listBook.isEmpty()) {
                 // Convertir la liste en ObservableList pour qu'elle soit compatible avec ListView
                 ObservableList<String> items = FXCollections.observableArrayList();
-                for (List<String> book : listBook) {
-                    items.add(String.join(", ", book)); // Convertir chaque liste de détails en une seule chaîne
+                for (Book book : listBook) {
+                    items.addAll(book.getISBN(),book.getLanguage(),book.getTitle(),book.getAuthor(), book.getEditor(), book.getRelease_year(); // Convertir chaque liste de détails en une seule chaîne
                 }
 
                 // Créer un Pagination pour gérer les pages
@@ -86,7 +87,7 @@ public class MostBorrowed extends VBox {
         }
     }
 
-    private VBox createPage(int pageIndex, ObservableList<String> items, List<List<String>> listBook) {
+    private VBox createPage(int pageIndex, ObservableList<String> items, List<Book> listBook) {
         int fromIndex = pageIndex * ITEMS_PER_PAGE;
         int toIndex = Math.min(fromIndex + ITEMS_PER_PAGE, items.size());
         ObservableList<String> subList = FXCollections.observableArrayList(items.subList(fromIndex, toIndex));
@@ -100,8 +101,8 @@ public class MostBorrowed extends VBox {
             if (selectedIndex >= 0) {
                 int actualIndex = fromIndex + selectedIndex; // Correction ici pour obtenir l'index réel
                 if (actualIndex < listBook.size()) {
-                    List<String> selectedBook = listBook.get(actualIndex);
-                    String isbn = selectedBook.get(0); // Récupérer l'ISBN
+                    Book selectedBook = listBook.get(actualIndex);
+                    String isbn = selectedBook.getISBN(); // Récupérer l'ISBN
                     System.out.println("Selected ISBN: " + isbn); // Log pour déboguer
                     try {
                         DisplayMostBorrowed mostborrowed = new  DisplayMostBorrowed((Stage) listView.getScene().getWindow(), scene.getWidth(), scene.getHeight(), isbn);

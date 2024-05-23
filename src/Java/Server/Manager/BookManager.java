@@ -1,5 +1,8 @@
 package Server.Manager;
 
+import Server.Data.APIBNF;
+import Server.Models.Book;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,12 +13,12 @@ import static Server.Data.APIBNF.retrieveBookList;
 import static Server.Data.APIBNF.retrieveBook_isbn;
 
 public class BookManager {
-    public static List<List<String>> displayBookList(String search) {
+    public static List<Book> displayBookList(String search) {
         // Appeler la méthode retrieveBookList pour obtenir la liste des livres
         List<List<String>> bookList = retrieveBookList(search);
 
         // Créer une liste pour stocker les informations formatées
-        List<List<String>> formattedList = new ArrayList<>();
+        List<Book> formattedList = new ArrayList<>();
 
         // Utiliser un Set pour suivre les ISBN déjà ajoutés
         Set<String> seenIsbns = new HashSet<>();
@@ -34,32 +37,24 @@ public class BookManager {
                 List<String> bookInfo = new ArrayList<>();
 
                 // Ajouter les éléments correspondant à l'indice actuel à la sous-liste du livre
-                bookInfo.add(isbn);
-                bookInfo.add(bookList.get(1).get(i));
-                bookInfo.add(bookList.get(2).get(i));
-                bookInfo.add(bookList.get(3).get(i));
-                bookInfo.add(bookList.get(4).get(i));
-                bookInfo.add(bookList.get(5).get(i));
-
-                // Ajouter la sous-liste du livre à la liste formatée
-                formattedList.add(bookInfo);
+                Book book = new Book(isbn, bookList.get(1).get(i), bookList.get(2).get(i), bookList.get(3).get(i), bookList.get(4).get(i), bookList.get(5).get(i));
+                formattedList.add(book);
 
                 // Ajouter l'ISBN au Set
                 seenIsbns.add(isbn);
             }
         }
-
         // Retourner la liste formatée
         return formattedList;
 
     }
-    public static List<List<String> >displayBook(String isbn) {
-        List<List<String>> book = retrieveBook_isbn(isbn);
+    public static Book displayBook(String isbn) {
+        Book book = retrieveBook_isbn(isbn);
         return(book);
     }
-    public static List<List<String>> mostBorrowedBooks() {
+    public static List<Book> mostBorrowedBooks() {
 
-        List<List<String>> mostBorrowedBooks = new ArrayList<>();
+        List<Book> mostBorrowedBooks = new ArrayList<>();
 
         String url = "jdbc:mysql://localhost:3307/bibli";
         String user = "root";
@@ -85,15 +80,8 @@ public class BookManager {
             while (rs.next()) {
                 String isbn = rs.getString("isbn");
                 int borrowCount = rs.getInt("borrow_count");
-                List<List<String>> book = retrieveBook_isbn(isbn);
-                List<String> book1 = new ArrayList<>();
-                book1.add(isbn);
-                book1.add(book.get(0).get(0));
-                book1.add(book.get(1).get(0));
-                book1.add(book.get(2).get(0));
-                book1.add(book.get(3).get(0));
-                book1.add(book.get(4).get(0));
-                book1.add(String.valueOf(borrowCount));
+                Book book = retrieveBook_isbn(isbn);
+                Book book1 = new Book(isbn, book.getTitle(), book.getAuthor(),book.getEditor(),book.getLanguage(),book.getRelease_year(),borrowCount);
                 mostBorrowedBooks.add(book1);
             }
         } catch (SQLException e) {

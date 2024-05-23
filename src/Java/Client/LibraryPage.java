@@ -1,6 +1,7 @@
 package Client;
 
 import Server.Manager.BookManager;
+import Server.Models.Book;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -21,14 +22,14 @@ public class LibraryPage extends VBox {
     private static final int ITEMS_PER_PAGE = 10; // Nombre d'éléments par page
     private TextField textFieldSearch;
     private ComboBox<String> langageComboBox;
-    private List<List<String>> currentListBook;
+    private List<Book> currentListBook;
     private ObservableList<String> currentItems;
 
     public LibraryPage(Stage primaryStage, double width, double height) {
         this(primaryStage, width, height, "", FXCollections.observableArrayList(), FXCollections.observableArrayList());
     }
 
-    public LibraryPage(Stage primaryStage, double width, double height, String searchQuery, List<List<String>> listBook, ObservableList<String> items) {
+    public LibraryPage(Stage primaryStage, double width, double height, String searchQuery, List<Book> listBook, ObservableList<String> items) {
         // Crée et configure la scène
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
@@ -126,13 +127,13 @@ public class LibraryPage extends VBox {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
         // Tâche pour effectuer la recherche
-        Callable<List<List<String>>> searchTask = () -> {
+        Callable<List<Book>> searchTask = () -> {
             String query = "bib.title all " + "\"" + text + "\"and (bib.doctype all \"a\")";
             return BookManager.displayBookList(query);
         };
 
         // Future pour la recherche
-        Future<List<List<String>>> future = executor.submit(searchTask);
+        Future<List<Book>> future = executor.submit(searchTask);
 
         // Tâche pour arrêter la recherche si elle prend plus de 30 secondes
         scheduler.schedule(() -> {
@@ -147,14 +148,15 @@ public class LibraryPage extends VBox {
         // Exécuter la recherche et traiter les résultats
         executor.execute(() -> {
             try {
-                List<List<String>> listBook = future.get(); // Obtenir le résultat de la recherche
+                List<Book> listBook = future.get(); // Obtenir le résultat de la recherche
 
                 Platform.runLater(() -> {
                     if (listBook != null && !listBook.isEmpty()) {
                         // Convertir la liste en ObservableList pour qu'elle soit compatible avec ListView
                         ObservableList<String> items = FXCollections.observableArrayList();
-                        for (List<String> book : listBook) {
-                            items.add(String.join(", ", book)); // Convertir chaque liste de détails en une seule chaîne
+                        for (Book book : listBook) {
+                            items.addAll(book.getISBN(),book.getLanguage(),book.getTitle(),book.getAuthor(), book.getEditor(), book.getRelease_year()); // Convertir chaque liste de détails en une seule chaîne
+                            new HBox(80, new Label("ISBN"), new Label("Langue"), new Label("Titre"), new Label("Auteur"), new Label("Éditeur"), new Label("Année"));
                         }
 
                         // Sauvegarder l'état actuel
@@ -203,7 +205,7 @@ public class LibraryPage extends VBox {
         }
     }*/
 
-    private VBox createPage(int pageIndex, ObservableList<String> items, List<List<String>> listBook) {
+    private VBox createPage(int pageIndex, ObservableList<String> items, List<Book> listBook) {
         int fromIndex = pageIndex * ITEMS_PER_PAGE;
         int toIndex = Math.min(fromIndex + ITEMS_PER_PAGE, items.size());
         ObservableList<String> subList = FXCollections.observableArrayList(items.subList(fromIndex, toIndex));
@@ -217,8 +219,8 @@ public class LibraryPage extends VBox {
             if (selectedIndex >= 0) {
                 int actualIndex = fromIndex + selectedIndex; // Correction ici pour obtenir l'index réel
                 if (actualIndex < listBook.size()) {
-                    List<String> selectedBook = listBook.get(actualIndex);
-                    String isbn = selectedBook.get(0); // Récupérer l'ISBN
+                    Book selectedBook = listBook.get(actualIndex);
+                    String isbn = Book.getISBN(); // Récupérer l'ISBN
                     System.out.println("Selected ISBN: " + isbn); // Log pour déboguer
                     try {
                         DisplayBook displayBook = new DisplayBook((Stage) listView.getScene().getWindow(), scene.getWidth(), scene.getHeight(), isbn, textFieldSearch.getText(), currentListBook, currentItems);

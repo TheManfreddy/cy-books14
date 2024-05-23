@@ -1,6 +1,7 @@
 package Client;
 
 import Server.Manager.BookManager;
+import Server.Models.Book;
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -17,10 +18,10 @@ public class DisplayBook {
 
     private Scene scene;
     private String searchQuery;
-    private List<List<String>> currentListBook;
+    private List<Book> currentListBook;
     private ObservableList<String> currentItems;
 
-    public DisplayBook(Stage primaryStage, double width, double height, String isbn, String searchQuery, List<List<String>> listBook, ObservableList<String> items) {
+    public DisplayBook(Stage primaryStage, double width, double height, String isbn, String searchQuery, List<Book> listBook, ObservableList<String> items) {
         this.searchQuery = searchQuery;
         this.currentListBook = listBook;
         this.currentItems = items;
@@ -38,13 +39,13 @@ public class DisplayBook {
             primaryStage.setScene(libraryPage.getLibraryPageScene());
         });
 
-        List<List<String>> bookDetails = BookManager.displayBook(isbn);
+        Book bookDetails = BookManager.displayBook(isbn);
 
-        String title = bookDetails.get(0).get(0);
-        String language = bookDetails.get(1).get(0);
-        String author = bookDetails.get(2).get(0);
-        String edition = bookDetails.get(3).get(0);
-        String publicationDate = bookDetails.get(4).get(0);
+        String title = bookDetails.getTitle();
+        String language = bookDetails.getLanguage();
+        String author = bookDetails.getAuthor();
+        String edition = bookDetails.getEditor();
+        String publicationDate = bookDetails.getRelease_year();
 
         // Create a Label for the title
         Label labelTitle = new Label(title);
