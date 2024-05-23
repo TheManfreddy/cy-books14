@@ -1,5 +1,6 @@
 package Client;
 
+import Server.Data.APIBNF;
 import Server.Manager.BookManager;
 import Server.Models.Book;
 import javafx.beans.property.SimpleStringProperty;
@@ -96,7 +97,7 @@ public class LibraryPage extends VBox {
         mostborrowedButton.getStyleClass().add("button");
 
         // Crée un conteneur HBox pour les champs de recherche
-        HBox searchBox = new HBox(15, labelSearch, textFieldSearch, searchButton, languageComboBox);
+        HBox searchBox = new HBox(15, labelSearch, textFieldSearch, searchButton, choiceComboBox);
         searchBox.setAlignment(Pos.TOP_CENTER);
 
         // Crée un conteneur HBox et y ajoute les composants
@@ -175,7 +176,8 @@ public class LibraryPage extends VBox {
 
         // Tâche pour effectuer la recherche
         Callable<List<Book>> searchTask = () -> {
-            String query = "bib.title all " + "\"" + text + "\"and (bib.doctype all \"a\")";
+            //String query = "bib.title all " + "\"" + text + "\"and (bib.doctype all \"a\")";
+            String query = APIBNF.searchBook(text, criteria);
             return BookManager.displayBookList(query);
         };
 
