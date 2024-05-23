@@ -25,9 +25,24 @@ public class APIBNF {
      * @param search
      * @return
      */
-    public static String searchBook (String search) {
+    public static String searchBook (String search,String criteria) {
 
-        String query = "((bib.author all " + "\"" + search + "\"" + ") or (bib.title all " + "\"" + search + "\"" + ")) and (bib.doctype all \"a\")";
+        String query="";
+
+        switch(criteria){
+            case("PAR TITRE"):
+                query = "(bib.title all " + "\"" + search + "\"" + ") and (bib.doctype all \"a\")";
+                break;
+            case("PAR AUTEUR"):
+                query = "(bib.author all " + "\"" + search + "\"" + ") and (bib.doctype all \"a\")";
+                break;
+            case("PAR ISBN"):
+                query = "(bib.isbn all " + "\"" + search + "\"" + ") and (bib.doctype all \"a\")";
+                break;
+            default:
+                query = "(bib.title all " + "\"" + search + "\"" + ") and (bib.doctype all \"a\")";
+                break;
+        }
         return query;
     }
 

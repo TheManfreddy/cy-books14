@@ -21,9 +21,11 @@ public class LibraryPage extends VBox {
     private Scene scene;
     private static final int ITEMS_PER_PAGE = 10; // Nombre d'éléments par page
     private TextField textFieldSearch;
-    private ComboBox<String> languageComboBox;
+    private ComboBox<String> choiceComboBox;
     private List<Book> currentListBook;
     private ObservableList<Book> currentItems;
+
+    private String criteria;
 
     /**
      * @param primaryStage
@@ -75,9 +77,19 @@ public class LibraryPage extends VBox {
         searchButton.getStyleClass().add("button");
 
         // Crée une ComboBox pour sélectionner la langue des livres
-        languageComboBox = new ComboBox<>();
-        languageComboBox.getItems().addAll("FR", "EN", "CHOISIR LANGUE");
-        languageComboBox.setValue("CHOISIR LANGUE"); // Valeur par défaut
+        choiceComboBox = new ComboBox<>();
+        choiceComboBox.getItems().addAll("PAR TITRE", "PAR AUTEUR", "PAR ISBN");
+        choiceComboBox.setValue("PAR TITRE"); // Valeur par défaut
+
+
+        criteria = "PAR TITRE"; //Value by default
+        //Ajoutez un ChangeListener pour détecter les changements de sélection
+        choiceComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+           criteria = onChoiceSelected(newValue);  // Appelez la méthode lorsque la sélection change
+        });
+
+
+
 
         // Crée un bouton pour voir les livres les plus empruntés
         Button mostborrowedButton = new Button("Les plus empruntés");
@@ -126,6 +138,30 @@ public class LibraryPage extends VBox {
         // Configure le bouton rechercher
         searchButton.setOnAction(e -> performSearch(primaryStage, root, textFieldSearch.getText()));
     }
+
+
+
+    // Méthode appelée lorsque la langue est sélectionnée
+
+    private String onChoiceSelected(String Choices) {
+        String Choice = "";
+        if (Choices.equals("PAR TITRE")) {
+            Choice = "PAR TITRE";
+
+
+        }if (Choices.equals("PAR AUTEUR")) {
+            Choice = "PAR AUTEUR";
+
+        }if (Choices.equals("PAR ISBN")) {
+            Choice = "PAR ISBN";
+            }
+        return Choice;
+    }
+
+
+
+
+
 
     /**
      * @param primaryStage
