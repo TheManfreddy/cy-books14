@@ -114,6 +114,7 @@ public class UserProfile extends VBox {
         HBox userInformationAndModifyButton = new HBox(15);
         VBox userInformationBox = new VBox();
         userInformationBox.getChildren().addAll(userNameLabel, userFirstNameLabel, userMailLabel, userBirthDateLabel, userAddressLabel, userPhoneNumberLabel, userNumberBorrowLabel);
+        userInformationBox.getStyleClass().add("user-info-box");
         userInformationAndModifyButton.getChildren().addAll(userInformationBox, modifyButton);
 
         // Affichage historique emprunts
