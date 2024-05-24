@@ -145,6 +145,12 @@ public class RegisterUser {
         // Place the VBox containing the text fields and button in the center of the BorderPane
         root.setCenter(vbox);
 
+        // Create a VBox and add the components
+        VBox vTitlebox = new VBox(15); // 15 is the spacing between elements
+        vTitlebox.getChildren().addAll(textFieldName,textFieldFirstName,textFieldBirthDate,textFieldMail,textFieldNumber,textFieldAddress);
+        vTitlebox.getStyleClass().add("container");
+
+
         // Configure the button to open the user page
         addUserButton.setOnAction(e -> {
             // Retrieve values from text fields

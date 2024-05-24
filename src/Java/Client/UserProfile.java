@@ -130,6 +130,8 @@ public class UserProfile extends VBox {
             borrows.add(borrow);
         }
 
+
+
         borrows.sort(Comparator.comparing(borrow1 -> {
             String color1 = borrow1.getColor();
             switch (color1) {
@@ -157,11 +159,6 @@ public class UserProfile extends VBox {
             Date endDate = borrow.getEnd_date();
             String color = borrow.getColor();
             int status = borrow.getStatus();
-
-
-            /*if (title != null && title.length() > 1 && title.startsWith("[") && title.endsWith("]")) {
-                title = title.substring(1, title.length() - 1);
-            }*/
 
             // Création des labels pour afficher l'historique des emprunts
             Label borrowTitleLabel = new Label("Titre :    " + title);
