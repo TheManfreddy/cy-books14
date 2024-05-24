@@ -5,53 +5,58 @@ import Server.Models.Borrow;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Manages operations related to borrowing books.
+ */
 public class BorrowManager {
+
     /**
-     * @param isbn
-     * @param idUser
+     * Registers a new borrow entry in the database.
+     *
+     * @param isbn   the ISBN of the book being borrowed
+     * @param idUser the ID of the user borrowing the book
      */
-    public static void registerBorrow(String isbn, String idUser){
-
-
+    public static void registerBorrow(String isbn, String idUser) {
+        // Get the current date
         LocalDate start_date = LocalDate.now();
-
+        // Calculate the end date (30 days from the start date)
         LocalDate end_date = start_date.plusDays(30);
 
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            // Connexion à la base de données
+            // Database connection
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
 
-            // Requête INSERT INTO avec un PreparedStatement
+            // Prepare the SQL INSERT INTO statement
             String sql = "INSERT INTO Borrow (isbn,idUser,duration,start_date,end_date,status) VALUES (?, ?, ?, ?, ?,?)";
             pstmt = conn.prepareStatement(sql);
 
-            // Attribution des valeurs aux paramètres
+            // Set parameter values
             pstmt.setString(1, isbn);
             pstmt.setString(2, idUser);
-            pstmt.setInt(3, 0);
+            pstmt.setInt(3, 0); // Duration initially set to 0
             pstmt.setDate(4, java.sql.Date.valueOf(start_date));
             pstmt.setDate(5, java.sql.Date.valueOf(end_date));
-            pstmt.setInt(6, 0); //
+            pstmt.setInt(6, 0); // Status initially set to 0
 
-            // Exécution de la requête d'insertion
+            // Execute the INSERT INTO query
             int rowsAffected = pstmt.executeUpdate();
 
-            // Vérification du succès de l'insertion
+            // Check if the insertion was successful
             if (rowsAffected > 0) {
-                System.out.println("Insertion réussie !");
+                System.out.println("Insertion successful!");
             } else {
-                System.out.println("Échec de l'insertion !");
+                System.out.println("Insertion failed!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // Fermeture des ressources
+            // Close resources
             try {
                 if (pstmt != null) {
                     pstmt.close();
@@ -66,15 +71,20 @@ public class BorrowManager {
     }
 
     /**
-     * @param idUser
+     * Updates the duration of ongoing borrows for a specific user.
+     *
+     * @param idUser the ID of the user
      */
     public static void updateBorrow(String idUser) {
-        LocalDate dateActuelle = LocalDate.now();
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
 
+        // Database connection parameters
         String url = "jdbc:mysql://localhost:3307/bibli";
         String user = "root";
         String password = "";
 
+        // SQL statements
         String statusSql = "SELECT isbn FROM Borrow WHERE idUser=?";
         String selectSql = "SELECT start_date FROM Borrow WHERE idUser=? AND status=0 AND isbn=?";
         String updateSql = "UPDATE Borrow SET duration = ? WHERE idUser=? AND status=0 AND isbn=?";
@@ -84,12 +94,13 @@ public class BorrowManager {
              PreparedStatement selectStmt = conn.prepareStatement(selectSql);
              PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
 
-            // Vérifier le statut de l'utilisateur
+            // Retrieve the ISBNs of books borrowed by the user
             isbnStmt.setString(1, idUser);
             ResultSet statusRs = isbnStmt.executeQuery();
 
             while (statusRs.next()) {
                 String isbn = statusRs.getString("isbn");
+                // Retrieve the start date for each book
                 selectStmt.setString(1, idUser);
                 selectStmt.setString(2, isbn);
 
@@ -97,20 +108,21 @@ public class BorrowManager {
 
                 while (selectRs.next()) {
                     LocalDate startDate = selectRs.getDate("start_date").toLocalDate();
-                    System.out.println("Start Date: " + startDate);
-                    long differenceJours = ChronoUnit.DAYS.between(startDate, dateActuelle);
-                    System.out.println("Difference in Days: " + differenceJours);
+                    // Calculate the duration of the borrow
+                    long daysDifference = ChronoUnit.DAYS.between(startDate, currentDate);
 
-                    updateStmt.setLong(1, differenceJours);
+                    // Update the duration in the database
+                    updateStmt.setLong(1, daysDifference);
                     updateStmt.setString(2, idUser);
                     updateStmt.setString(3, isbn);
 
                     int rowsAffected = updateStmt.executeUpdate();
 
+                    // Check if the update was successful
                     if (rowsAffected > 0) {
-                        System.out.println("Mise à jour réussie!");
+                        System.out.println("Update successful!");
                     } else {
-                        System.out.println("Échec de la mise à jour!");
+                        System.out.println("Update failed!");
                     }
                 }
             }
@@ -120,11 +132,12 @@ public class BorrowManager {
     }
 
     /**
-     * @param isbn
-     * @param idUser
+     * Marks a borrowed book as returned in the database.
+     *
+     * @param isbn   the ISBN of the book being returned
+     * @param idUser the ID of the user returning the book
      */
-    public static void returnBorrow(String isbn, String idUser){
-
+    public static void returnBorrow(String isbn, String idUser) {
         Connection conn = null;
         PreparedStatement pstmt1 = null;
         PreparedStatement pstmt2 = null;
@@ -132,10 +145,10 @@ public class BorrowManager {
         ResultSet rs = null;
 
         try {
-            // Connexion à la base de données
+            // Database connection
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
 
-            // Requête permettant de mettre à jour le statut de l'emprunt
+            // SQL statement to update borrow status
             String sql1 = "UPDATE Borrow SET status = ? WHERE isbn = ? AND idUser = ?";
             pstmt1 = conn.prepareStatement(sql1);
             pstmt1.setInt(1, 1);
@@ -143,7 +156,7 @@ public class BorrowManager {
             pstmt1.setString(3, idUser);
             pstmt1.executeUpdate();
 
-            // Requête permettant de récupérer le nombre d'emprunts de l'utilisateur
+            // SQL statement to retrieve user's borrow count
             String sql2 = "SELECT number_borrow FROM user WHERE mail = ?";
             pstmt2 = conn.prepareStatement(sql2);
             pstmt2.setString(1, idUser);
@@ -151,8 +164,8 @@ public class BorrowManager {
 
             if (rs.next()) {
                 int numberBorrow = rs.getInt("number_borrow");
-                if(numberBorrow>0) {
-                    // Requête permettant de mettre à jour le nombre d'emprunts de l'utilisateur
+                if (numberBorrow > 0) {
+                    // SQL statement to update user's borrow count
                     String sql3 = "UPDATE user SET number_borrow = ? WHERE mail = ?";
                     pstmt3 = conn.prepareStatement(sql3);
                     pstmt3.setInt(1, numberBorrow - 1);
@@ -160,11 +173,10 @@ public class BorrowManager {
                     pstmt3.executeUpdate();
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // Fermeture des ressources
+            // Close resources
             try {
                 if (rs != null) {
                     rs.close();
@@ -188,20 +200,21 @@ public class BorrowManager {
     }
 
     /**
-     * @param isbn
-     * @param idUser
-     * @return
+     * Adds a new borrow entry and updates user's borrow count.
+     *
+     * @param isbn   the ISBN of the book being borrowed
+     * @param idUser the ID of the user borrowing the book
+     * @return true if borrow was successfully added, false otherwise
      */
-    public static boolean addBorrow(String isbn, String idUser){
-
+    public static boolean addBorrow(String isbn, String idUser) {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            // Connexion à la base de données
+            // Database connection
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
 
-            // Récupérer le nombre d'emprunts de l'utilisateur
+            // Retrieve user's borrow count
             String getUserBorrowCountSql = "SELECT number_borrow FROM user WHERE mail = ?";
             pstmt = conn.prepareStatement(getUserBorrowCountSql);
             pstmt.setString(1, idUser);
@@ -216,22 +229,22 @@ public class BorrowManager {
                 System.out.println("Utilisateur non trouvé.");
             }
 
-            // Vérifier si l'utilisateur peut emprunter plus de livres
+            // Check if the user can borrow more books
             if (numberBorrow >= 5) {
                 System.out.println("L'utilisateur a atteint le nombre maximal d'emprunts.");
-                return(false);
+                return false;
             } else {
-                // Ajouter un nouvel emprunt
+                // Add a new borrow entry
                 registerBorrow(isbn, idUser);
 
-                // Mettre à jour le nombre d'emprunts de l'utilisateur
+                // Update the user's borrow count
                 String updateUserBorrowCountSql = "UPDATE user SET number_borrow = number_borrow + 1 WHERE mail = ?";
                 pstmt = conn.prepareStatement(updateUserBorrowCountSql);
                 pstmt.setString(1, idUser);
 
                 int updateRows = pstmt.executeUpdate();
                 if (updateRows > 0) {
-                    return(true);
+                    return true;
                 } else {
                     System.out.println("Échec de la mise à jour du nombre d'emprunts.");
                 }
@@ -240,7 +253,7 @@ public class BorrowManager {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // Fermeture des ressources
+            // Close resources
             try {
                 if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
@@ -248,34 +261,34 @@ public class BorrowManager {
                 e.printStackTrace();
             }
         }
-        return(true);
+        return true;
     }
 
     /**
-     * @param idUser
-     * @return
+     * Retrieves the borrowing history of a user.
+     *
+     * @param idUser the ID of the user
+     * @return a list of Borrow objects representing the borrowing history
      */
-    public static List<Borrow> historyBorrow(String idUser){
-
+    public static List<Borrow> historyBorrow(String idUser) {
+        // List to store borrowing history
         List<Borrow> listOfBorrows = new ArrayList<>();
 
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            // Connexion à la base de données
+            // Database connection
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "");
 
+            // SQL statement to retrieve borrow details
             String statusSql = "SELECT idBorrow,isbn,duration,start_date,end_date,status FROM borrow WHERE idUser=?";
             pstmt = conn.prepareStatement(statusSql);
-            // Attribution des valeurs aux paramètres
-            pstmt.setString(1,idUser);
+            // Set parameter values
+            pstmt.setString(1, idUser);
 
             ResultSet r = pstmt.executeQuery();
-            while (r.next()) {  // Déplacer le curseur au premier enregistrement
-
-                //List<String> list1 = new ArrayList<>();
-
+            while (r.next()) {
                 int idBorrow = r.getInt("idBorrow");
                 String isbn = r.getString("isbn");
                 int duration = r.getInt("duration");
@@ -283,38 +296,14 @@ public class BorrowManager {
                 Date end_date = r.getDate("end_date");
                 int status = r.getInt("status");
 
-                Borrow borrow = new Borrow(idBorrow,isbn,idUser,duration,start_date,end_date,status);
-
-                /*list1.add(isbn);
-                list1.add(String.valueOf(duration));
-                list1.add(String.valueOf(start_date));
-                list1.add(String.valueOf(end_date));*/
-
-
-
-                if(status == 0 && duration>30){
-                    //list1.add("red");
-                    borrow.setColor("red");
-                }
-                if(status == 0 && duration<=30){
-                    //list1.add("green");
-                    borrow.setColor("green");
-                }
-                if(status == 1){
-                    //list1.add("gray");
-                    borrow.setColor("gray");
-                }
-
-                //list1.add(String.valueOf(status));
-
+                // Create a Borrow object and add it to the list
+                Borrow borrow = new Borrow(idBorrow, isbn, idUser, duration, start_date, end_date, status);
                 listOfBorrows.add(borrow);
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // Fermeture des ressources
+            // Close resources
             try {
                 if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
@@ -322,6 +311,6 @@ public class BorrowManager {
                 e.printStackTrace();
             }
         }
-        return(listOfBorrows);
+        return listOfBorrows;
     }
 }

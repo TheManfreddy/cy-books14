@@ -4,39 +4,47 @@ import Server.Models.Library;
 
 import java.sql.*;
 
+/**
+ * The LibraryManager class provides methods to manage library authentication.
+ */
 public class LibraryManager {
+
     /**
-     * @param library
-     * @return
+     * Validates the login credentials of a library user.
+     *
+     * @param library The Library object containing the login credentials
+     * @return true if the login credentials are valid, false otherwise
      */
     public static boolean validateLogin(Library library) {
+        // Database connection parameters
         String url = "jdbc:mysql://localhost:3307/bibli";
-        String user = "root";  // Nom d'utilisateur de la base de données
-        String pass = "";  // Mot de passe de la base de données
+        String user = "root";  // Database username
+        String pass = "";      // Database password
 
+        // SQL query to check login credentials
         String query = "SELECT * FROM library WHERE login = ? AND password = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            // Définir les paramètres de la requête
+            // Set query parameters
             stmt.setString(1, library.getLogin());
             stmt.setString(2, library.getPassword());
 
-            // Exécuter la requête
+            // Execute the query
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    // L'utilisateur existe
+                    // User exists
                     return true;
                 }
             }
         } catch (SQLException e) {
-            // Gestion des erreurs de connexion et d'exécution de la requête
+            // Handle connection and query execution errors
             e.printStackTrace();
-            // Vous pouvez également utiliser un journal de bord (logger) pour enregistrer les erreurs
+            // You may also use a logger to log errors
         }
 
-        // Retourner false si l'utilisateur n'existe pas ou en cas d'erreur
+        // Return false if the user does not exist or in case of an error
         return false;
     }
 
