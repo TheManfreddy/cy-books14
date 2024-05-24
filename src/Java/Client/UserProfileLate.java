@@ -65,7 +65,7 @@ public class UserProfileLate extends VBox {
 
         // Crée un conteneur HBox pour le bouton retour et le titre
         HBox topBox = new HBox(100);
-        topBox.setAlignment(Pos.CENTER_LEFT);
+        topBox.setAlignment(Pos.CENTER);
         topBox.setStyle("-fx-padding: 20;");
         topBox.getChildren().addAll(returnButton, titleLabel, dateLabel);
 

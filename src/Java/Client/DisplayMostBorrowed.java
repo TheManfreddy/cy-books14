@@ -35,8 +35,6 @@ public class DisplayMostBorrowed extends VBox {
             primaryStage.setScene(mostborrowed.getMostBorrowedScene());
         });
 
-
-
         Book book = BookManager.displayBook(isbn);
 
         // Create a Label for the title
@@ -44,10 +42,11 @@ public class DisplayMostBorrowed extends VBox {
         labelTitle.getStyleClass().add("title");
 
         // Create a container for the title
-        HBox titleBox = new HBox(labelTitle);
-        titleBox.setAlignment(Pos.CENTER);
-        titleBox.setStyle("-fx-padding: 20;");
+        HBox titleBox = new HBox(350);
+        titleBox.setAlignment(Pos.CENTER_LEFT);
+        titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
+        titleBox.getChildren().addAll(returnButton,labelTitle);
 
         // Create a Label for the book title
         Label labelTitleV = new Label("Titre : ");
@@ -117,7 +116,7 @@ public class DisplayMostBorrowed extends VBox {
 
         // Create a VBox and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(titleBoxValue,authorBox,editionBox,parutionDateBox,languageBox,borrowButton,returnButton);
+        vbox.getChildren().addAll(titleBoxValue,authorBox,editionBox,parutionDateBox,languageBox,borrowButton);
         vbox.getStyleClass().add("container");
 
         // Place the VBox containing the text fields and button in the center of the BorderPane

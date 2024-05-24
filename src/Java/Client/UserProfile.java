@@ -102,7 +102,7 @@ public class UserProfile extends VBox {
 
         // Crée un bouton modifications des informations
         Button modifyButton = new Button("Modifications des informations");
-        modifyButton.getStyleClass().add("button");
+        modifyButton.getStyleClass().add("button-UsersPage");
 
         // Configure le bouton modifier information
         String finalMail = mail;
@@ -150,6 +150,7 @@ public class UserProfile extends VBox {
 
         for (Borrow borrow : borrows) {
             VBox borrowInformationBox = new VBox(15);
+            borrowInformationBox.getStyleClass().add("borrowBox");
 
             String isbn = borrow.getIsbn();
             Book book = retrieveBook_isbn(isbn);
@@ -162,6 +163,7 @@ public class UserProfile extends VBox {
 
             // Création des labels pour afficher l'historique des emprunts
             Label borrowTitleLabel = new Label("Titre :    " + title);
+            borrowTitleLabel.getStyleClass().add("borrowTitle");
             if (color.equals("red")) {
                 borrowTitleLabel.getStyleClass().add("highlighted-label-red");
             }
@@ -186,7 +188,7 @@ public class UserProfile extends VBox {
             if (status==0) {
                 // Crée un bouton pour retourner emprunt
                 Button returnBorrowButton = new Button("Retour Emprunt");
-                returnBorrowButton.getStyleClass().add("button");
+                returnBorrowButton.getStyleClass().add("button-UsersPage");
 
                 // Configure le bouton retour
                 returnBorrowButton.setOnAction(e -> {

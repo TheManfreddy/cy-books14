@@ -68,35 +68,45 @@
     -fx-background-color: #660000;
 }
 
-.combo-box {
-    -fx-background-color: #590824;
-    -fx-text-fill: white;
-    -fx-font-size: 12pt;
-    -fx-padding: 5 15; /* Réduire le padding pour rendre le bouton plus fin */
-    -fx-border-radius: 50;
-    -fx-background-radius: 50;
-}
-
-.combo-box:hover {
-    -fx-background-color: #660000;
-}
-
 /* UserProfil */
+.borrowTitle {
+    -fx-text-fill: black;
+}
 
 .highlighted-label-green {
-    -fx-background-color: green;
+    -fx-background-color: #89DD87;
+    -fx-background-radius: 50;
     -fx-padding: 5px;
 }
 
 .highlighted-label-red {
-    -fx-background-color: red;
+    -fx-background-color: #E75C5C;
+    -fx-background-radius: 50;
     -fx-padding: 5px;
 }
 
 .highlighted-label-gray {
     -fx-background-color: gray;
+    -fx-background-radius: 50;
     -fx-padding: 5px;
+    -fx-opacity: 0.8;
 }
+.user-info-box {
+    -fx-border-color: #E57D7D;
+    -fx-border-width: 3;
+    -fx-padding: 20px;
+    -fx-margin: 50px;
+    -fx-border-radius: 50;
+}
+
+.borrowBox {
+    -fx-border-color: #E57D7D;
+    -fx-border-radius: 50;
+    -fx-border-width: 3;
+    -fx-margin: 50px;
+    -fx-padding: 20px;
+}
+
 
 /* HomePage */
 
@@ -267,8 +277,6 @@
     -fx-background-color: rgb(247, 223, 223, 0.8);
     -fx-text-fill: black;
 }
-
-
 
 
 
