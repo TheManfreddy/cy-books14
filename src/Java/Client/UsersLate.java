@@ -45,21 +45,17 @@ public class UsersLate extends VBox {
         Label titleLabel = new Label("Usagers");
         titleLabel.getStyleClass().add("title");
 
-        // Crée un conteneur pour le titre et le centre
-        VBox titleBox = new VBox(titleLabel);
-        titleBox.setAlignment(Pos.CENTER);
-        titleBox.setStyle("-fx-padding: 20;");
-        root.setTop(titleBox);
 
         // Crée un bouton retour
         Button returnButton = new Button("⬅");
-        returnButton.getStyleClass().add("button");
+        returnButton.getStyleClass().add("button-UsersPage");
 
-        // Crée un conteneur HBox pour le bouton retour et le titre
-        HBox topBox = new HBox(100);
-        topBox.setAlignment(Pos.CENTER_LEFT);
-        topBox.setStyle("-fx-padding: 20;");
-        topBox.getChildren().addAll(returnButton);
+        // Create a container for the title
+        HBox titleBox = new HBox(350);
+        titleBox.setAlignment(Pos.CENTER_LEFT);
+        titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
+        root.setTop(titleBox);
+        titleBox.getChildren().addAll(returnButton,titleLabel);
 
         // Configure le bouton retour
         returnButton.setOnAction(e -> {
@@ -167,7 +163,7 @@ public class UsersLate extends VBox {
         updateUserList(usersInformationBox, userList);
 
         VBox finalBox = new VBox(15);
-        finalBox.getChildren().addAll(topBox, hBox, legendBox, usersInformationBox, paginationBox);
+        finalBox.getChildren().addAll( hBox, legendBox, usersInformationBox, paginationBox);
         finalBox.setAlignment(Pos.CENTER);
         root.setLeft(finalBox);
     }

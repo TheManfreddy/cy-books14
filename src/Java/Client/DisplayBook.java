@@ -41,8 +41,8 @@ public class DisplayBook {
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
         // Crée un bouton retour pour revenir à la liste des livres
-        Button returnButton = new Button("Retour");
-        returnButton.getStyleClass().add("button");
+        Button returnButton = new Button("⬅");
+        returnButton.getStyleClass().add("button-UsersPage");
         returnButton.setOnAction(e -> {
             LibraryPage libraryPage = new LibraryPage(primaryStage, width, height, searchQuery, currentListBook, currentItems);
             primaryStage.setScene(libraryPage.getLibraryPageScene());
@@ -61,10 +61,11 @@ public class DisplayBook {
         labelTitle.getStyleClass().add("title");
 
         // Create a container for the title
-        HBox titleBox = new HBox(labelTitle);
-        titleBox.setAlignment(Pos.CENTER);
-        titleBox.setStyle("-fx-padding: 20;");
+        HBox titleBox = new HBox(350);
+        titleBox.setAlignment(Pos.CENTER_LEFT);
+        titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
+        titleBox.getChildren().addAll(returnButton,labelTitle);
 
         // Create a Label for the book title
         Label labelTitleV = new Label("Titre : ");
@@ -131,7 +132,7 @@ public class DisplayBook {
 
         // Create a VBox and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(titleBoxValue, authorBox, editionBox, parutionDateBox, languageBox, borrowButton, returnButton);
+        vbox.getChildren().addAll(titleBoxValue, authorBox, editionBox, parutionDateBox, languageBox, borrowButton);
         vbox.getStyleClass().add("container");
 
         // Place the VBox containing the text fields and button in the center of the BorderPane

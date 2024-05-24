@@ -48,7 +48,7 @@ public class UserProfile extends VBox {
 
         // Crée un bouton retour
         Button returnButton = new Button("⬅");
-        returnButton.getStyleClass().add("button");
+        returnButton.getStyleClass().add("button-UsersPage");
 
         // Configure le bouton retour
         returnButton.setOnAction(e -> {
@@ -63,7 +63,7 @@ public class UserProfile extends VBox {
         dateLabel.getStyleClass().add("label");
 
         // Crée un conteneur HBox pour le bouton retour, le titre et la date
-        HBox topBox = new HBox(100);
+        HBox topBox = new HBox(340);
         topBox.setAlignment(Pos.CENTER_LEFT);
         topBox.setStyle("-fx-padding: 20;");
         topBox.getChildren().addAll(returnButton, titleLabel, dateLabel);

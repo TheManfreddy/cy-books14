@@ -28,8 +28,8 @@ public class DisplayMostBorrowed extends VBox {
 
 
         // Crée un bouton retour pour revenir à la liste des livres
-        Button returnButton = new Button("Retour");
-        returnButton.getStyleClass().add("button");
+        Button returnButton = new Button("⬅");
+        returnButton.getStyleClass().add("button-UsersPage");
         returnButton.setOnAction(e -> {
             MostBorrowed mostborrowed = new MostBorrowed(primaryStage, width, height);
             primaryStage.setScene(mostborrowed.getMostBorrowedScene());

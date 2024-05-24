@@ -47,7 +47,7 @@ public class UserProfileLate extends VBox {
 
         // Crée un bouton retour
         Button returnButton = new Button("⬅");
-        returnButton.getStyleClass().add("button");
+        returnButton.getStyleClass().add("button-UsersPage");
 
         // Configure le bouton retour
         returnButton.setOnAction(e -> {

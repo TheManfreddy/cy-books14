@@ -40,7 +40,7 @@ public class RegisterUser {
 
         //Create a return button
         Button returnButton = new Button("⬅");
-        returnButton.getStyleClass().add("button");
+        returnButton.getStyleClass().add("button-UsersPage");
 
         // Configure the button to open the user page
         returnButton.setOnAction(e -> {
@@ -53,10 +53,13 @@ public class RegisterUser {
         titleLabel.getStyleClass().add("title");
 
         // Create a container for the title
-        HBox titleBox = new HBox(titleLabel);
-        titleBox.setAlignment(Pos.CENTER);
+        HBox titleBox = new HBox(350);
+        titleBox.setAlignment(Pos.CENTER_LEFT);
         titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
+        titleBox.getChildren().addAll(returnButton,titleLabel);
+
+
 
         // Create a Label for the name
         Label labelName = new Label("Nom :");
@@ -136,7 +139,7 @@ public class RegisterUser {
 
         // Create a VBox and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton, returnButton);
+        vbox.getChildren().addAll(nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton);
         vbox.getStyleClass().add("container");
 
         // Place the VBox containing the text fields and button in the center of the BorderPane

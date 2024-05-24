@@ -37,7 +37,7 @@ public class MostBorrowed extends VBox {
 
         // Crée un bouton retour
         Button returnButton = new Button("⬅");
-        returnButton.getStyleClass().add("button");
+        returnButton.getStyleClass().add("button-UsersPage");
 
         // Crée un conteneur pour le titre et le centre
         HBox titleBox = new HBox(titleLabel, returnButton);

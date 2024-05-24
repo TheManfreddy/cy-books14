@@ -190,46 +190,67 @@
     -fx-background-radius: 50;
 
 }
-.buttonEye:hover{
-    -fx-background-color: rgb(247, 223, 223,0.8);
-}
-
-.data-box{
-    -fx-font-size: 12pt;
-    -fx-font-family:  'Arial', monospace;
-    -fx-font-weight: bold ;
-    -fx-alignment: center;
-    -fx-background-color: rgb(247, 223, 223,0.5);
-    -fx-text-fill: black;
-    -fx-padding: 10 20;
-    -fx-border-radius: 50;
+/* Conteneur de l'en-tête des colonnes */
+.table-view .column-header-background {
+    -fx-background-color: rgb(247, 223, 223, 0.5);
+    -fx-border-color: rgb(89, 8, 36, 0.5);
     -fx-border-width: 0.2;
+    -fx-border-radius: 50;
     -fx-background-radius: 50;
-    -fx-border-color: rgb(89, 8, 36,0.5);
-    -fx-min-width: 950px;
-    -fx-min-height: 51px;
-    -fx-max-width: 950px;
-    -fx-max-height: 51px;
-
 }
 
-.data-box-value{
+/* Labels dans l'en-tête des colonnes */
+.table-view .column-header .label {
     -fx-font-size: 12pt;
-    -fx-font-family:  'Arial', monospace;
-    -fx-font-weight: bold ;
-    -fx-alignment: center;
+    -fx-font-family: 'Arial', monospace;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-alignment:  center-left;
+    -fx-padding: 10;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+
+.table-view {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-box-border: transparent;
+}
+
+/* Lignes du tableau */
+.table-view .table-row-cell {
+    -fx-font-size: 12pt;
+    -fx-font-family: 'Arial', monospace;
+    -fx-font-weight: normal;
+    -fx-alignment:  center-left;
     -fx-background-color: rgb(247, 223, 223);
     -fx-text-fill: black;
-    -fx-padding: 10 20;
-    -fx-border-radius: 50;
+    -fx-padding: 5.7;
+    -fx-border-radius: 100;
     -fx-border-width: 0.2;
     -fx-background-radius: 50;
-    -fx-border-color: rgb(89, 8, 36,0.5);
-    -fx-min-width: 1000px;
-    -fx-min-height: 51px;
-    -fx-max-width: 1000px;
-    -fx-max-height: 51px;
+    -fx-border-color: rgb(89, 8, 36, 0.5);
 }
+
+.table-view .table-cell {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+    -fx-alignment:  center-left;
+}
+
+.table-view .table-row-cell:filled:hover, .table-view .table-cell:filled:hover {
+    -fx-background-color: rgb(247, 223, 223, 0.8);
+    -fx-text-fill: black;
+}
+
+
 
 
 

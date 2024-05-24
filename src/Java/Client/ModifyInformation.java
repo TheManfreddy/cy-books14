@@ -46,7 +46,7 @@ public class ModifyInformation {
 
         //Create a return button
         Button returnButton = new Button("⬅");
-        returnButton.getStyleClass().add("button");
+        returnButton.getStyleClass().add("button-UsersPage");
 
         // Configure the button to open the user page
         returnButton.setOnAction(e -> {
