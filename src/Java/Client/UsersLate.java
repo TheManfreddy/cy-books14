@@ -23,8 +23,6 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.util.List;
 
-import static Server.Manager.BorrowManager.updateBorrow;
-
 public class UsersLate extends VBox {
     private Scene scene;
     private TextField textFieldResearchBar;
@@ -184,38 +182,38 @@ public class UsersLate extends VBox {
         VBox finalBox = new VBox(15);
         finalBox.getChildren().addAll( hBox, tableView, paginationBox);
         finalBox.setAlignment(Pos.CENTER);
-        root.setLeft(finalBox);
+        root.setCenter(finalBox);
     }
 
     private void createTableColumns(TableView<User> tableView) {
         // Crée une colonne pour le nom
         TableColumn<User, String> nameColumn = new TableColumn<>("Nom");
         nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-        nameColumn.setPrefWidth(200);
+        nameColumn.setPrefWidth(100);
 
         TableColumn<User, String> firstNameColumn = new TableColumn<>("Prénom");
         firstNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirst_name()));
-        firstNameColumn.setPrefWidth(200);
+        firstNameColumn.setPrefWidth(100);
 
         TableColumn<User, String> mailColumn = new TableColumn<>("Mail");
         mailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMail()));
-        mailColumn.setPrefWidth(230);
+        mailColumn.setPrefWidth(130);
 
         TableColumn<User, String> birthDateColumn = new TableColumn<>("Date de naissance");
         birthDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBirth_date()));
-        birthDateColumn.setPrefWidth(220);
+        birthDateColumn.setPrefWidth(120);
 
         TableColumn<User, String> addressColumn = new TableColumn<>("Adresse");
         addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAddress()));
-        addressColumn.setPrefWidth(220);
+        addressColumn.setPrefWidth(120);
 
         TableColumn<User, String> phoneNumberColumn = new TableColumn<>("Téléphone");
         phoneNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumber()));
-        phoneNumberColumn.setPrefWidth(200);
+        phoneNumberColumn.setPrefWidth(100);
 
         TableColumn<User, String> numberBorrowColumn = new TableColumn<>("Emprunts");
         numberBorrowColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumber_borrow()));
-        numberBorrowColumn.setPrefWidth(500);
+        numberBorrowColumn.setPrefWidth(80);
 
 
 
@@ -223,8 +221,6 @@ public class UsersLate extends VBox {
 
         //Redimensionne les colonnes pour occuper toute la largeur disponible
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-
     }
 
     private void updateUserList(TableView<User> tableView, ObservableList<User> userObservableList) {
@@ -236,12 +232,6 @@ public class UsersLate extends VBox {
 
         // Met à jour le TableView avec une sous-liste des utilisateurs correspondant à la page actuelle.
         tableView.setItems(FXCollections.observableArrayList(userObservableList.subList(fromIndex, toIndex)));
-        List<User> userList = UserManager.displayUserList();
-        for (User user : userList) {
-            // Check if the user is not null
-            String mail = user.getMail();
-            updateBorrow(mail);
-        }
     }
 
     private void updateUserList(TableView<User> tableView) {
