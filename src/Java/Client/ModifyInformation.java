@@ -64,10 +64,11 @@ public class ModifyInformation {
         titleLabel.getStyleClass().add("title");
 
         // Create a container for the title
-        HBox titleBox = new HBox(titleLabel);
-        titleBox.setAlignment(Pos.CENTER);
-        titleBox.setStyle("-fx-padding: 20;");
+        HBox titleBox = new HBox(350);
+        titleBox.setAlignment(Pos.CENTER_LEFT);
+        titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
+        titleBox.getChildren().addAll(returnButton,titleLabel);
 
         // Create a Label for the name
         Label labelName = new Label("Nom :");
@@ -79,7 +80,7 @@ public class ModifyInformation {
         textFieldName.getStyleClass().add("text-field");
 
         // Create an HBox for the name and its text field
-        HBox nameBox = new HBox(5, labelName, textFieldName);
+        HBox nameBox = new HBox(30, labelName, textFieldName);
 
         // Create a Label for the first name
         Label labelFirstName = new Label("Prénom :");
@@ -91,7 +92,7 @@ public class ModifyInformation {
         textFieldFirstName.getStyleClass().add("text-field");
 
         // Create an HBox for the first name and its text field
-        HBox firstNameBox = new HBox(5, labelFirstName, textFieldFirstName);
+        HBox firstNameBox = new HBox(30, labelFirstName, textFieldFirstName);
 
         // Create a Label for the birth date
         Label labelBirthDate = new Label("Date de naissance :");
@@ -103,7 +104,7 @@ public class ModifyInformation {
         textFieldBirthDate.getStyleClass().add("text-field");
 
         // Create an HBox for the birth date and its text field
-        HBox birthDateBox = new HBox(5, labelBirthDate, textFieldBirthDate);
+        HBox birthDateBox = new HBox(30, labelBirthDate, textFieldBirthDate);
 
         // Create a Label for the email
         Label labelMail = new Label("Mail :");
@@ -115,7 +116,7 @@ public class ModifyInformation {
         textFieldMail.getStyleClass().add("text-field");
 
         // Create an HBox for the email and its text field
-        HBox mailBox = new HBox(5, labelMail, textFieldMail);
+        HBox mailBox = new HBox(30, labelMail, textFieldMail);
 
         // Create a Label for the phone number
         Label labelNumber = new Label("Téléphone :");
@@ -127,7 +128,7 @@ public class ModifyInformation {
         textFieldNumber.getStyleClass().add("text-field");
 
         // Create an HBox for the phone number and its text field
-        HBox numberBox = new HBox(5, labelNumber, textFieldNumber);
+        HBox numberBox = new HBox(30, labelNumber, textFieldNumber);
 
         // Create a Label for the address
         Label labelAddress = new Label("Adresse :");
@@ -139,7 +140,7 @@ public class ModifyInformation {
         textFieldAddress.getStyleClass().add("text-field");
 
         // Create an HBox for the address and its text field
-        HBox addressBox = new HBox(5, labelAddress, textFieldAddress);
+        HBox addressBox = new HBox(30, labelAddress, textFieldAddress);
 
         // Create an add button
         Button addUserButton = new Button("Valider");
@@ -147,7 +148,7 @@ public class ModifyInformation {
 
         // Create a VBox and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton, returnButton);
+        vbox.getChildren().addAll(nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, addUserButton);
         vbox.getStyleClass().add("container");
 
         // Place the VBox containing the text fields and button in the center of the BorderPane

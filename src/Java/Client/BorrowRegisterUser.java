@@ -71,7 +71,7 @@ public class BorrowRegisterUser {
         textFieldName.getStyleClass().add("text-field");
 
         // Create an HBox for the name and its text field
-        HBox nameBox = new HBox(5, labelName, textFieldName);
+        HBox nameBox = new HBox(30, labelName, textFieldName);
 
         // Create a Label for the first name
         Label labelFirstName = new Label("Prénom :");
@@ -83,7 +83,7 @@ public class BorrowRegisterUser {
         textFieldFirstName.getStyleClass().add("text-field");
 
         // Create an HBox for the first name and its text field
-        HBox firstNameBox = new HBox(5, labelFirstName, textFieldFirstName);
+        HBox firstNameBox = new HBox(30, labelFirstName, textFieldFirstName);
 
         // Create a Label for the birth date
         Label labelBirthDate = new Label("Date de naissance :");
@@ -95,7 +95,7 @@ public class BorrowRegisterUser {
         textFieldBirthDate.getStyleClass().add("text-field");
 
         // Create an HBox for the birth date and its text field
-        HBox birthDateBox = new HBox(5, labelBirthDate, textFieldBirthDate);
+        HBox birthDateBox = new HBox(30, labelBirthDate, textFieldBirthDate);
 
         // Create a Label for the email
         Label labelMail = new Label("Mail :");
@@ -107,7 +107,7 @@ public class BorrowRegisterUser {
         textFieldMail.getStyleClass().add("text-field");
 
         // Create an HBox for the email and its text field
-        HBox mailBox = new HBox(5, labelMail, textFieldMail);
+        HBox mailBox = new HBox(30, labelMail, textFieldMail);
 
         // Create a Label for the phone number
         Label labelNumber = new Label("Téléphone :");
@@ -119,7 +119,7 @@ public class BorrowRegisterUser {
         textFieldNumber.getStyleClass().add("text-field");
 
         // Create an HBox for the phone number and its text field
-        HBox numberBox = new HBox(5, labelNumber, textFieldNumber);
+        HBox numberBox = new HBox(30, labelNumber, textFieldNumber);
 
         // Create a Label for the address
         Label labelAddress = new Label("Adresse :");
@@ -131,7 +131,7 @@ public class BorrowRegisterUser {
         textFieldAddress.getStyleClass().add("text-field");
 
         // Create an HBox for the address and its text field
-        HBox addressBox = new HBox(5, labelAddress, textFieldAddress);
+        HBox addressBox = new HBox(30, labelAddress, textFieldAddress);
 
         // Crée un bouton valider pour et revenir à la liste des livres
         Button validateButton = new Button("Valider");
