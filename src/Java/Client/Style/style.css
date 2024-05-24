@@ -333,7 +333,74 @@
 
 }
 
+.button-Combobox {
+    -fx-background-color: white;
+    -fx-border-color: #E57D7D;
+    -fx-text-fill: black;
+    -fx-font-size: 12pt;
+    -fx-border-width: 0.6;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-min-width: 180px;
+    -fx-min-height: 50px;
+    -fx-max-width: 180px;
+    -fx-max-height: 50px;
 
+}
+.combo-box .cell {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: black;
+    -fx-font-size: 12pt;
+    -fx-padding: 5 15;
+
+}
+
+.button-Combobox .list-cell:hover {
+    -fx-background-color: #E57D7D;
+}
+
+.buttonMostBorrow {
+    -fx-background-color: #FFD700;
+    -fx-border-color: #E57D7D;
+    -fx-opacity: 0.71;
+    -fx-text-fill: black;
+    -fx-font-size: 12pt;
+    -fx-border-width: 0.6;
+    -fx-padding: 10 20;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-alignment: center;
+}
+.buttonMostBorrow:hover {
+    -fx-background-color: #FFD700;
+    -fx-opacity: 0.61;
+}
+
+.titleMostBorrow {
+    -fx-font-size: 12pt;
+    -fx-font-family:  'Arial', monospace;
+    -fx-font-weight: bold ;
+    -fx-alignment: center;
+    -fx-background-color: #ffdc7a;
+    -fx-text-fill: black;
+    -fx-padding: 10 20;
+    -fx-border-radius: 50;
+    -fx-border-width: 0.2;
+    -fx-background-radius: 50;
+    -fx-border-color: rgb(89, 8, 36,0.5);
+    -fx-min-width: 400px;
+    -fx-min-height: 51px;
+    -fx-max-width: 600px;
+    -fx-max-height: 51px;
+
+}
 
 
 

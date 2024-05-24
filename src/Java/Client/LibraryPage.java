@@ -59,24 +59,22 @@ public class LibraryPage extends VBox {
         Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button-UsersPage");
 
-        // Crée un conteneur pour le titre et le centre
-        HBox titleBox = new HBox(returnButton, titleLabel);
-        titleBox.setAlignment(Pos.CENTER);
-        titleBox.setStyle("-fx-padding: 20;");  // Ajoute du padding autour du titre
+        // Create a container for the title
+        HBox titleBox = new HBox(365);
+        titleBox.setAlignment(Pos.CENTER_LEFT);
+        titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
+        titleBox.getChildren().addAll(returnButton,titleLabel);
 
-        // Crée un Label pour la recherche
-        Label labelSearch = new Label("Recherche :");
-        labelSearch.getStyleClass().add("label");
 
         // Crée un champ de texte pour rechercher un livre
         textFieldSearch = new TextField(searchQuery);
-        textFieldSearch.setPromptText("Rechercher un livre");
+        textFieldSearch.setPromptText("  Rechercher un livre");
         textFieldSearch.getStyleClass().add("text-fieldSearch");
 
         // Crée un bouton pour lancer la recherche
         Button searchButton = new Button("\uD83D\uDD0E");
-        searchButton.getStyleClass().add("button");
+        searchButton.getStyleClass().add("button-UsersPage");
 
         // Crée une ComboBox pour sélectionner la langue des livres
         choiceComboBox = new ComboBox<>();
@@ -90,21 +88,24 @@ public class LibraryPage extends VBox {
             criteria = onChoiceSelected(newValue);  // Appelez la méthode lorsque la sélection change
         });
 
+        choiceComboBox.getStyleClass().add("button-Combobox");
+
 
 
 
         // Crée un bouton pour voir les livres les plus empruntés
         Button mostborrowedButton = new Button("Les plus empruntés");
-        mostborrowedButton.getStyleClass().add("buttonBorrow");
+        mostborrowedButton.getStyleClass().add("buttonMostBorrow");
 
         // Crée un conteneur HBox pour les champs de recherche
-        HBox searchBox = new HBox(15, labelSearch, textFieldSearch, searchButton, choiceComboBox);
+        HBox searchBox = new HBox(15, textFieldSearch, searchButton, choiceComboBox);
         searchBox.setAlignment(Pos.TOP_CENTER);
 
         // Crée un conteneur HBox et y ajoute les composants
         HBox hBox = new HBox(50); // 50 est l'espacement entre les éléments
         hBox.getChildren().addAll(mostborrowedButton);
         hBox.setAlignment(Pos.CENTER);
+
 
         // Crée un VBox pour contenir le label, la barre de recherche et les boutons
         VBox topBox = new VBox(15, titleBox, searchBox, hBox);
@@ -120,7 +121,7 @@ public class LibraryPage extends VBox {
 
             // Créer un Pagination pour gérer les pages
             Pagination pagination = new Pagination((int) Math.ceil((double) items.size() / ITEMS_PER_PAGE), 0);
-            pagination.setPageFactory(pageIndex -> createPage(pageIndex, items, listBook));
+           pagination.setPageFactory(pageIndex -> createPage(pageIndex, items, listBook));
 
             // Ajouter le Pagination au centre du BorderPane
             root.setCenter(pagination);

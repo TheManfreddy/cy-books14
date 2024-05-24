@@ -35,10 +35,12 @@ public class MostBorrowed extends VBox {
         // Crée et configure la scène
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
+        scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
+
 
         // Crée un Label pour le titre
         Label titleLabel = new Label("Les livres les plus empruntés durant les 30 derniers jours");
-        titleLabel.getStyleClass().add("title");
+        titleLabel.getStyleClass().add("titleMostBorrow");
 
         // Crée un bouton retour
         Button returnButton = new Button("⬅");
@@ -100,26 +102,48 @@ public class MostBorrowed extends VBox {
 
         TableColumn<Book, String> isbnColumn = new TableColumn<>("ISBN");
         isbnColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getISBN()));
+        isbnColumn.setPrefWidth(150); // Largeur préférée
+        isbnColumn.setMinWidth(150);  // Largeur minimale
+        isbnColumn.setMaxWidth(150);  // Largeur maximale
 
         TableColumn<Book, String> titleColumn = new TableColumn<>("Titre");
         titleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+        titleColumn.setPrefWidth(150); // Largeur préférée
+        titleColumn.setMinWidth(150);  // Largeur minimale
+        titleColumn.setMaxWidth(600);  // Largeur maximale
 
         TableColumn<Book, String> languageColumn = new TableColumn<>("Langue");
         languageColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLanguage()));
+        languageColumn.setPrefWidth(100); // Largeur préférée
+        languageColumn.setMinWidth(100);  // Largeur minimale
+        languageColumn.setMaxWidth(100);  // Largeur maximale
 
         TableColumn<Book, String> authorColumn = new TableColumn<>("Auteur");
         authorColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAuthor()));
+        authorColumn.setPrefWidth(150); // Largeur préférée
+        authorColumn.setMinWidth(150);  // Largeur minimale
+        authorColumn.setMaxWidth(600);  // Largeur maximale
 
         TableColumn<Book, String> editorColumn = new TableColumn<>("Éditeur");
         editorColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEditor()));
+        editorColumn.setPrefWidth(200); // Largeur préférée
+        editorColumn.setMinWidth(200);  // Largeur minimale
+        editorColumn.setMaxWidth(200);  // Largeur maximale
 
         TableColumn<Book, String> yearColumn = new TableColumn<>("Année");
         yearColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRelease_year()));
+        yearColumn.setPrefWidth(100); // Largeur préférée
+        yearColumn.setMinWidth(100);  // Largeur minimale
+        yearColumn.setMaxWidth(150);  // Largeur maximale
 
-        TableColumn<Book, Integer> borrowCountColumn = new TableColumn<>("Nombre de fois emprunté");
+        TableColumn<Book, Integer> borrowCountColumn = new TableColumn<>("Nombre d'emprunts");
         borrowCountColumn.setCellValueFactory(cellData -> new SimpleObjectProperty(cellData.getValue().getBorrowCount()));
+        borrowCountColumn.setPrefWidth(200); // Largeur préférée
+        borrowCountColumn.setMinWidth(200);  // Largeur minimale
+        borrowCountColumn.setMaxWidth(200);  // Largeur maximale
 
         tableView.getColumns().addAll(isbnColumn, titleColumn, languageColumn, authorColumn, editorColumn, yearColumn, borrowCountColumn);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Ajouter un écouteur d'événements pour chaque ligne de la table
         tableView.setRowFactory(tv -> {
