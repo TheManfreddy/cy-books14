@@ -84,7 +84,7 @@ public class BookManager {
                 "    isbn " +
                 "ORDER BY " +
                 " borrow_count DESC " +
-                "LIMIT 20";
+                "LIMIT 8";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(query);
