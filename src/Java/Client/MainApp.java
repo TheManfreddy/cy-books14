@@ -62,7 +62,6 @@ public class MainApp extends Application {
         } finally {
             scanner.close();
         }
-
         launch(args);
     }
 }

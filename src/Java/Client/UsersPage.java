@@ -22,6 +22,8 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.util.List;
 
+import static Server.Manager.BorrowManager.updateBorrow;
+
 public class UsersPage extends VBox {
     private Scene scene;
     private TextField textFieldResearchBar;
@@ -224,6 +226,13 @@ public class UsersPage extends VBox {
 
         // Met à jour le TableView avec une sous-liste des utilisateurs correspondant à la page actuelle.
         tableView.setItems(FXCollections.observableArrayList(userObservableList.subList(fromIndex, toIndex)));
+        List<User> userList = UserManager.displayUserList();
+        for (User user : userList) {
+            // Check if the user is not null
+            String mail = user.getMail();
+            updateBorrow(mail);
+
+        }
     }
 
     private void updateUserList(TableView<User> tableView) {
@@ -236,6 +245,7 @@ public class UsersPage extends VBox {
         // Appelle la méthode précédente pour mettre à jour le TableView avec les données paginées.
         updateUserList(tableView, userObservableList);
     }
+
 
     public String getTextFieldResearchBar() {
         return textFieldResearchBar.getText();
