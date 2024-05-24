@@ -68,6 +68,19 @@
     -fx-background-color: #660000;
 }
 
+.combo-box {
+    -fx-background-color: #590824;
+    -fx-text-fill: white;
+    -fx-font-size: 12pt;
+    -fx-padding: 5 15; /* Réduire le padding pour rendre le bouton plus fin */
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+}
+
+.combo-box:hover {
+    -fx-background-color: #660000;
+}
+
 /* UserProfil */
 
 .highlighted-label-green {

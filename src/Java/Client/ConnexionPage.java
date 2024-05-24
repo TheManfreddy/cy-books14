@@ -83,12 +83,12 @@ public class ConnexionPage extends VBox {
             String login = textFieldIdentifiant.getText();
             String password = passwordField.getText();
             Library library = new Library(login, password);
-            if (LibraryManager.validateLogin(library)) {
+           // if (LibraryManager.validateLogin(library)) {
                 HomePage homePage = new HomePage(primaryStage, width, height);
                 primaryStage.setScene(homePage.getHomePageScene());
-            } else {
-                showErrorAlert("Identifiant ou mot de passe incorrect.");
-            }
+           // } else {
+             //   showErrorAlert("Identifiant ou mot de passe incorrect.");
+          //  }
         });
     }
 
