@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 import static Server.Manager.BorrowManager.updateBorrow;
 
@@ -80,19 +81,19 @@ public class UsersPage extends VBox {
         // Configure le bouton recherche
         searchButton.setOnAction(e -> {
             String mail = getTextFieldResearchBar();
+
+
+            UserProfile userProfile;
             try {
-                UserManager.displayUser(mail);
+                if (!Objects.equals(mail, "")) {
+                    userProfile = new UserProfile(primaryStage, width, height, mail);
+                    primaryStage.setScene(userProfile.getUserProfileScene());
+                }
+
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
 
-            UserProfile userProfile = null;
-            try {
-                userProfile = new UserProfile(primaryStage, width, height, mail);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-            primaryStage.setScene(userProfile.getUserProfileScene());
         });
 
         // Crée le bouton ajouter usager
