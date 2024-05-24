@@ -70,7 +70,8 @@ public class UserProfile extends VBox {
         LocalDate localDate = LocalDate.now();
         String date = localDate.toString();
         Label dateLabel = new Label(date);
-        dateLabel.getStyleClass().add("label");
+        dateLabel.getStyleClass().add("highlighted-label-gray-date");
+
 
         //Crée un conteneur Hbox pour les informations personnelles et la date
         HBox topBox2 = new HBox(800);
@@ -90,28 +91,28 @@ public class UserProfile extends VBox {
         String numberBorrow = user.getNumber_borrow();
 
         Label userMailLabel = new Label("Mail :    " + mail);
-        userMailLabel.getStyleClass().add("label");
+        userMailLabel.getStyleClass().add("labelUser");
 
         Label userNameLabel = new Label("Nom :    " + name);
-        userNameLabel.getStyleClass().add("label");
+        userNameLabel.getStyleClass().add("labelUser");
 
         Label userFirstNameLabel = new Label("Prénom :    " + firstName);
-        userFirstNameLabel.getStyleClass().add("label");
+        userFirstNameLabel.getStyleClass().add("labelUser");
 
         Label userBirthDateLabel = new Label("Date de naissance :    " + birthDate);
-        userBirthDateLabel.getStyleClass().add("label");
+        userBirthDateLabel.getStyleClass().add("labelUser");
 
         Label userAddressLabel = new Label("Adresse :    " + address);
-        userAddressLabel.getStyleClass().add("label");
+        userAddressLabel.getStyleClass().add("labelUser");
 
         Label userPhoneNumberLabel = new Label("Téléphone :    " + phoneNumber);
-        userPhoneNumberLabel.getStyleClass().add("label");
+        userPhoneNumberLabel.getStyleClass().add("labelUser");
 
         Label userNumberBorrowLabel = new Label("Nombre d'emprunts :    " + numberBorrow);
-        userNumberBorrowLabel.getStyleClass().add("label");
+        userNumberBorrowLabel.getStyleClass().add("labelUser");
 
         // Crée un bouton modifications des informations
-        Button modifyButton = new Button("Modifications des informations");
+        Button modifyButton = new Button("\uD83D\uDD8A");
         modifyButton.getStyleClass().add("button-UsersPage");
 
         // Configure le bouton modifier information
@@ -152,8 +153,6 @@ public class UserProfile extends VBox {
             Borrow borrow = (Borrow) userInformation.get(i);
             borrows.add(borrow);
         }
-
-
 
         borrows.sort(Comparator.comparing(borrow1 -> {
             String color1 = borrow1.getColor();

@@ -35,6 +35,11 @@
     -fx-text-fill: #333333;
 }
 
+.labelUser {
+    -fx-font-size: 14pt;
+    -fx-font-weight: lighter ;
+    -fx-text-fill: #333333;
+}
 .text-field, .password-field {
     -fx-font-size: 12pt;
     -fx-padding: 10;
@@ -90,6 +95,14 @@
     -fx-background-radius: 50;
     -fx-padding: 5px;
     -fx-opacity: 0.8;
+}
+
+.highlighted-label-gray-date {
+    -fx-text-fill: rgba(0, 0, 0, 0.9); /* Texte noir avec 90% d'opacité */
+    -fx-font-weight: bold;
+    -fx-background-color: rgba(128, 128, 128, 0.5); /* Fond gris avec 50% d'opacité */
+    -fx-background-radius: 50;
+    -fx-padding: 5px;
 }
 .user-info-box {
     -fx-border-color: #E57D7D;
@@ -164,6 +177,11 @@
     -fx-background-color: rgb(247, 223, 223,0.8);
 }
 
+.subtitle{
+    -fx-text-fill: black;
+    -fx-font-weight: lighter;
+    -fx-font-size: 25pt;
+}
 
 /* UsersPage */
 

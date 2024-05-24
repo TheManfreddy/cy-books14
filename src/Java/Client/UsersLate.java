@@ -23,6 +23,8 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.util.List;
 
+import static Server.Manager.BorrowManager.updateBorrow;
+
 public class UsersLate extends VBox {
     private Scene scene;
     private TextField textFieldResearchBar;
@@ -232,6 +234,13 @@ public class UsersLate extends VBox {
 
         // Met à jour le TableView avec une sous-liste des utilisateurs correspondant à la page actuelle.
         tableView.setItems(FXCollections.observableArrayList(userObservableList.subList(fromIndex, toIndex)));
+        List<User> userList = UserManager.displayUserBorrowLateList();
+        for (User user : userList) {
+            // Check if the user is not null
+            String mail = user.getMail();
+            updateBorrow(mail);
+
+        }
     }
 
     private void updateUserList(TableView<User> tableView) {

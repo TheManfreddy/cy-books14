@@ -216,9 +216,9 @@ public class UserProfileLate extends VBox {
                 returnBorrowButton.setOnAction(e -> {
                     BorrowManager.returnBorrow(isbn, finalMail);
 
-                    UserProfile userProfile = null;
+                    UserProfileLate userProfileLate = null;
                     try {
-                        userProfile = new UserProfile(primaryStage, width, height, finalMail);
+                        userProfileLate = new UserProfileLate(primaryStage, width, height, finalMail);
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
