@@ -136,13 +136,13 @@ public class UsersLate extends VBox {
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty()) {
                     User user = row.getItem();
-                    UserProfile userProfile = null;
+                    UserProfileLate userProfileLate = null;
                     try {
-                        userProfile = new UserProfile(primaryStage, width, height, user.getMail());
+                       userProfileLate = new UserProfileLate(primaryStage, width, height, user.getMail());
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
-                    primaryStage.setScene(userProfile.getUserProfileScene());
+                    primaryStage.setScene(userProfileLate.getUserProfileLateScene());
                 }
             });
             return row;

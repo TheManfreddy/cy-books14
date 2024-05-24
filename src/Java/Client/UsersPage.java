@@ -100,7 +100,7 @@ public class UsersPage extends VBox {
         Button addUserButton = new Button("➕");
         addUserButton.getStyleClass().add("button-UsersPage");
 
-        // Configure le bouton usagers pour ouvrir la page usagers
+        // Configure le bouton usagers pour ouvrir la page ajouter usagers
         addUserButton.setOnAction(e -> {
             RegisterUser registerUser = new RegisterUser(primaryStage, width, height);
             primaryStage.setScene(registerUser.getRegisterUserScene());

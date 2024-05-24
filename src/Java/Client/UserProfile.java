@@ -56,17 +56,27 @@ public class UserProfile extends VBox {
             primaryStage.setScene(usersPage.getUsersPageScene());
         });
 
+        // Crée un conteneur HBox pour le bouton retour, le titre
+        HBox topBox = new HBox(365);
+        topBox.setAlignment(Pos.CENTER_LEFT);
+        topBox.setStyle("-fx-padding: 20;");
+        topBox.getChildren().addAll(returnButton, titleLabel);
+
+        //Crée un Label pour Informations personnelles
+        Label personalInfoLabel = new Label("Informations personnelles");
+        personalInfoLabel.getStyleClass().add("subtitle");
+
         // Crée un Label pour la date du jour
         LocalDate localDate = LocalDate.now();
         String date = localDate.toString();
         Label dateLabel = new Label(date);
         dateLabel.getStyleClass().add("label");
 
-        // Crée un conteneur HBox pour le bouton retour, le titre et la date
-        HBox topBox = new HBox(340);
-        topBox.setAlignment(Pos.CENTER_LEFT);
-        topBox.setStyle("-fx-padding: 20;");
-        topBox.getChildren().addAll(returnButton, titleLabel, dateLabel);
+        //Crée un conteneur Hbox pour les informations personnelles et la date
+        HBox topBox2 = new HBox(800);
+        topBox2.setAlignment(Pos.CENTER_LEFT);
+        topBox2.setStyle("-fx-padding: 40;");
+        topBox2.getChildren().addAll(personalInfoLabel,dateLabel);
 
         // Création du label pour afficher les informations des utilisateurs
         List<Object> userInformation = UserManager.displayUser(mail);
@@ -111,11 +121,23 @@ public class UserProfile extends VBox {
             primaryStage.setScene(modifyInformation.getModifyInformationScene());
         });
 
+        //Crée un conteneur pour les informations personnelles et le bouton modification de retour
         HBox userInformationAndModifyButton = new HBox(15);
         VBox userInformationBox = new VBox();
         userInformationBox.getChildren().addAll(userNameLabel, userFirstNameLabel, userMailLabel, userBirthDateLabel, userAddressLabel, userPhoneNumberLabel, userNumberBorrowLabel);
         userInformationBox.getStyleClass().add("user-info-box");
         userInformationAndModifyButton.getChildren().addAll(userInformationBox, modifyButton);
+        userInformationAndModifyButton.setStyle("-fx-padding: 0px 0px 0px 40px;");
+
+        //Crée un Label pour Emprunts
+        Label borrowsLabel= new Label("Emprunts");
+        borrowsLabel.getStyleClass().add("subtitle");
+
+        //Création d'un contenur pour Emprunts
+        HBox borrowBox = new HBox();
+        borrowBox.setAlignment(Pos.CENTER_LEFT);
+        borrowBox.setStyle("-fx-padding: 40;");
+        borrowBox.getChildren().addAll(borrowsLabel);
 
         // Affichage historique emprunts
         userInformation.remove(0);
@@ -176,13 +198,13 @@ public class UserProfile extends VBox {
             }
 
             Label borrowDurationLabel = new Label("Durée :    " + duration);
-            borrowDurationLabel.getStyleClass().add("label");
+            borrowDurationLabel.getStyleClass().add("labelUser");
 
             Label borrowStartDateLabel = new Label("Date d'emprunt :    " + startDate);
-            borrowStartDateLabel.getStyleClass().add("label");
+            borrowStartDateLabel.getStyleClass().add("labelUser");
 
             Label borrowEndDateLabel = new Label("Date de retour prévue :    " + endDate);
-            borrowEndDateLabel.getStyleClass().add("label");
+            borrowEndDateLabel.getStyleClass().add("labelUser");
 
             String queryStatus = "SELECT status FROM borrow WHERE duration>30 AND status=?";
 
@@ -210,6 +232,7 @@ public class UserProfile extends VBox {
             }
 
             borrowsInformationGrid.add(borrowInformationBox, col, row);
+            borrowsInformationGrid.getStyleClass().add("borrowsGrid");
 
             col++;
             if (col == 3) {
@@ -221,13 +244,17 @@ public class UserProfile extends VBox {
 
 
         VBox finalBox = new VBox(15);
-        finalBox.getChildren().addAll(topBox, userInformationAndModifyButton, borrowsInformationGrid);
+        finalBox.getChildren().addAll(topBox,topBox2,userInformationAndModifyButton, borrowBox, borrowsInformationGrid);
         finalBox.setAlignment(Pos.CENTER);
 
         // Ajout de la boîte finale dans un ScrollPane
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(finalBox);
         scrollPane.setFitToWidth(true);
+        scrollPane.setPannable(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Hide horizontal scrollbar
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Show vertical scrollbar only when needed
+        scrollPane.getStyleClass().add("scroll-pane"); // Apply custom style
         root.setCenter(scrollPane);
     }
 
