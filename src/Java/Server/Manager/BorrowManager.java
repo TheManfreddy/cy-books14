@@ -49,9 +49,9 @@ public class BorrowManager {
 
             // Check if the insertion was successful
             if (rowsAffected > 0) {
-                System.out.println("Insertion successful!");
+                System.out.println("Insertion réussie !");
             } else {
-                System.out.println("Insertion failed!");
+                System.out.println("Échec de l'insertion !");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,7 +76,6 @@ public class BorrowManager {
      * @param idUser the ID of the user
      */
     public static void updateBorrow(String idUser) {
-        // Get the current date
         LocalDate currentDate = LocalDate.now();
 
         // Database connection parameters
@@ -120,9 +119,9 @@ public class BorrowManager {
 
                     // Check if the update was successful
                     if (rowsAffected > 0) {
-                        System.out.println("Update successful!");
+                        System.out.println("Mise à jour réussie!");
                     } else {
-                        System.out.println("Update failed!");
+                        System.out.println("Échec de la mise à jour!");
                     }
                 }
             }
@@ -270,8 +269,8 @@ public class BorrowManager {
      * @param idUser the ID of the user
      * @return a list of Borrow objects representing the borrowing history
      */
-    public static List<Borrow> historyBorrow(String idUser) {
-        // List to store borrowing history
+    public static List<Borrow> historyBorrow(String idUser){
+
         List<Borrow> listOfBorrows = new ArrayList<>();
 
         Connection conn = null;
@@ -298,6 +297,20 @@ public class BorrowManager {
 
                 // Create a Borrow object and add it to the list
                 Borrow borrow = new Borrow(idBorrow, isbn, idUser, duration, start_date, end_date, status);
+
+                if(status == 0 && duration>30){
+                    //list1.add("red");
+                    borrow.setColor("red");
+                }
+                if(status == 0 && duration<=30){
+                    //list1.add("green");
+                    borrow.setColor("green");
+                }
+                if(status == 1){
+                    //list1.add("gray");
+                    borrow.setColor("gray");
+                }
+
                 listOfBorrows.add(borrow);
             }
         } catch (SQLException e) {

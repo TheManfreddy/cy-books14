@@ -1,6 +1,5 @@
 package Client;
 
-import Server.Manager.BorrowManager;
 import Server.Manager.UserManager;
 import Server.Models.User;
 import javafx.beans.property.SimpleStringProperty;
@@ -172,10 +171,12 @@ public class UsersPage extends VBox {
         totalPages = (int) Math.ceil((double) userList.size() / itemsPerPage);
         updateUserList(tableView, userObservableList);
 
+        // Modifier la création de la boîte finale pour ajuster la largeur et l'alignement
         VBox finalBox = new VBox(15);
-        finalBox.getChildren().addAll( hBox, tableView, paginationBox);
-        finalBox.setAlignment(Pos.CENTER);
+        finalBox.getChildren().addAll(hBox, tableView, paginationBox);
+        finalBox.setAlignment(Pos.CENTER); // Centrer verticalement la boîte finale
         root.setCenter(finalBox);
+
     }
 
     private void createTableColumns(TableView<User> tableView) {
@@ -207,8 +208,6 @@ public class UsersPage extends VBox {
         TableColumn<User, String> numberBorrowColumn = new TableColumn<>("Emprunts");
         numberBorrowColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumber_borrow()));
         numberBorrowColumn.setPrefWidth(80);
-
-
 
         tableView.getColumns().addAll(nameColumn, firstNameColumn, mailColumn, birthDateColumn, addressColumn, phoneNumberColumn, numberBorrowColumn);
 

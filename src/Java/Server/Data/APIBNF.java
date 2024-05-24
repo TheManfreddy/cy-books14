@@ -28,13 +28,13 @@ public class APIBNF {
 
         // Determine the query based on the provided search criteria
         switch (criteria) {
-            case ("BY TITLE"):
+            case ("PAR TITRE"):
                 query = "(bib.title all " + "\"" + search + "\"" + ") and (bib.doctype all \"a\")";
                 break;
-            case ("BY AUTHOR"):
+            case ("PAR AUTEUR"):
                 query = "(bib.author all " + "\"" + search + "\"" + ") and (bib.doctype all \"a\")";
                 break;
-            case ("BY ISBN"):
+            case ("PAR ISBN"):
                 query = "(bib.isbn all " + "\"" + search + "\"" + ") and (bib.doctype all \"a\")";
                 break;
             default:
