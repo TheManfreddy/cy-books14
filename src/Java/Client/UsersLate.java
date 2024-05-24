@@ -2,14 +2,22 @@ package Client;
 
 import Server.Manager.BorrowManager;
 import Server.Manager.UserManager;
-import Server.Models.Borrow;
 import Server.Models.User;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
@@ -19,7 +27,7 @@ public class UsersLate extends VBox {
     private Scene scene;
     private TextField textFieldResearchBar;
     private int currentPage = 0;
-    private final int itemsPerPage = 5;
+    private final int itemsPerPage = 8;
     private int totalPages;
 
     private Stage primaryStage;
@@ -65,7 +73,7 @@ public class UsersLate extends VBox {
 
         // Crée un champ de texte pour la barre de recherche
         textFieldResearchBar = new TextField();
-        textFieldResearchBar.setPromptText("Rechercher un usager");
+        textFieldResearchBar.setPromptText(" \uD83D\uDD0E Rechercher un usager");
         textFieldResearchBar.getStyleClass().add("text-fieldSearch");
 
         // Crée un bouton recherche
@@ -116,22 +124,30 @@ public class UsersLate extends VBox {
             primaryStage.setScene(registerUser.getRegisterUserScene());
         });
 
-        // Création des labels pour afficher les légendes
-        String legend = "Prénom" + "        " + "Nom" + "        " + "Mail" + "        "
-                + "Date de naissance" + "        " + "Adresse" + "        " + "Téléphone" + "        "
-                + "Emprunts" + "        ";
-        Label legendLabel = new Label(legend);
-        legendLabel.getStyleClass().add("label");
+        // Crée un TableView pour afficher les informations des utilisateurs
+        TableView<User> tableView = new TableView<>();
+        createTableColumns(tableView);
 
-        // Crée un conteneur HBox pour les légendes
-        HBox legendBox = new HBox();
-        legendBox.setAlignment(Pos.CENTER_LEFT);
-        legendBox.setStyle("-fx-padding: 20;");
-        legendBox.getChildren().add(legendLabel);
-        legendBox.getStyleClass().add("data-box");
 
-        // Affiche les utilisateurs
-        VBox usersInformationBox = new VBox(15);
+
+        // Ajoute un écouteur d'événements pour chaque ligne du tableau
+        tableView.setRowFactory(tv -> {
+            TableRow<User> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty()) {
+                    User user = row.getItem();
+                    UserProfile userProfile = null;
+                    try {
+                        userProfile = new UserProfile(primaryStage, width, height, user.getMail());
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    primaryStage.setScene(userProfile.getUserProfileScene());
+                }
+            });
+            return row;
+        });
+
 
         // Crée des boutons pour la pagination
         Button prevButton = new Button("<");
@@ -142,14 +158,14 @@ public class UsersLate extends VBox {
         prevButton.setOnAction(e -> {
             if (currentPage > 0) {
                 currentPage--;
-                updateUserList(usersInformationBox);
+                updateUserList(tableView);
             }
         });
 
         nextButton.setOnAction(e -> {
             if (currentPage < totalPages - 1) {
                 currentPage++;
-                updateUserList(usersInformationBox);
+                updateUserList(tableView);
             }
         });
 
@@ -159,100 +175,86 @@ public class UsersLate extends VBox {
 
         // Initialisation de la liste d'utilisateurs
         List<User> userList = UserManager.displayUserBorrowLateList();
+        ObservableList<User> userObservableList = FXCollections.observableArrayList(userList);
         totalPages = (int) Math.ceil((double) userList.size() / itemsPerPage);
-        updateUserList(usersInformationBox, userList);
+        updateUserList(tableView, userObservableList);
 
         VBox finalBox = new VBox(15);
-        finalBox.getChildren().addAll( hBox, legendBox, usersInformationBox, paginationBox);
+        finalBox.getChildren().addAll( hBox, tableView, paginationBox);
         finalBox.setAlignment(Pos.CENTER);
         root.setLeft(finalBox);
     }
 
-    /**
-     * @param usersInformationBox
-     * @param userList
-     */
-    private void updateUserList(VBox usersInformationBox, List<User> userList) {
-        usersInformationBox.getChildren().clear();
+    private void createTableColumns(TableView<User> tableView) {
+        // Crée une colonne pour le nom
+        TableColumn<User, String> nameColumn = new TableColumn<>("Nom");
+        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        nameColumn.setPrefWidth(200);
 
-        int start = currentPage * itemsPerPage;
-        int end = Math.min(start + itemsPerPage, userList.size());
+        TableColumn<User, String> firstNameColumn = new TableColumn<>("Prénom");
+        firstNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirst_name()));
+        firstNameColumn.setPrefWidth(200);
 
-        for (int i = start; i < end; i++) {
-            User user = userList.get(i);
-            HBox userInformationBox = new HBox(15);
-            String mail = user.getMail();
-            String name = user.getName();
-            String firstName = user.getFirst_name();
-            String birthDate = user.getBirth_date();
-            String address = user.getAddress();
-            String phoneNumber = user.getNumber();
-            String numberBorrow = user.getNumber_borrow();
+        TableColumn<User, String> mailColumn = new TableColumn<>("Mail");
+        mailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMail()));
+        mailColumn.setPrefWidth(230);
 
-            // Mise à jour de la durée des emprunts
-            BorrowManager.updateBorrow(mail);
+        TableColumn<User, String> birthDateColumn = new TableColumn<>("Date de naissance");
+        birthDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBirth_date()));
+        birthDateColumn.setPrefWidth(220);
 
-            // Création des labels pour afficher les informations des utilisateurs
-            Label userMailLabel = new Label(mail);
-            userMailLabel.getStyleClass().add("label");
+        TableColumn<User, String> addressColumn = new TableColumn<>("Adresse");
+        addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAddress()));
+        addressColumn.setPrefWidth(220);
 
-            Label userNameLabel = new Label(name);
-            userNameLabel.getStyleClass().add("label");
+        TableColumn<User, String> phoneNumberColumn = new TableColumn<>("Téléphone");
+        phoneNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumber()));
+        phoneNumberColumn.setPrefWidth(200);
 
-            Label userFirstNameLabel = new Label(firstName);
-            userFirstNameLabel.getStyleClass().add("label");
+        TableColumn<User, String> numberBorrowColumn = new TableColumn<>("Emprunts");
+        numberBorrowColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumber_borrow()));
+        numberBorrowColumn.setPrefWidth(500);
 
-            Label userBirthDateLabel = new Label(birthDate);
-            userBirthDateLabel.getStyleClass().add("label");
 
-            Label userAddressLabel = new Label(address);
-            userAddressLabel.getStyleClass().add("label");
 
-            Label userPhoneNumberLabel = new Label(phoneNumber);
-            userPhoneNumberLabel.getStyleClass().add("label");
+        tableView.getColumns().addAll(nameColumn, firstNameColumn, mailColumn, birthDateColumn, addressColumn, phoneNumberColumn, numberBorrowColumn);
 
-            Label userNumberBorrowLabel = new Label(numberBorrow);
-            userNumberBorrowLabel.getStyleClass().add("label");
+        //Redimensionne les colonnes pour occuper toute la largeur disponible
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-            // Crée le bouton pour afficher l'oeil
-            Button eyeButton = new Button("\uD83D\uDC40");
-            eyeButton.getStyleClass().add("button");
 
-            userInformationBox.getChildren().addAll(userNameLabel, userFirstNameLabel, userMailLabel, userBirthDateLabel, userAddressLabel, userPhoneNumberLabel, userNumberBorrowLabel, eyeButton);
-            usersInformationBox.getChildren().add(userInformationBox);
-            userInformationBox.getStyleClass().add("date-box-value");
-
-            // Configure le bouton oeil pour ouvrir le profil usager
-            eyeButton.setOnAction(e -> {
-                UserProfile userProfile = null;
-                try {
-                    userProfile = new UserProfile(primaryStage, width, height, mail);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-                primaryStage.setScene(userProfile.getUserProfileScene());
-            });
-        }
     }
 
-    /**
-     * @param usersInformationBox
-     */
-    private void updateUserList(VBox usersInformationBox) {
-        List<User> userList = UserManager.displayUserBorrowLateList();
-        updateUserList(usersInformationBox, userList);
+    private void updateUserList(TableView<User> tableView, ObservableList<User> userObservableList) {
+        // Calcule l'indice de début de la sous-liste en fonction de la page actuelle et du nombre d'éléments par page.
+        int fromIndex = currentPage * itemsPerPage;
+
+        // Calcule l'indice de fin de la sous-liste, afin de ne pas dépasser la taille de la liste.
+        int toIndex = Math.min(fromIndex + itemsPerPage, userObservableList.size());
+
+        // Met à jour le TableView avec une sous-liste des utilisateurs correspondant à la page actuelle.
+        tableView.setItems(FXCollections.observableArrayList(userObservableList.subList(fromIndex, toIndex)));
     }
 
-    /**
-     * @return
-     */
+    private void updateUserList(TableView<User> tableView) {
+        // Récupère la liste complète des utilisateurs depuis le UserManager.
+        List<User> userList = UserManager.displayUserList();
+
+        // Convertit la liste des utilisateurs en un ObservableList
+        ObservableList<User> userObservableList = FXCollections.observableArrayList(userList);
+
+        // Appelle la méthode précédente pour mettre à jour le TableView avec les données paginées.
+        updateUserList(tableView, userObservableList);
+    }
+
+
+
+
     public String getTextFieldResearchBar() {
         return textFieldResearchBar.getText();
     }
 
-    /**
-     * @return
-     */
+
     public Scene getUsersLateScene() {
         return scene;
     }

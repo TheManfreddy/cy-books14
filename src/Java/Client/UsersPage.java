@@ -68,7 +68,7 @@ public class UsersPage extends VBox {
 
         // Crée un champ de texte pour la barre de recherche
         textFieldResearchBar = new TextField();
-        textFieldResearchBar.setPromptText("Rechercher un usager");
+        textFieldResearchBar.setPromptText(" \uD83D\uDD0E Rechercher un usager");
         textFieldResearchBar.getStyleClass().add("text-fieldSearch");
 
         // Crée un bouton recherche
@@ -207,7 +207,6 @@ public class UsersPage extends VBox {
         TableColumn<User, String> numberBorrowColumn = new TableColumn<>("Emprunts");
         numberBorrowColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumber_borrow()));
         numberBorrowColumn.setPrefWidth(80);
-
 
 
         tableView.getColumns().addAll(nameColumn, firstNameColumn, mailColumn, birthDateColumn, addressColumn, phoneNumberColumn, numberBorrowColumn);
