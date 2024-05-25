@@ -10,24 +10,30 @@ import javafx.scene.Scene;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * The MainApp class serves as the entry point for the JavaFX application.
+ */
 public class MainApp extends Application {
 
     /**
-     * @param primaryStage
+     * The start method is the main entry point for all JavaFX applications.
+     * It is called after the init method has returned, and after the system is ready for the application to begin running.
+     *
+     * @param primaryStage the primary stage for this application, onto which the application scene can be set
      */
     @Override
     public void start(Stage primaryStage) {
-        // Obtenir les dimensions de l'écran
+        // Get the screen dimensions
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
 
-        // Créer une instance de ConnexionPage avec les dimensions de l'écran
+        // Create an instance of ConnexionPage with the screen dimensions
         ConnexionPage connexionPage = new ConnexionPage(primaryStage, bounds.getWidth(), bounds.getHeight());
 
-        // Obtenir la scène de connexion
+        // Get the login scene
         Scene connexionScene = connexionPage.getConnexionPageScene();
 
-        // Configurer la scène principale
+        // Configure the primary stage
         primaryStage.setScene(connexionScene);
         primaryStage.setTitle("CYBook");
         primaryStage.setX(bounds.getMinX());
@@ -38,14 +44,16 @@ public class MainApp extends Application {
     }
 
     /**
-     * @param args
+     * The main method is the entry point for the application. It initializes the server and starts the JavaFX application.
+     *
+     * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // Création d'une instance de Server
+        // Create an instance of Server
         Server manager = new Server();
         Scanner scanner = new Scanner(System.in);
 
-        // Appel des méthodes nécessaires
+        // Call necessary methods
         try {
             String xamppPath = Server.findXamppPath();
             if (xamppPath == null) {
@@ -55,15 +63,14 @@ public class MainApp extends Application {
             }
             Server.XAMPP_START = xamppPath;
 
-            manager.startXAMPPServices(); // Démarrage d'Apache et MySQL
+            manager.startXAMPPServices(); // Start Apache and MySQL
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
             scanner.close();
         }
+        // Launch the JavaFX application
         launch(args);
     }
 }
-
-

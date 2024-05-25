@@ -13,13 +13,18 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * The ConnexionPage class represents the login page for the application.
+ */
 public class ConnexionPage extends VBox {
     private Scene scene;
 
     /**
-     * @param primaryStage
-     * @param width
-     * @param height
+     * Constructor for ConnexionPage.
+     *
+     * @param primaryStage the primary stage
+     * @param width        the width of the scene
+     * @param height       the height of the scene
      */
     public ConnexionPage(Stage primaryStage, double width, double height) {
         // Create and configure the scene
@@ -70,10 +75,9 @@ public class ConnexionPage extends VBox {
 
         // Create a VBox container and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(titleBox,identifiantBox, passwordBox, loginButton);
+        vbox.getChildren().addAll(titleBox, identifiantBox, passwordBox, loginButton);
         vbox.getStyleClass().add("container");
         vbox.setAlignment(Pos.CENTER);
-
 
         // Place the VBox containing the text fields and button in the center of the BorderPane
         root.setCenter(vbox);
@@ -83,17 +87,19 @@ public class ConnexionPage extends VBox {
             String login = textFieldIdentifiant.getText();
             String password = passwordField.getText();
             Library library = new Library(login, password);
-           // if (LibraryManager.validateLogin(library)) {
+            if (LibraryManager.validateLogin(library)) {
                 HomePage homePage = new HomePage(primaryStage, width, height);
                 primaryStage.setScene(homePage.getHomePageScene());
-           // } else {
-             //   showErrorAlert("Identifiant ou mot de passe incorrect.");
-          //  }
+            } else {
+                showErrorAlert("Identifiant ou mot de passe incorrect.");
+            }
         });
     }
 
     /**
-     * @param message
+     * Displays an error alert with the given message.
+     *
+     * @param message the error message to display
      */
     private static void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -104,7 +110,9 @@ public class ConnexionPage extends VBox {
     }
 
     /**
-     * @return
+     * Gets the scene for the login page.
+     *
+     * @return the login page scene
      */
     public Scene getConnexionPageScene() {
         return scene;

@@ -18,9 +18,12 @@ import java.util.List;
 import java.util.concurrent.*;
 import javafx.application.Platform;
 
+/**
+ * The LibraryPage class represents the user interface for displaying and searching books in the library.
+ */
 public class LibraryPage extends VBox {
     private Scene scene;
-    private static final int ITEMS_PER_PAGE = 8; // Nombre d'éléments par page
+    private static final int ITEMS_PER_PAGE = 8; // Number of items per page
     private TextField textFieldSearch;
     private ComboBox<String> choiceComboBox;
     private List<Book> currentListBook;
@@ -29,33 +32,37 @@ public class LibraryPage extends VBox {
     private String criteria;
 
     /**
-     * @param primaryStage
-     * @param width
-     * @param height
+     * Constructor for LibraryPage with default search query and empty lists.
+     *
+     * @param primaryStage the primary stage
+     * @param width        the width of the scene
+     * @param height       the height of the scene
      */
     public LibraryPage(Stage primaryStage, double width, double height) {
         this(primaryStage, width, height, "", FXCollections.observableArrayList(), FXCollections.observableArrayList());
     }
 
     /**
-     * @param primaryStage
-     * @param width
-     * @param height
-     * @param searchQuery
-     * @param listBook
-     * @param items
+     * Constructor for LibraryPage with specified search query and lists.
+     *
+     * @param primaryStage the primary stage
+     * @param width        the width of the scene
+     * @param height       the height of the scene
+     * @param searchQuery  the search query
+     * @param listBook     the list of books
+     * @param items        the observable list of books
      */
     public LibraryPage(Stage primaryStage, double width, double height, String searchQuery, List<Book> listBook, ObservableList<Book> items) {
-        // Crée et configure la scène
+        // Create and configure the scene
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-        // Crée un Label pour le titre
+        // Create a Label for the title
         Label titleLabel = new Label("BIBLIOTHEQUE");
         titleLabel.getStyleClass().add("title");
 
-        // Crée un bouton retour
+        // Create a back button
         Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button-UsersPage");
 
@@ -64,84 +71,85 @@ public class LibraryPage extends VBox {
         titleBox.setAlignment(Pos.CENTER_LEFT);
         titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
-        titleBox.getChildren().addAll(returnButton,titleLabel);
+        titleBox.getChildren().addAll(returnButton, titleLabel);
 
-
-        // Crée un champ de texte pour rechercher un livre
+        // Create a text field for searching books
         textFieldSearch = new TextField(searchQuery);
         textFieldSearch.setPromptText("  Rechercher un livre");
         textFieldSearch.getStyleClass().add("text-fieldSearch");
 
-        // Crée un bouton pour lancer la recherche
+        // Create a button to initiate the search
         Button searchButton = new Button("\uD83D\uDD0E");
         searchButton.getStyleClass().add("button-UsersPage");
 
-        // Crée une ComboBox pour sélectionner la langue des livres
+        // Create a ComboBox to select the search criteria
         choiceComboBox = new ComboBox<>();
-
         choiceComboBox.getItems().addAll("PAR TITRE", "PAR AUTEUR", "PAR ISBN");
-        choiceComboBox.setValue("PAR TITRE"); // Valeur par défaut
+        choiceComboBox.setValue("PAR TITRE"); // Default value
 
-        criteria = "PAR TITRE"; // Valeur par défaut
-        // Ajoutez un ChangeListener pour détecter les changements de sélection
+        criteria = "PAR TITRE"; // Default value
+        // Add a ChangeListener to detect changes in selection
         choiceComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            criteria = onChoiceSelected(newValue);  // Appelez la méthode lorsque la sélection change
+            criteria = onChoiceSelected(newValue);  // Call method when selection changes
         });
 
         choiceComboBox.getStyleClass().add("button-Combobox");
 
-
-
-
-        // Crée un bouton pour voir les livres les plus empruntés
+        // Create a button to view the most borrowed books
         Button mostborrowedButton = new Button("Les plus empruntés");
         mostborrowedButton.getStyleClass().add("buttonMostBorrow");
 
-        // Crée un conteneur HBox pour les champs de recherche
+        // Create an HBox container for search fields
         HBox searchBox = new HBox(15, textFieldSearch, searchButton, choiceComboBox);
         searchBox.setAlignment(Pos.TOP_CENTER);
 
-        // Crée un conteneur HBox et y ajoute les composants
-        HBox hBox = new HBox(50); // 50 est l'espacement entre les éléments
+        // Create an HBox and add the components
+        HBox hBox = new HBox(50); // 50 is the spacing between elements
         hBox.getChildren().addAll(mostborrowedButton);
         hBox.setAlignment(Pos.CENTER);
 
-
-        // Crée un VBox pour contenir le label, la barre de recherche et les boutons
+        // Create a VBox to hold the label, search bar, and buttons
         VBox topBox = new VBox(15, titleBox, searchBox, hBox);
         topBox.setAlignment(Pos.CENTER);
 
-        // Place le VBox topBox en haut du BorderPane
+        // Place the VBox topBox at the top of the BorderPane
         root.setTop(topBox);
 
-        // Initialiser l'état actuel si disponible
+        // Initialize the current state if available
         if (items != null && !items.isEmpty()) {
             currentListBook = listBook;
             currentItems = items;
 
-            // Créer un Pagination pour gérer les pages
+            // Create a Pagination to handle pages
             Pagination pagination = new Pagination((int) Math.ceil((double) items.size() / ITEMS_PER_PAGE), 0);
-           pagination.setPageFactory(pageIndex -> createPage(pageIndex, items, listBook));
+            pagination.setPageFactory(pageIndex -> createPage(pageIndex, items, listBook));
 
-            // Ajouter le Pagination au centre du BorderPane
+            // Add the Pagination to the center of the BorderPane
             root.setCenter(pagination);
         }
 
-        // Configure le bouton retour
+        // Configure the back button
         returnButton.setOnAction(e -> {
             HomePage homePage = new HomePage(primaryStage, width, height);
             primaryStage.setScene(homePage.getHomePageScene());
         });
-        // Configure le bouton les plus empruntés
+
+        // Configure the most borrowed books button
         mostborrowedButton.setOnAction(e -> {
             MostBorrowed mostborrowed = new MostBorrowed(primaryStage, width, height);
             primaryStage.setScene(mostborrowed.getMostBorrowedScene());
         });
-        // Configure le bouton rechercher
+
+        // Configure the search button
         searchButton.setOnAction(e -> performSearch(primaryStage, root, textFieldSearch.getText()));
     }
 
-    // Méthode appelée lorsque la langue est sélectionnée
+    /**
+     * Method called when a search criteria is selected.
+     *
+     * @param Choices the selected criteria
+     * @return the selected criteria as a string
+     */
     private String onChoiceSelected(String Choices) {
         String Choice = "";
         if (Choices.equals("PAR TITRE")) {
@@ -157,53 +165,55 @@ public class LibraryPage extends VBox {
     }
 
     /**
-     * @param primaryStage
-     * @param root
-     * @param text
+     * Method to perform the search operation.
+     *
+     * @param primaryStage the primary stage
+     * @param root         the root BorderPane
+     * @param text         the search text
      */
     private void performSearch(Stage primaryStage, BorderPane root, String text) {
-        // ExecutorService pour gérer les tâches en arrière-plan
+        // ExecutorService to handle background tasks
         ExecutorService executor = Executors.newSingleThreadExecutor();
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-        // Tâche pour effectuer la recherche
+        // Task to perform the search
         Callable<List<Book>> searchTask = () -> {
             String query = APIBNF.searchBook(text, criteria);
             return BookManager.displayBookList(query);
         };
 
-        // Future pour la recherche
+        // Future for the search task
         Future<List<Book>> future = executor.submit(searchTask);
 
-        // Tâche pour arrêter la recherche si elle prend plus de 30 secondes
+        // Task to stop the search if it takes more than 30 seconds
         scheduler.schedule(() -> {
             if (!future.isDone()) {
-                future.cancel(true); // Annuler la tâche
+                future.cancel(true); // Cancel the task
                 Platform.runLater(() -> {
                     root.setCenter(new Label("Recherche arrêtée car elle a pris plus de 30 secondes."));
                 });
             }
         }, 30, TimeUnit.SECONDS);
 
-        // Exécuter la recherche et traiter les résultats
+        // Execute the search and process the results
         executor.execute(() -> {
             try {
-                List<Book> listBook = future.get(); // Obtenir le résultat de la recherche
+                List<Book> listBook = future.get(); // Get the search result
 
                 Platform.runLater(() -> {
                     if (listBook != null && !listBook.isEmpty()) {
-                        // Convertir la liste en ObservableList pour qu'elle soit compatible avec TableView
+                        // Convert the list to an ObservableList to be compatible with TableView
                         ObservableList<Book> items = FXCollections.observableArrayList(listBook);
 
-                        // Sauvegarder l'état actuel
+                        // Save the current state
                         currentListBook = listBook;
                         currentItems = items;
 
-                        // Créer un Pagination pour gérer les pages
+                        // Create a Pagination to handle pages
                         Pagination pagination = new Pagination((int) Math.ceil((double) items.size() / ITEMS_PER_PAGE), 0);
                         pagination.setPageFactory(pageIndex -> createPage(pageIndex, items, listBook));
 
-                        // Ajouter le Pagination au centre du BorderPane
+                        // Add the Pagination to the center of the BorderPane
                         root.setCenter(pagination);
                     } else {
                         // Gérer le cas où la recherche ne retourne aucun résultat
@@ -223,17 +233,21 @@ public class LibraryPage extends VBox {
     }
 
     /**
-     * @return
+     * Gets the scene for the library page.
+     *
+     * @return the library page scene
      */
     public Scene getLibraryPageScene() {
         return scene;
     }
 
     /**
-     * @param pageIndex
-     * @param items
-     * @param listBook
-     * @return
+     * Creates a page of TableView for pagination.
+     *
+     * @param pageIndex the page index
+     * @param items     the list of books to display
+     * @param listBook  the list of all books
+     * @return a VBox containing the TableView
      */
     private VBox createPage(int pageIndex, ObservableList<Book> items, List<Book> listBook) {
         int fromIndex = pageIndex * ITEMS_PER_PAGE;
@@ -244,54 +258,51 @@ public class LibraryPage extends VBox {
 
         TableColumn<Book, String> isbnColumn = new TableColumn<>("ISBN");
         isbnColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getISBN()));
-        isbnColumn.setPrefWidth(150); // Largeur préférée
-        isbnColumn.setMinWidth(150);  // Largeur minimale
-        isbnColumn.setMaxWidth(150);  // Largeur maximale
+        isbnColumn.setPrefWidth(150); // Preferred width
+        isbnColumn.setMinWidth(150);  // Minimum width
+        isbnColumn.setMaxWidth(150);  // Maximum width
 
         TableColumn<Book, String> titleColumn = new TableColumn<>("Titre");
         titleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
-        titleColumn.setPrefWidth(250); // Largeur préférée
-        titleColumn.setMinWidth(250);  // Largeur minimale
-        titleColumn.setMaxWidth(600);  // Largeur maximale
+        titleColumn.setPrefWidth(250); // Preferred width
+        titleColumn.setMinWidth(250);  // Minimum width
+        titleColumn.setMaxWidth(600);  // Maximum width
 
         TableColumn<Book, String> authorColumn = new TableColumn<>("Auteur");
         authorColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAuthor()));
-        authorColumn.setPrefWidth(250); // Largeur préférée
-        authorColumn.setMinWidth(250);  // Largeur minimale
-        authorColumn.setMaxWidth(600);  // Largeur maximale
+        authorColumn.setPrefWidth(250); // Preferred width
+        authorColumn.setMinWidth(250);  // Minimum width
+        authorColumn.setMaxWidth(600);  // Maximum width
 
         TableColumn<Book, String> editorColumn = new TableColumn<>("Éditeur");
         editorColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEditor()));
-        editorColumn.setPrefWidth(200); // Largeur préférée
-        editorColumn.setMinWidth(200);  // Largeur minimale
-        editorColumn.setMaxWidth(200);  // Largeur maximale
+        editorColumn.setPrefWidth(200); // Preferred width
+        editorColumn.setMinWidth(200);  // Minimum width
+        editorColumn.setMaxWidth(200);  // Maximum width
 
         TableColumn<Book, String> languageColumn = new TableColumn<>("Langue");
         languageColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLanguage()));
-        languageColumn.setPrefWidth(100); // Largeur préférée
-        languageColumn.setMinWidth(100);  // Largeur minimale
-        languageColumn.setMaxWidth(100);  // Largeur maximale
+        languageColumn.setPrefWidth(100); // Preferred width
+        languageColumn.setMinWidth(100);  // Minimum width
+        languageColumn.setMaxWidth(100);  // Maximum width
 
         TableColumn<Book, String> releaseYearColumn = new TableColumn<>("Année");
         releaseYearColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRelease_year()));
-        releaseYearColumn.setPrefWidth(150); // Largeur préférée
-        releaseYearColumn.setMinWidth(150);  // Largeur minimale
-        releaseYearColumn.setMaxWidth(150);  // Largeur maximale
-
-
-
+        releaseYearColumn.setPrefWidth(150); // Preferred width
+        releaseYearColumn.setMinWidth(150);  // Minimum width
+        releaseYearColumn.setMaxWidth(150);  // Maximum width
 
         tableView.getColumns().addAll(isbnColumn, titleColumn, authorColumn, editorColumn, languageColumn, releaseYearColumn);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        // Ajouter un écouteur d'événements pour chaque élément de la liste
 
+        // Add an event listener for each row in the list
         tableView.setRowFactory(tv -> {
             TableRow<Book> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     Book selectedBook = row.getItem();
-                    String isbn = selectedBook.getISBN(); // Récupérer l'ISBN
-                    System.out.println("Selected ISBN: " + isbn); // Log pour déboguer
+                    String isbn = selectedBook.getISBN(); // Retrieve the ISBN
+                    System.out.println("Selected ISBN: " + isbn); // Log for debugging
                     try {
                         DisplayBook displayBook = new DisplayBook((Stage) tableView.getScene().getWindow(), scene.getWidth(), scene.getHeight(), isbn, textFieldSearch.getText(), currentListBook, currentItems);
                         ((Stage) tableView.getScene().getWindow()).setScene(displayBook.getDisplayBookScene());
@@ -304,9 +315,8 @@ public class LibraryPage extends VBox {
             return row;
         });
 
-        VBox vbox = new VBox(15,tableView);
+        VBox vbox = new VBox(15, tableView);
         vbox.setAlignment(Pos.CENTER);
         return vbox;
     }
 }
-

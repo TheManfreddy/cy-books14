@@ -12,25 +12,28 @@ import javafx.stage.Stage;
 
 import java.util.Optional;
 
+/**
+ * The BorrowBook class represents the user interface for borrowing a book.
+ */
 public class BorrowBook {
     private Scene scene;
 
-
     /**
-     * @param primaryStage
-     * @param width
-     * @param height
-     * @param isbn
-     * @param title
+     * Constructor for BorrowBook.
+     *
+     * @param primaryStage the primary stage
+     * @param width        the width of the scene
+     * @param height       the height of the scene
+     * @param isbn         the ISBN of the book to be borrowed
+     * @param title        the title of the book to be borrowed
      */
-    public BorrowBook(Stage primaryStage, double width, double height, String isbn,String title){
-
+    public BorrowBook(Stage primaryStage, double width, double height, String isbn, String title) {
         // Create and configure the scene
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-        // Crée un bouton retour pour revenir à la liste des livres
+        // Create a return button to go back to the list of books
         Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button-UsersPage");
         returnButton.setOnAction(e -> {
@@ -47,7 +50,7 @@ public class BorrowBook {
         titleBox.setAlignment(Pos.CENTER_LEFT);
         titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
-        titleBox.getChildren().addAll(returnButton,labelTitle);
+        titleBox.getChildren().addAll(returnButton, labelTitle);
 
         // Create a Label for the book title
         Label labelTitleV = new Label("Titre : ");
@@ -58,28 +61,28 @@ public class BorrowBook {
         labelTitleValue.getStyleClass().add("label");
 
         // Create a container for the title
-        HBox titleBoxValue = new HBox(labelTitleV,labelTitleValue);
+        HBox titleBoxValue = new HBox(labelTitleV, labelTitleValue);
 
-        // Create a Label for the user mail
+        // Create a Label for the user email
         Label labelMail = new Label("Mail de l'usager:");
         labelMail.getStyleClass().add("label");
 
-        // Create a text field for the user mail
+        // Create a text field for the user email
         TextField textFieldMail = new TextField();
         textFieldMail.setPromptText("Saisir le mail de l'usager");
         textFieldMail.getStyleClass().add("text-field");
 
-        // Create an HBox for the user mail and its text field
+        // Create an HBox for the user email and its text field
         HBox mailBox = new HBox(5, labelMail, textFieldMail);
 
-        // Crée un bouton valider pour revenir à la liste des livres
+        // Create a validate button to borrow the book
         Button validateButton = new Button("Valider");
         validateButton.getStyleClass().add("button");
         validateButton.setOnAction(e -> {
             String mail = textFieldMail.getText();
             if (UserManager.isUserEmailExists(mail)) {
-                // Appelle la méthode registerBorrow
-                if(BorrowManager.addBorrow(isbn, mail)==true) {
+                // Call the method to register the borrow
+                if (BorrowManager.addBorrow(isbn, mail)) {
                     LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
                     primaryStage.setScene(libraryPage.getLibraryPageScene());
                     showSuccessAlert("Emprunt ajouté avec succès.");
@@ -87,57 +90,58 @@ public class BorrowBook {
                 else{
                     showErrorAlert("L'utilisateur a dépassé le nombre d'emprunts autorisés.",primaryStage, width, height,isbn );
                 }
+            } else {
+                // Redirect to the user registration page
+                showErrorAlert("Usager non inscrit", primaryStage, width, height, isbn);
             }
-            else {
-                // Redirige vers la page RegisterUser
-                showErrorAlert("Usager non inscrit" ,primaryStage, width, height,isbn);
-
-            }
-
-
         });
 
         // Create a VBox and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(titleBoxValue,mailBox,validateButton);
+        vbox.getChildren().addAll(titleBoxValue, mailBox, validateButton);
         vbox.getStyleClass().add("container");
 
         // Place the VBox containing the text fields and button in the center of the BorderPane
         root.setCenter(vbox);
-
-
-
     }
 
     /**
-     * @param message
+     * Displays an error alert with the given message and provides options to register a new user.
+     *
+     * @param message       the error message to display
+     * @param primaryStage  the primary stage
+     * @param width         the width of the scene
+     * @param height        the height of the scene
+     * @param isbn          the ISBN of the book to be borrowed
      */
     public static void showErrorAlert(String message, Stage primaryStage, double width, double height, String isbn) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
+        alert.setTitle("Error");
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // Ajoute un bouton "Annuler"
-        ButtonType cancelButtonType = new ButtonType("Annuler", ButtonType.CANCEL.getButtonData());
+        // Add a "Cancel" button
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonType.CANCEL.getButtonData());
         alert.getButtonTypes().setAll(ButtonType.OK, cancelButtonType);
 
-        // Affiche la boîte de dialogue et attend l'interaction de l'utilisateur
+        // Display the dialog and wait for user interaction
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent()) {
             if (result.get() == ButtonType.OK) {
-                // Change la scène lors du clic sur "OK"
+                // Change the scene on "OK" click
                 BorrowRegisterUser borrowRegisterUser = new BorrowRegisterUser(primaryStage, width, height, isbn);
                 primaryStage.setScene(borrowRegisterUser.getBorrowRegisterUserScene());
             } else if (result.get() == cancelButtonType) {
-                // Le bouton "Annuler" ferme simplement l'alerte
+                // The "Cancel" button simply closes the alert
                 alert.close();
             }
         }
     }
 
     /**
-     * @param message
+     * Displays a success alert with the given message.
+     *
+     * @param message the success message to display
      */
     private static void showSuccessAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -148,11 +152,11 @@ public class BorrowBook {
     }
 
     /**
-     * @return
+     * Gets the scene for borrowing a book.
+     *
+     * @return the scene for borrowing a book
      */
     public Scene getBorrowBookScene() {
         return scene;
     }
-
-
 }

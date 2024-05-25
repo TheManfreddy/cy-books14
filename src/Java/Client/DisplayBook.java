@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 import javafx.collections.ObservableList;
 import java.util.List;
 
+/**
+ * The DisplayBook class represents the user interface for displaying detailed information about a selected book.
+ */
 public class DisplayBook {
 
     private Scene scene;
@@ -22,13 +25,15 @@ public class DisplayBook {
     private ObservableList<Book> currentItems;
 
     /**
-     * @param primaryStage
-     * @param width
-     * @param height
-     * @param isbn
-     * @param searchQuery
-     * @param listBook
-     * @param items
+     * Constructor for DisplayBook.
+     *
+     * @param primaryStage the primary stage
+     * @param width        the width of the scene
+     * @param height       the height of the scene
+     * @param isbn         the ISBN of the book to display
+     * @param searchQuery  the search query used to find the book
+     * @param listBook     the list of books from the search
+     * @param items        the observable list of books from the search
      */
     public DisplayBook(Stage primaryStage, double width, double height, String isbn, String searchQuery, List<Book> listBook, ObservableList<Book> items) {
         this.searchQuery = searchQuery;
@@ -40,7 +45,7 @@ public class DisplayBook {
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-        // Crée un bouton retour pour revenir à la liste des livres
+        // Create a return button to go back to the list of books
         Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button-UsersPage");
         returnButton.setOnAction(e -> {
@@ -48,6 +53,7 @@ public class DisplayBook {
             primaryStage.setScene(libraryPage.getLibraryPageScene());
         });
 
+        // Fetch book details using the BookManager
         Book bookDetails = BookManager.displayBook(isbn);
 
         String title = bookDetails.getTitle();
@@ -65,9 +71,9 @@ public class DisplayBook {
         titleBox.setAlignment(Pos.CENTER_LEFT);
         titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
-        titleBox.getChildren().addAll(returnButton,labelTitle);
+        titleBox.getChildren().addAll(returnButton, labelTitle);
 
-        // Create a Label for the book title
+        // Create labels and containers for book details
         Label labelTitleV = new Label("Titre : ");
         labelTitleV.getStyleClass().add("label");
 
@@ -132,7 +138,7 @@ public class DisplayBook {
         // Create a container for the parution date
         HBox parutionDateBox = new HBox(labelParutionDateV, labelParutionDateValue);
 
-        // Crée un bouton "Emprunter"
+        // Create a "Borrow" button
         Button borrowButton = new Button("Emprunter");
         borrowButton.getStyleClass().add("button");
         borrowButton.setOnAction(e -> {
@@ -150,7 +156,9 @@ public class DisplayBook {
     }
 
     /**
-     * @return
+     * Gets the scene for displaying the book details.
+     *
+     * @return the scene for displaying the book details
      */
     public Scene getDisplayBookScene() {
         return scene;

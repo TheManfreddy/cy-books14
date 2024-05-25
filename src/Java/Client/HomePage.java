@@ -9,70 +9,70 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * The HomePage class represents the main entry point of the application, allowing navigation to user and library sections.
+ */
 public class HomePage extends VBox {
     private Scene scene;
 
     /**
-     * @param primaryStage
-     * @param width
-     * @param height
+     * Constructor for HomePage.
+     *
+     * @param primaryStage the primary stage
+     * @param width        the width of the scene
+     * @param height       the height of the scene
      */
-    public HomePage(Stage primaryStage,double width, double height) {
-        // Crée et configure la scène
+    public HomePage(Stage primaryStage, double width, double height) {
+        // Create and configure the scene
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-        // Crée un Label pour le titre
+        // Create a Label for the title
         Label titleLabel = new Label("CYBOOKS");
         titleLabel.getStyleClass().add("titleConnexion");
 
-        // Crée un conteneur pour le titre et le centre
+        // Create a container for the title and center it
         VBox titleBox = new VBox(titleLabel);
         titleBox.setAlignment(Pos.CENTER);
         titleBox.setStyle("-fx-padding: 20;");
         root.setTop(titleBox);
 
-
-        // Crée un bouton pour passer dans la section usagers
+        // Create a button to navigate to the users section
         Button usersButton = new Button("Usagers");
         usersButton.getStyleClass().add("buttonHome");
 
-        // Crée un bouton pour passer dans la section bibliothèque
+        // Create a button to navigate to the library section
         Button libraryButton = new Button("Bibliothèque");
         libraryButton.getStyleClass().add("buttonHome");
 
-
-        // Crée un conteneur VBox et y ajoute les composants
+        // Create an HBox container and add the components
         HBox hbox = new HBox(70);
         hbox.getChildren().addAll(usersButton, libraryButton);
         hbox.setAlignment(Pos.CENTER);
 
-        // Place le VBox contenant le champ de texte et le bouton au centre du BorderPane
+        // Place the HBox containing the buttons at the center of the BorderPane
         root.setCenter(hbox);
 
-
-
-        // Configure le bouton usagers pour ouvrir la page usagers
+        // Configure the users button to open the UsersPage
         usersButton.setOnAction(e -> {
-            UsersPage usersPage = new UsersPage(primaryStage,width,height);
+            UsersPage usersPage = new UsersPage(primaryStage, width, height);
             primaryStage.setScene(usersPage.getUsersPageScene());
         });
-        // Configure le bouton usagers pour ouvrir la page usagers
+
+        // Configure the library button to open the LibraryPage
         libraryButton.setOnAction(e -> {
-            LibraryPage libraryPage = new LibraryPage(primaryStage,width, height);
+            LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
             primaryStage.setScene(libraryPage.getLibraryPageScene());
         });
-
     }
 
-
     /**
-     * @return
+     * Gets the scene for the home page.
+     *
+     * @return the home page scene
      */
     public Scene getHomePageScene() {
         return scene;
     }
 }
-
-

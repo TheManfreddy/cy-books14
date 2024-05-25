@@ -19,6 +19,9 @@ import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+/**
+ * The BorrowRegisterUser class represents the user interface for registering a new user and borrowing a book.
+ */
 public class BorrowRegisterUser {
 
     private Scene scene;
@@ -30,12 +33,14 @@ public class BorrowRegisterUser {
     private TextField textFieldAddress;
 
     /**
-     * @param primaryStage
-     * @param width
-     * @param height
-     * @param isbn
+     * Constructor for BorrowRegisterUser.
+     *
+     * @param primaryStage the primary stage
+     * @param width        the width of the scene
+     * @param height       the height of the scene
+     * @param isbn         the ISBN of the book to be borrowed
      */
-    public BorrowRegisterUser(Stage primaryStage, double width, double height,String isbn){
+    public BorrowRegisterUser(Stage primaryStage, double width, double height, String isbn) {
 
         // Create and configure the scene
         BorderPane root = new BorderPane();
@@ -46,7 +51,7 @@ public class BorrowRegisterUser {
         Label titleLabel = new Label("Inscrire un nouvel usager");
         titleLabel.getStyleClass().add("title");
 
-        //Create an return button
+        // Create a return button
         Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button-UsersPage");
 
@@ -55,11 +60,9 @@ public class BorrowRegisterUser {
         titleBox.setAlignment(Pos.CENTER_LEFT);
         titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
-        titleBox.getChildren().addAll(returnButton,titleLabel);
+        titleBox.getChildren().addAll(returnButton, titleLabel);
 
-
-
-        // Configure the button to open the user page
+        // Configure the button to open the library page
         returnButton.setOnAction(e -> {
             LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
             primaryStage.setScene(libraryPage.getLibraryPageScene());
@@ -143,18 +146,18 @@ public class BorrowRegisterUser {
 
         // Create a VBox and add the components
         VBox vbox = new VBox(15); // 15 is the spacing between elements
-        vbox.getChildren().addAll(nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox,validateButton);
+        vbox.getChildren().addAll(nameBox, firstNameBox, birthDateBox, mailBox, numberBox, addressBox, validateButton);
         vbox.getStyleClass().add("container");
 
         // Place the VBox containing the text fields and button in the center of the BorderPane
         root.setCenter(vbox);
 
-
+        // Configure the validate button to register the user and borrow the book
         validateButton.setOnAction(e -> {
             // Retrieve values from text fields
             String name = getTextFieldName();
             String firstName = getTextFieldFirstName();
-            String birthDateStr = getTextFieldBirthDate(); // Obtenez la chaîne de la date de naissance
+            String birthDateStr = getTextFieldBirthDate();
 
             // Validate date of birth format
             if (!isValidDateFormat(birthDateStr)) {
@@ -184,9 +187,9 @@ public class BorrowRegisterUser {
                 if (UserManager.isUserEmailExists(mail)) {
                     showErrorAlert("L'utilisateur existe déjà dans la base de données.");
                 } else {
-                    if ((!Objects.equals(name, "")) && (!Objects.equals(firstName, "")) && (!Objects.equals(address, ""))){
+                    if (!Objects.equals(name, "") && !Objects.equals(firstName, "") && !Objects.equals(address, "")) {
                         UserManager.registerUser(mail, name, firstName, birthDateStr, address, phoneNumber, 0);
-                        if(BorrowManager.addBorrow(isbn, mail)) {
+                        if (BorrowManager.addBorrow(isbn, mail)) {
                             LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
                             primaryStage.setScene(libraryPage.getLibraryPageScene());
                             showSuccessAlert("Emprunt ajouté avec succès.");
@@ -201,35 +204,42 @@ public class BorrowRegisterUser {
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-
-
         });
     }
 
     /**
-     * @param message
+     * Displays an error alert with the given message.
+     *
+     * @param message the error message to display
      */
     static void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
+        alert.setTitle("Error");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
     /**
-     * @param message
+     * Displays a success alert with the given message.
+     *
+     * @param message the success message to display
      */
     private static void showSuccessAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Succès");
+        alert.setTitle("Success");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
+    /**
+     * Validates the format of the birth date.
+     *
+     * @param dateStr the date string to validate
+     * @return true if the date format is valid, false otherwise
+     */
     private boolean isValidDateFormat(String dateStr) {
-        // Utilisez le format spécifié pour vérifier la validité de la date
         try {
             LocalDate.parse(dateStr);
             return true;
@@ -238,10 +248,11 @@ public class BorrowRegisterUser {
         }
     }
 
-
     /**
-     * @param email
-     * @return
+     * Validates the format of the email.
+     *
+     * @param email the email string to validate
+     * @return true if the email format is valid, false otherwise
      */
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
@@ -249,57 +260,74 @@ public class BorrowRegisterUser {
     }
 
     /**
-     * @param phoneNumber
-     * @return
+     * Validates the format of the phone number.
+     *
+     * @param phoneNumber the phone number string to validate
+     * @return true if the phone number format is valid, false otherwise
      */
     private boolean isValidPhoneNumber(String phoneNumber) {
         String phoneRegex = "^(\\+\\d{1,3}[- ]?)?\\d{10}$";
         return Pattern.matches(phoneRegex, phoneNumber);
     }
+
     /**
-     * @return
+     * Gets the scene for registering a user and borrowing a book.
+     *
+     * @return the scene for registering a user and borrowing a book
      */
     public Scene getBorrowRegisterUserScene() {
         return scene;
     }
 
     /**
-     * @return
+     * Gets the text from the name text field.
+     *
+     * @return the text from the name text field
      */
     public String getTextFieldName() {
         return textFieldName.getText();
     }
 
     /**
-     * @return
+     * Gets the text from the first name text field.
+     *
+     * @return the text from the first name text field
      */
     public String getTextFieldFirstName() {
         return textFieldFirstName.getText();
     }
 
     /**
-     * @return
+     * Gets the text from the birth date text field.
+     *
+     * @return the text from the birth date text field
      */
     public String getTextFieldBirthDate() {
         return textFieldBirthDate.getText();
     }
 
     /**
-     * @return
+     * Gets the text from the email text field.
+     *
+     * @return the text from the email text field
      */
     public String getTextFieldMail() {
         return textFieldMail.getText();
     }
 
     /**
-     * @return
+     * Gets the text from the phone number text field.
+     *
+     * @return the text from the phone number text field
      */
     public String getTextFieldNumber() {
         return textFieldNumber.getText();
     }
 
     /**
-     * @return
+     * Gets the text from the address text field.
+     *
+     * @return the text from the address text field
      */
     public String getTextFieldAddress() {
         return textFieldAddress.getText();
