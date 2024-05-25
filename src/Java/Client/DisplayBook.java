@@ -76,7 +76,12 @@ public class DisplayBook {
         labelTitleValue.getStyleClass().add("label");
 
         // Create a container for the title
-        HBox titleBoxValue = new HBox(labelTitleV, labelTitleValue);
+        HBox titleVBox = new HBox(labelTitleV);
+        HBox titleValueBox = new HBox(labelTitleValue);
+
+        titleValueBox.setPrefSize(500, 20);
+
+        HBox titleBoxValue = new HBox(titleVBox,titleValueBox);
 
         // Create a Label for the language
         Label labelLanguageV = new Label("Langue : ");
@@ -98,7 +103,12 @@ public class DisplayBook {
         labelAuthorValue.getStyleClass().add("label");
 
         // Create a container for the author
-        HBox authorBox = new HBox(labelAuthorV, labelAuthorValue);
+        HBox authorVBox = new HBox(labelAuthorV);
+        HBox authorValueBox = new HBox(labelAuthorValue);
+
+        authorValueBox.setPrefSize(500, 20);
+
+        HBox authorBox = new HBox(authorVBox,authorValueBox);
 
         // Create a Label for the edition
         Label labelEditionV = new Label("Edition : ");

@@ -367,9 +367,8 @@
 }
 
 .buttonMostBorrow {
-    -fx-background-color: #FFD700;
+    -fx-background-color: white;
     -fx-border-color: #E57D7D;
-    -fx-opacity: 0.71;
     -fx-text-fill: black;
     -fx-font-size: 12pt;
     -fx-border-width: 0.6;
