@@ -4,14 +4,13 @@ import Server.Manager.BorrowManager;
 import Server.Manager.UserManager;
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 public class BorrowBook {
     private Scene scene;
@@ -86,15 +85,14 @@ public class BorrowBook {
                     showSuccessAlert("Emprunt ajouté avec succès.");
                 }
                 else{
-                    showErrorAlert("L'utilisateur a dépassé le nombre d'emprunts autorisés.");
+                    showErrorAlert("L'utilisateur a dépassé le nombre d'emprunts autorisés.",primaryStage, width, height,isbn );
                 }
             }
             // Vérifiez dans le cas où le champ du mail saisi est null, créée Exception
             else {
                 // Redirige vers la page RegisterUser
-                showErrorAlert("Usager non inscrit");
-                BorrowRegisterUser borrowRegisterUser = new BorrowRegisterUser(primaryStage, width, height,isbn);
-                primaryStage.setScene(borrowRegisterUser.getBorrowRegisterUserScene());
+                showErrorAlert("Usager non inscrit" ,primaryStage, width, height,isbn);
+
             }
 
 
@@ -115,12 +113,28 @@ public class BorrowBook {
     /**
      * @param message
      */
-    static void showErrorAlert(String message) {
+    public static void showErrorAlert(String message, Stage primaryStage, double width, double height, String isbn) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.showAndWait();
+
+        // Ajoute un bouton "Annuler"
+        ButtonType cancelButtonType = new ButtonType("Annuler", ButtonType.CANCEL.getButtonData());
+        alert.getButtonTypes().setAll(ButtonType.OK, cancelButtonType);
+
+        // Affiche la boîte de dialogue et attend l'interaction de l'utilisateur
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent()) {
+            if (result.get() == ButtonType.OK) {
+                // Change la scène lors du clic sur "OK"
+                BorrowRegisterUser borrowRegisterUser = new BorrowRegisterUser(primaryStage, width, height, isbn);
+                primaryStage.setScene(borrowRegisterUser.getBorrowRegisterUserScene());
+            } else if (result.get() == cancelButtonType) {
+                // Le bouton "Annuler" ferme simplement l'alerte
+                alert.close();
+            }
+        }
     }
 
     /**
