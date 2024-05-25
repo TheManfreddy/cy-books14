@@ -25,6 +25,10 @@ import java.util.List;
 
 import static Server.Data.APIBNF.retrieveBook_isbn;
 
+
+/**
+ * UserProfile class represents the user profile page.
+ */
 public class UserProfile extends VBox {
     private Scene scene;
 
