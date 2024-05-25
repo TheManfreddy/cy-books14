@@ -98,9 +98,9 @@
 }
 
 .highlighted-label-gray-date {
-    -fx-text-fill: rgba(0, 0, 0, 0.9); /* Texte noir avec 90% d'opacité */
+    -fx-text-fill: rgba(0, 0, 0, 0.9);
     -fx-font-weight: bold;
-    -fx-background-color: rgba(128, 128, 128, 0.5); /* Fond gris avec 50% d'opacité */
+    -fx-background-color: rgba(128, 128, 128, 0.5);
     -fx-background-radius: 50;
     -fx-padding: 5px;
 }
@@ -294,9 +294,9 @@
 
 
 .table-view {
-    -fx-pref-width: 1450px; /* Définissez une largeur préférée pour le tableau */
-    -fx-max-width: 1450px; /* Définissez une largeur maximale pour le tableau */
-    -fx-align-items: center; /* Centre le contenu du tableau */
+    -fx-pref-width: 1450px;
+    -fx-max-width: 1450px;
+    -fx-align-items: center;
     -fx-border-color: transparent;
     -fx-background-color: transparent;
     -fx-box-border: transparent;
@@ -304,8 +304,8 @@
 
 /* Lignes du tableau */
 .table-view .table-row-cell {
-    -fx-pref-width: 1400px; /* Définissez une largeur préférée pour le tableau */
-    -fx-max-width: 1400px; /* Définissez une largeur maximale pour le tableau */
+    -fx-pref-width: 1400px;
+    -fx-max-width: 1400px;
     -fx-font-size: 12pt;
     -fx-font-family: 'Arial', monospace;
     -fx-font-weight: normal;
