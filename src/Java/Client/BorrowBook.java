@@ -66,7 +66,7 @@ public class BorrowBook {
 
         // Create a text field for the user mail
         TextField textFieldMail = new TextField();
-        textFieldMail.setPromptText("Veuillez entrer le mail de l'usager");
+        textFieldMail.setPromptText("Saisir le mail de l'usager");
         textFieldMail.getStyleClass().add("text-field");
 
         // Create an HBox for the user mail and its text field

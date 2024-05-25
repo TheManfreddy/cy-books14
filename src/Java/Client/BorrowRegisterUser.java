@@ -14,6 +14,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class BorrowRegisterUser {
 
@@ -150,25 +154,55 @@ public class BorrowRegisterUser {
             // Retrieve values from text fields
             String name = getTextFieldName();
             String firstName = getTextFieldFirstName();
-            String birthDate = getTextFieldBirthDate();
+            String birthDateStr = getTextFieldBirthDate(); // Obtenez la chaîne de la date de naissance
+
+            // Validate date of birth format
+            if (!isValidDateFormat(birthDateStr)) {
+                showErrorAlert("Le format de la date de naissance est incorrect. Utilisez YYYY-MM-JJ.");
+                return;
+            }
+
+            // Convert the birthDateStr to a LocalDate object
+            LocalDate birthDate = LocalDate.parse(birthDateStr);
+
             String mail = getTextFieldMail();
             String phoneNumber = getTextFieldNumber();
             String address = getTextFieldAddress();
 
+            // Validate email and phone number
+            if (!isValidEmail(mail)) {
+                showErrorAlert("Le format de l'adresse mail est incorrect.");
+                return;
+            }
+            if (!isValidPhoneNumber(phoneNumber)) {
+                showErrorAlert("Le format du numéro de téléphone est incorrect.");
+                return;
+            }
+
             try {
-                UserManager.registerUser(mail,name, firstName, birthDate,address , phoneNumber,0 );
+                // Check if user already exists
+                if (UserManager.isUserEmailExists(mail)) {
+                    showErrorAlert("L'utilisateur existe déjà dans la base de données.");
+                } else {
+                    if ((!Objects.equals(name, "")) && (!Objects.equals(firstName, "")) && (!Objects.equals(address, ""))){
+                        UserManager.registerUser(mail, name, firstName, birthDateStr, address, phoneNumber, 0);
+                        if(BorrowManager.addBorrow(isbn, mail)) {
+                            LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
+                            primaryStage.setScene(libraryPage.getLibraryPageScene());
+                            showSuccessAlert("Emprunt ajouté avec succès.");
+                        }
+                        else{
+                            showErrorAlert("L'utilisateur a dépassé le nombre d'emprunts autorisés.");
+                        }
+                    }else {
+                        showErrorAlert("Veuillez remplir chaque champs.");
+                    }
+                }
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
 
-            if(BorrowManager.addBorrow(isbn, mail)==true) {
-                LibraryPage libraryPage = new LibraryPage(primaryStage, width, height);
-                primaryStage.setScene(libraryPage.getLibraryPageScene());
-                showSuccessAlert("Emprunt ajouté avec succès.");
-            }
-            else{
-                showErrorAlert("L'utilisateur a dépassé le nombre d'emprunts autorisés.");
-            }
+
         });
     }
 
@@ -194,7 +228,34 @@ public class BorrowRegisterUser {
         alert.showAndWait();
     }
 
+    private boolean isValidDateFormat(String dateStr) {
+        // Utilisez le format spécifié pour vérifier la validité de la date
+        try {
+            LocalDate.parse(dateStr);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
 
+
+    /**
+     * @param email
+     * @return
+     */
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return Pattern.matches(emailRegex, email);
+    }
+
+    /**
+     * @param phoneNumber
+     * @return
+     */
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        String phoneRegex = "^(\\+\\d{1,3}[- ]?)?\\d{10}$";
+        return Pattern.matches(phoneRegex, phoneNumber);
+    }
     /**
      * @return
      */

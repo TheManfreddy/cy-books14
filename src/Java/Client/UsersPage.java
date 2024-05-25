@@ -8,12 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -56,7 +51,7 @@ public class UsersPage extends VBox {
         returnButton.getStyleClass().add("button-UsersPage");
 
         // Create a container for the title
-        HBox titleBox = new HBox(350);
+        HBox titleBox = new HBox(365);
         titleBox.setAlignment(Pos.CENTER_LEFT);
         titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
@@ -82,12 +77,15 @@ public class UsersPage extends VBox {
         searchButton.setOnAction(e -> {
             String mail = getTextFieldResearchBar();
 
-
             UserProfile userProfile;
             try {
                 if (!Objects.equals(mail, "")) {
-                    userProfile = new UserProfile(primaryStage, width, height, mail);
-                    primaryStage.setScene(userProfile.getUserProfileScene());
+                    if (!UserManager.isUserEmailExists(mail)){
+                        showErrorAlert("L'usager n'existe pas ");
+                    } else {
+                        userProfile = new UserProfile(primaryStage, width, height, mail);
+                        primaryStage.setScene(userProfile.getUserProfileScene());
+                    }
                 }
 
             } catch (SQLException ex) {
@@ -247,6 +245,13 @@ public class UsersPage extends VBox {
         updateUserList(tableView, userObservableList);
     }
 
+    static void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     public String getTextFieldResearchBar() {
         return textFieldResearchBar.getText();

@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class RegisterUser {
@@ -183,9 +184,14 @@ public class RegisterUser {
                 if (UserManager.isUserEmailExists(mail)) {
                     showErrorAlert("L'utilisateur existe déjà dans la base de données.");
                 } else {
-                    UserManager.registerUser(mail, name, firstName, birthDate.toString(), address, phoneNumber, 0);
-                    UsersPage usersPage = new UsersPage(primaryStage, width, height);
-                    primaryStage.setScene(usersPage.getUsersPageScene());
+                    if ((!Objects.equals(name, "")) && (!Objects.equals(firstName, "")) && (!Objects.equals(address, ""))){
+                        UserManager.registerUser(mail, name, firstName, birthDateStr, address, phoneNumber, 0);
+                        UsersPage usersPage = new UsersPage(primaryStage, width, height);
+                        primaryStage.setScene(usersPage.getUsersPageScene());
+                    }else {
+                        showErrorAlert("Veuillez remplir chaque champs.");
+                    }
+
                 }
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);

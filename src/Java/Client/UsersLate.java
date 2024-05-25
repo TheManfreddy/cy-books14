@@ -8,12 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -62,7 +57,7 @@ public class UsersLate extends VBox {
         returnButton.getStyleClass().add("button-UsersPage");
 
         // Create a container for the title
-        HBox titleBox = new HBox(350);
+        HBox titleBox = new HBox(365);
         titleBox.setAlignment(Pos.CENTER_LEFT);
         titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
@@ -86,17 +81,17 @@ public class UsersLate extends VBox {
         // Configure le bouton recherche
         searchButton.setOnAction(e -> {
             String mail = getTextFieldResearchBar();
-            try {
-                UserManager.displayUser(mail);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
+
 
             UserProfileLate userProfileLate;
             try {
                 if (!Objects.equals(mail, "")) {
-                    userProfileLate = new UserProfileLate(primaryStage, width, height, mail);
-                    primaryStage.setScene(userProfileLate.getUserProfileLateScene());
+                    if (!UserManager.isUserEmailExists(mail)){
+                        showErrorAlert("L'usager n'existe pas ");
+                    } else {
+                        userProfileLate = new UserProfileLate(primaryStage, width, height, mail);
+                        primaryStage.setScene(userProfileLate.getUserProfileLateScene());
+                    }
                 }
 
             } catch (SQLException ex) {
@@ -258,7 +253,13 @@ public class UsersLate extends VBox {
         updateUserList(tableView, userObservableList);
     }
 
-
+    static void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
 
     public String getTextFieldResearchBar() {

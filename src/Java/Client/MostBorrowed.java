@@ -37,21 +37,22 @@ public class MostBorrowed extends VBox {
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-
         // Crée un Label pour le titre
         Label titleLabel = new Label("Les livres les plus empruntés durant les 30 derniers jours");
         titleLabel.getStyleClass().add("titleMostBorrow");
+
 
         // Crée un bouton retour
         Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button-UsersPage");
 
-        // Crée un conteneur pour le titre et le centre
-        HBox titleBox = new HBox(returnButton, titleLabel);
-        titleBox.setAlignment(Pos.CENTER);
-        titleBox.setStyle("-fx-padding: 20;");  // Ajoute du padding autour du titre
+        // Create a container for the title
+        HBox titleBox = new HBox(425);
+        titleBox.setAlignment(Pos.CENTER_LEFT);
+        titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
-        root.setLeft(returnButton);
+        titleBox.getChildren().addAll(returnButton,titleLabel);
+
 
         // Configure le bouton retour
         returnButton.setOnAction(e -> {
