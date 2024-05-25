@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 import static Server.Manager.BorrowManager.updateBorrow;
 
@@ -91,13 +92,16 @@ public class UsersLate extends VBox {
                 throw new RuntimeException(ex);
             }
 
-            UserProfile userProfile = null;
+            UserProfileLate userProfileLate;
             try {
-                userProfile = new UserProfile(primaryStage, width, height, mail);
+                if (!Objects.equals(mail, "")) {
+                    userProfileLate = new UserProfileLate(primaryStage, width, height, mail);
+                    primaryStage.setScene(userProfileLate.getUserProfileLateScene());
+                }
+
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-            primaryStage.setScene(userProfile.getUserProfileScene());
         });
 
         // Crée le bouton ajouter usager
