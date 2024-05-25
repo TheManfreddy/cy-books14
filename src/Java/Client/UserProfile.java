@@ -25,71 +25,72 @@ import java.util.List;
 
 import static Server.Data.APIBNF.retrieveBook_isbn;
 
-
 public class UserProfile extends VBox {
     private Scene scene;
 
     /**
-     * @param primaryStage
-     * @param width
-     * @param height
-     * @param mail
-     * @throws SQLException
+     * Creates a user profile interface.
+     *
+     * @param primaryStage The primary stage of the application.
+     * @param width         The width of the scene.
+     * @param height        The height of the scene.
+     * @param mail          The email address of the user.
+     * @throws SQLException If a SQL exception occurs.
      */
     public UserProfile(Stage primaryStage, double width, double height, String mail) throws SQLException {
-        // Crée et configure la scène
+        // Create and configure the scene
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-        // Crée un Label pour le titre
+        // Create a Label for the title
         Label titleLabel = new Label("Profil Usager");
         titleLabel.getStyleClass().add("title");
 
-        // Crée un bouton retour
+        // Create a return button
         Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button-UsersPage");
 
-        // Configure le bouton retour
+        // Configure the return button
         returnButton.setOnAction(e -> {
             UsersPage usersPage = new UsersPage(primaryStage, width, height);
             primaryStage.setScene(usersPage.getUsersPageScene());
         });
 
-        // Crée un conteneur HBox pour le bouton retour, le titre
+        // Create an HBox container for the return button and the title
         HBox topBox = new HBox(365);
         topBox.setAlignment(Pos.CENTER_LEFT);
         topBox.setStyle("-fx-padding: 20;");
         topBox.getChildren().addAll(returnButton, titleLabel);
 
-        //Crée un Label pour Informations personnelles
+        // Create a Label for personal information
         Label personalInfoLabel = new Label("Informations personnelles");
         personalInfoLabel.getStyleClass().add("subtitle");
 
-        // Crée un Label pour la date du jour
+        // Create a Label for the current date
         LocalDate localDate = LocalDate.now();
         String date = localDate.toString();
         Label dateLabel = new Label(date);
         dateLabel.getStyleClass().add("highlighted-label-gray-date");
 
-
-        //Crée un conteneur Hbox pour les informations personnelles et la date
+        // Create an HBox container for personal information and the date
         HBox topBox2 = new HBox(800);
         topBox2.setAlignment(Pos.CENTER_LEFT);
         topBox2.setStyle("-fx-padding: 40;");
-        topBox2.getChildren().addAll(personalInfoLabel,dateLabel);
+        topBox2.getChildren().addAll(personalInfoLabel, dateLabel);
 
-        // Création du label pour afficher les informations des utilisateurs
+        // Fetch user information
         List<Object> userInformation = UserManager.displayUser(mail);
         User user = (User) userInformation.get(0);
         mail = user.getMail();
         String name = user.getName();
         String firstName = user.getFirst_name();
-        String birthDate= user.getBirth_date();
+        String birthDate = user.getBirth_date();
         String address = user.getAddress();
         String phoneNumber = user.getNumber();
         String numberBorrow = user.getNumber_borrow();
 
+        // Create Labels to display user information
         Label userMailLabel = new Label("Mail :    " + mail);
         userMailLabel.getStyleClass().add("labelUser");
 
@@ -111,18 +112,18 @@ public class UserProfile extends VBox {
         Label userNumberBorrowLabel = new Label("Nombre d'emprunts :    " + numberBorrow);
         userNumberBorrowLabel.getStyleClass().add("labelUser");
 
-        // Crée un bouton modifications des informations
+        // Create a button to modify user information
         Button modifyButton = new Button("\uD83D\uDD8A");
         modifyButton.getStyleClass().add("button-UsersPage");
 
-        // Configure le bouton modifier information
+        // Configure the modify information button
         String finalMail = mail;
         modifyButton.setOnAction(e -> {
             ModifyInformation modifyInformation = new ModifyInformation(primaryStage, width, height, finalMail, name, firstName, birthDate, address, phoneNumber);
             primaryStage.setScene(modifyInformation.getModifyInformationScene());
         });
 
-        //Crée un conteneur pour les informations personnelles et le bouton modification de retour
+        // Create a container for user information and the modify button
         HBox userInformationAndModifyButton = new HBox(15);
         VBox userInformationBox = new VBox();
         userInformationBox.getChildren().addAll(userNameLabel, userFirstNameLabel, userMailLabel, userBirthDateLabel, userAddressLabel, userPhoneNumberLabel, userNumberBorrowLabel);
@@ -130,24 +131,24 @@ public class UserProfile extends VBox {
         userInformationAndModifyButton.getChildren().addAll(userInformationBox, modifyButton);
         userInformationAndModifyButton.setStyle("-fx-padding: 0px 0px 0px 40px;");
 
-        //Crée un Label pour Emprunts
-        Label borrowsLabel= new Label("Emprunts");
+        // Create a Label for borrows
+        Label borrowsLabel = new Label("Emprunts");
         borrowsLabel.getStyleClass().add("subtitle");
 
-        //Création d'un contenur pour Emprunts
+        // Create a container for borrows
         HBox borrowBox = new HBox();
         borrowBox.setAlignment(Pos.CENTER_LEFT);
         borrowBox.setStyle("-fx-padding: 40;");
         borrowBox.getChildren().addAll(borrowsLabel);
 
-        // Affichage historique emprunts
+        // Display borrow history
         userInformation.remove(0);
 
         GridPane borrowsInformationGrid = new GridPane();
         borrowsInformationGrid.setHgap(30);
         borrowsInformationGrid.setVgap(15);
 
-        List<Borrow> borrows=new ArrayList<>();
+        List<Borrow> borrows = new ArrayList<>();
 
         for (int i = 0; i < userInformation.size(); i++) {
             Borrow borrow = (Borrow) userInformation.get(i);
@@ -157,18 +158,19 @@ public class UserProfile extends VBox {
         borrows.sort(Comparator.comparing(borrow1 -> {
             String color1 = borrow1.getColor();
             switch (color1) {
-                case "green": return 1;
-                case "red": return 2;
-                case "gray": return 3;
-                default: return 4;
+                case "green":
+                    return 1;
+                case "red":
+                    return 2;
+                case "gray":
+                    return 3;
+                default:
+                    return 4;
             }
         }));
 
-
         int col = 0;
         int row = 0;
-
-
 
         for (Borrow borrow : borrows) {
             VBox borrowInformationBox = new VBox(15);
@@ -183,7 +185,7 @@ public class UserProfile extends VBox {
             String color = borrow.getColor();
             int status = borrow.getStatus();
 
-            // Création des labels pour afficher l'historique des emprunts
+            // Create labels to display borrow history
             Label borrowTitleLabel = new Label("Titre :    " + title);
             borrowTitleLabel.getStyleClass().add("borrowTitle");
             if (color.equals("red")) {
@@ -207,12 +209,12 @@ public class UserProfile extends VBox {
 
             String queryStatus = "SELECT status FROM borrow WHERE duration>30 AND status=?";
 
-            if (status==0) {
-                // Crée un bouton pour retourner emprunt
+            if (status == 0) {
+                // Create a button to return the borrow
                 Button returnBorrowButton = new Button("Retour Emprunt");
                 returnBorrowButton.getStyleClass().add("button-UsersPage");
 
-                // Configure le bouton retour
+                // Configure the return button
                 returnBorrowButton.setOnAction(e -> {
                     BorrowManager.returnBorrow(isbn, finalMail);
 
@@ -240,13 +242,11 @@ public class UserProfile extends VBox {
             }
         }
 
-
-
         VBox finalBox = new VBox(15);
-        finalBox.getChildren().addAll(topBox,topBox2,userInformationAndModifyButton, borrowBox, borrowsInformationGrid);
+        finalBox.getChildren().addAll(topBox, topBox2, userInformationAndModifyButton, borrowBox, borrowsInformationGrid);
         finalBox.setAlignment(Pos.CENTER);
 
-        // Ajout de la boîte finale dans un ScrollPane
+        // Add the final box into a ScrollPane
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(finalBox);
         scrollPane.setFitToWidth(true);
@@ -258,9 +258,12 @@ public class UserProfile extends VBox {
     }
 
     /**
-     * @return
+     * Get the user profile scene.
+     *
+     * @return The user profile scene.
      */
     public Scene getUserProfileScene() {
         return scene;
     }
 }
+

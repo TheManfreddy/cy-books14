@@ -28,11 +28,11 @@ public class UserManager {
      * @throws SQLException If a database access error occurs
      */
     public static void registerUser(String mail, String name, String first_name, String birth_date, String address, String phone_number, int number_borrow) throws SQLException {
-        // Establish database connection
+        // Database connection establishment
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "")) {
             String query = "INSERT INTO user (mail, name, first_name, birth_date, address, phone_number, number_borrow) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                // Set values for query parameters
+                // Setting values for query parameters
                 stmt.setString(1, mail);
                 stmt.setString(2, name);
                 stmt.setString(3, first_name);
@@ -41,7 +41,7 @@ public class UserManager {
                 stmt.setString(6, phone_number);
                 stmt.setInt(7, number_borrow);
 
-                // Execute the query to insert the user into the database
+                // Executing the query to insert the user into the database
                 int rowsInserted = stmt.executeUpdate();
                 if (rowsInserted > 0) {
                     System.out.println("User added successfully!");
@@ -66,7 +66,7 @@ public class UserManager {
      * @throws SQLException If a database access error occurs
      */
     public static void modifyInformation(String mail, String name, String first_name, String birth_date, String address, String phone_number) throws SQLException {
-        // Establish database connection
+        // Database connection establishment
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/bibli", "root", "")) {
             int rowsInserted;
             // Update name if provided
@@ -132,7 +132,7 @@ public class UserManager {
                     stmt.setString(1, phone_number);
                     stmt.setString(2, mail);
                     rowsInserted = stmt.executeUpdate();
-                    if (rowsInserted >                    0) {
+                    if (rowsInserted > 0) {
                         System.out.println("Phone number modified successfully.");
                     } else {
                         System.out.println("Failed to modify phone number.");

@@ -1,6 +1,5 @@
 package Client;
 
-import Server.Manager.BorrowManager;
 import Server.Manager.UserManager;
 import Server.Models.User;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,6 +19,9 @@ import java.util.Objects;
 
 import static Server.Manager.BorrowManager.updateBorrow;
 
+/**
+ * This class represents the page where users' information is displayed and managed.
+ */
 public class UsersPage extends VBox {
     private Scene scene;
     private TextField textFieldResearchBar;
@@ -31,22 +33,28 @@ public class UsersPage extends VBox {
     private double width;
     private double height;
 
+    /**
+     * Constructs a UsersPage object.
+     *
+     * @param primaryStage The primary stage of the application
+     * @param width        The width of the scene
+     * @param height       The height of the scene
+     */
     public UsersPage(Stage primaryStage, double width, double height) {
         this.primaryStage = primaryStage;
         this.width = width;
         this.height = height;
 
-        // Crée et configure la scène
+        // Create and configure the scene
         BorderPane root = new BorderPane();
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-        // Crée un Label pour le titre
+        // Create a Label for the title
         Label titleLabel = new Label("Usagers");
         titleLabel.getStyleClass().add("title");
 
-
-        // Crée un bouton retour
+        // Create a return button
         Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button-UsersPage");
 
@@ -55,25 +63,24 @@ public class UsersPage extends VBox {
         titleBox.setAlignment(Pos.CENTER_LEFT);
         titleBox.setStyle("-fx-padding: 20;");  // Add padding around the title
         root.setTop(titleBox);
-        titleBox.getChildren().addAll(returnButton,titleLabel);
+        titleBox.getChildren().addAll(returnButton, titleLabel);
 
-
-        // Configure le bouton retour
+        // Configure the return button
         returnButton.setOnAction(e -> {
             HomePage homePage = new HomePage(primaryStage, width, height);
             primaryStage.setScene(homePage.getHomePageScene());
         });
 
-        // Crée un champ de texte pour la barre de recherche
+        // Create a text field for the search bar
         textFieldResearchBar = new TextField();
         textFieldResearchBar.setPromptText(" \uD83D\uDD0E Rechercher un usager");
         textFieldResearchBar.getStyleClass().add("text-fieldSearch");
 
-        // Crée un bouton recherche
+        // Create a search button
         Button searchButton = new Button("Rechercher");
         searchButton.getStyleClass().add("button-UsersPage");
 
-        // Configure le bouton recherche
+        // Configure the search button
         searchButton.setOnAction(e -> {
             String mail = getTextFieldResearchBar();
 
@@ -94,38 +101,37 @@ public class UsersPage extends VBox {
 
         });
 
-        // Crée le bouton ajouter usager
+        // Create the add user button
         Button addUserButton = new Button("➕");
         addUserButton.getStyleClass().add("button-UsersPage");
 
-        // Configure le bouton usagers pour ouvrir la page ajouter usagers
+        // Configure the add user button to open the register user page
         addUserButton.setOnAction(e -> {
             RegisterUser registerUser = new RegisterUser(primaryStage, width, height);
             primaryStage.setScene(registerUser.getRegisterUserScene());
         });
 
-        // Crée le bouton afficher retardataire
+        // Create the show late users button
         Button lateUserButton = new Button("Afficher les retardataires");
         lateUserButton.getStyleClass().add("button-UsersPage");
 
-        // Configure le bouton afficher retardataire
+        // Configure the show late users button
         lateUserButton.setOnAction(e -> {
             UsersLate usersLate = new UsersLate(primaryStage, width, height);
             primaryStage.setScene(usersLate.getUsersLateScene());
         });
 
-        // Crée un conteneur HBox pour la barre de recherche, le bouton ajouter usager et le bouton afficher retardataire
+        // Create an HBox container for the search bar, add user button, and show late users button
         HBox hBox = new HBox(100);
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setStyle("-fx-padding: 20;");
         hBox.getChildren().addAll(textFieldResearchBar, searchButton, addUserButton, lateUserButton);
 
-        // Crée un TableView pour afficher les informations des utilisateurs
+        // Create a TableView to display users' information
         TableView<User> tableView = new TableView<>();
         createTableColumns(tableView);
 
-
-        // Ajoute un écouteur d'événements pour chaque ligne du tableau
+        // Add an event listener for each row in the table
         tableView.setRowFactory(tv -> {
             TableRow<User> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -143,7 +149,7 @@ public class UsersPage extends VBox {
             return row;
         });
 
-        // Crée des boutons pour la pagination
+        // Create buttons for pagination
         Button prevButton = new Button("<");
         prevButton.getStyleClass().add("button-UsersPage");
         Button nextButton = new Button(">");
@@ -167,84 +173,112 @@ public class UsersPage extends VBox {
         paginationBox.setAlignment(Pos.CENTER);
         paginationBox.setStyle("-fx-padding: 20;");
 
-        // Initialisation de la liste d'utilisateurs
+        // Initialize the list of users
         List<User> userList = UserManager.displayUserList();
         ObservableList<User> userObservableList = FXCollections.observableArrayList(userList);
         totalPages = (int) Math.ceil((double) userList.size() / itemsPerPage);
         updateUserList(tableView, userObservableList);
 
         VBox finalBox = new VBox(15);
-        finalBox.getChildren().addAll( hBox, tableView, paginationBox);
+        finalBox.getChildren().addAll(hBox, tableView, paginationBox);
         finalBox.setAlignment(Pos.CENTER);
         root.setCenter(finalBox);
     }
 
+    /**
+     * Creates columns for the TableView.
+     *
+     * @param tableView The TableView to which columns are added
+     */
     private void createTableColumns(TableView<User> tableView) {
-        // Crée une colonne pour le nom
-        TableColumn<User, String> nameColumn = new TableColumn<>("Nom");
+        // Create a column for the name
+        TableColumn<User, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         nameColumn.setPrefWidth(100);
 
-        TableColumn<User, String> firstNameColumn = new TableColumn<>("Prénom");
+        // Create a column for the user
+        TableColumn<User, String> firstNameColumn = new TableColumn<>("First Name");
         firstNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirst_name()));
         firstNameColumn.setPrefWidth(100);
 
-        TableColumn<User, String> mailColumn = new TableColumn<>("Mail");
+        // Create a column for the mail
+        TableColumn<User, String> mailColumn = new TableColumn<>("Email");
         mailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMail()));
         mailColumn.setPrefWidth(130);
 
-        TableColumn<User, String> birthDateColumn = new TableColumn<>("Date de naissance");
+        // Create a column for the birthDate
+        TableColumn<User, String> birthDateColumn = new TableColumn<>("Birth Date");
         birthDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBirth_date()));
         birthDateColumn.setPrefWidth(120);
 
-        TableColumn<User, String> addressColumn = new TableColumn<>("Adresse");
+        // Create a column for the address
+        TableColumn<User, String> addressColumn = new TableColumn<>("Address");
         addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAddress()));
         addressColumn.setPrefWidth(120);
 
-        TableColumn<User, String> phoneNumberColumn = new TableColumn<>("Téléphone");
+        // Create a column for the phone number
+        TableColumn<User, String> phoneNumberColumn = new TableColumn<>("Phone Number");
         phoneNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumber()));
         phoneNumberColumn.setPrefWidth(100);
 
-        TableColumn<User, String> numberBorrowColumn = new TableColumn<>("Emprunts");
+        // Create a column for the number of borrows
+        TableColumn<User, String> numberBorrowColumn = new TableColumn<>("Borrows");
         numberBorrowColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumber_borrow()));
         numberBorrowColumn.setPrefWidth(80);
 
-
+        // Add all columns to the table view
         tableView.getColumns().addAll(nameColumn, firstNameColumn, mailColumn, birthDateColumn, addressColumn, phoneNumberColumn, numberBorrowColumn);
 
-        //Redimensionne les colonnes pour occuper toute la largeur disponible
+        // Resize columns to occupy all available width
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
+    /**
+     * Updates the user list displayed in the TableView.
+     *
+     * @param tableView         The TableView to be updated
+     * @param userObservableList The list of users to be displayed
+     */
     private void updateUserList(TableView<User> tableView, ObservableList<User> userObservableList) {
-        // Calcule l'indice de début de la sous-liste en fonction de la page actuelle et du nombre d'éléments par page.
+        // Calculate the start index of the sublist based on the current page and items per page.
         int fromIndex = currentPage * itemsPerPage;
 
-        // Calcule l'indice de fin de la sous-liste, afin de ne pas dépasser la taille de la liste.
+        // Calculate the end index of the sublist, ensuring not to exceed the list size.
         int toIndex = Math.min(fromIndex + itemsPerPage, userObservableList.size());
 
-        // Met à jour le TableView avec une sous-liste des utilisateurs correspondant à la page actuelle.
+        // Update the TableView with a sublist of users corresponding to the current page.
         tableView.setItems(FXCollections.observableArrayList(userObservableList.subList(fromIndex, toIndex)));
+
+        // Update the borrow information for each user
         List<User> userList = UserManager.displayUserList();
         for (User user : userList) {
             // Check if the user is not null
             String mail = user.getMail();
             updateBorrow(mail);
-
         }
     }
 
+    /**
+     * Updates the user list displayed in the TableView.
+     *
+     * @param tableView The TableView to be updated
+     */
     private void updateUserList(TableView<User> tableView) {
-        // Récupère la liste complète des utilisateurs depuis le UserManager.
+        // Retrieve the complete list of users from the UserManager.
         List<User> userList = UserManager.displayUserList();
 
-        // Convertit la liste des utilisateurs en un ObservableList
+        // Convert the list of users to an ObservableList
         ObservableList<User> userObservableList = FXCollections.observableArrayList(userList);
 
-        // Appelle la méthode précédente pour mettre à jour le TableView avec les données paginées.
+        // Call the previous method to update the TableView with paginated data.
         updateUserList(tableView, userObservableList);
     }
 
+    /**
+     * Displays an error alert with the given message.
+     *
+     * @param message The error message to be displayed
+     */
     static void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
@@ -253,13 +287,22 @@ public class UsersPage extends VBox {
         alert.showAndWait();
     }
 
+    /**
+     * Gets the text from the research bar TextField.
+     *
+     * @return The text from the research bar
+     */
     public String getTextFieldResearchBar() {
         return textFieldResearchBar.getText();
     }
 
+    /**
+     * Retrieves the Scene of the UsersPage.
+     *
+     * @return The Scene of the UsersPage
+     */
     public Scene getUsersPageScene() {
         return scene;
     }
 }
-
 

@@ -88,7 +88,6 @@ public class BorrowBook {
                     showErrorAlert("L'utilisateur a dépassé le nombre d'emprunts autorisés.",primaryStage, width, height,isbn );
                 }
             }
-            // Vérifiez dans le cas où le champ du mail saisi est null, créée Exception
             else {
                 // Redirige vers la page RegisterUser
                 showErrorAlert("Usager non inscrit" ,primaryStage, width, height,isbn);

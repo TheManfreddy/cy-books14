@@ -18,6 +18,9 @@ import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+/**
+ * A class representing the user registration interface.
+ */
 public class RegisterUser {
 
     private Scene scene;
@@ -29,9 +32,11 @@ public class RegisterUser {
     private TextField textFieldAddress;
 
     /**
-     * @param primaryStage
-     * @param width
-     * @param height
+     * Constructs a new RegisterUser object.
+     *
+     * @param primaryStage The primary stage of the application.
+     * @param width        The width of the scene.
+     * @param height       The height of the scene.
      */
     public RegisterUser(Stage primaryStage, double width, double height) {
         // Create and configure the scene
@@ -39,7 +44,7 @@ public class RegisterUser {
         scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource("Style/style.css").toExternalForm());
 
-        //Create a return button
+        // Create a return button
         Button returnButton = new Button("⬅");
         returnButton.getStyleClass().add("button-UsersPage");
 
@@ -200,11 +205,13 @@ public class RegisterUser {
     }
 
     /**
-     * @param dateStr
-     * @return
+     * Validates the format of the given date string.
+     *
+     * @param dateStr The date string to validate.
+     * @return True if the format is valid, otherwise false.
      */
     private boolean isValidDateFormat(String dateStr) {
-        // Utilisez le format spécifié pour vérifier la validité de la date
+        // Use the specified format to check the validity of the date
         try {
             LocalDate.parse(dateStr);
             return true;
@@ -215,8 +222,10 @@ public class RegisterUser {
 
 
     /**
-     * @param email
-     * @return
+     * Validates the format of the given email address.
+     *
+     * @param email The email address to validate.
+     * @return True if the format is valid, otherwise false.
      */
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
@@ -224,8 +233,10 @@ public class RegisterUser {
     }
 
     /**
-     * @param phoneNumber
-     * @return
+     * Validates the format of the given phone number.
+     *
+     * @param phoneNumber The phone number to validate.
+     * @return True if the format is valid, otherwise false.
      */
     private boolean isValidPhoneNumber(String phoneNumber) {
         String phoneRegex = "^(\\+\\d{1,3}[- ]?)?\\d{10}$";
@@ -233,7 +244,9 @@ public class RegisterUser {
     }
 
     /**
-     * @param message
+     * Displays an error alert with the given message.
+     *
+     * @param message The error message to display.
      */
     private void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -244,55 +257,66 @@ public class RegisterUser {
     }
 
     /**
-     * @return
+     * Retrieves the text entered in the name field.
+     *
+     * @return The text entered in the name field.
      */
     public String getTextFieldName() {
         return textFieldName.getText();
     }
 
     /**
-     * @return
+     * Retrieves the text entered in the first name field.
+     *
+     * @return The text entered in the first name field.
      */
     public String getTextFieldFirstName() {
         return textFieldFirstName.getText();
     }
 
     /**
-     * @return
+     * Retrieves the text entered in the birth date field.
+     *
+     * @return The text entered in the birth date field.
      */
     public String getTextFieldBirthDate() {
         return textFieldBirthDate.getText();
     }
 
     /**
-     * @return
+     * Retrieves the text entered in the email field.
+     *
+     * @return The text entered in the email field.
      */
     public String getTextFieldMail() {
         return textFieldMail.getText();
     }
 
     /**
-     * @return
+     * Retrieves the text entered in the phone number field.
+     *
+     * @return The text entered in the phone number field.
      */
     public String getTextFieldNumber() {
         return textFieldNumber.getText();
     }
 
     /**
-     * @return
+     * Retrieves the text entered in the address field.
+     *
+     * @return The text entered in the address field.
      */
     public String getTextFieldAddress() {
         return textFieldAddress.getText();
     }
 
     /**
-     * @return
+     * Retrieves the scene for the user registration interface.
+     *
+     * @return The scene for the user registration interface.
      */
     public Scene getRegisterUserScene() {
         return scene;
     }
 }
-
-
-
 

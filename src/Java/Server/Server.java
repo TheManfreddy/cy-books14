@@ -4,6 +4,10 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
+/**
+ * The Server class provides methods to manage XAMPP services.
+ * It can check if certain services are running and start them if they are not.
+ */
 public class Server {
 
     // List of common paths where XAMPP might be installed
@@ -90,7 +94,3 @@ public class Server {
         return null;
     }
 }
-
-
-
-
