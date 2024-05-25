@@ -88,7 +88,7 @@ public class BorrowBook {
                     showSuccessAlert("Emprunt ajouté avec succès.");
                 }
                 else{
-                    showErrorAlert("L'utilisateur a dépassé le nombre d'emprunts autorisés.",primaryStage, width, height,isbn );
+                    showErrorAlert1("L'utilisateur a dépassé le nombre d'emprunts autorisés.",primaryStage, width, height);
                 }
             } else {
                 // Redirect to the user registration page
@@ -131,6 +131,37 @@ public class BorrowBook {
                 // Change the scene on "OK" click
                 BorrowRegisterUser borrowRegisterUser = new BorrowRegisterUser(primaryStage, width, height, isbn);
                 primaryStage.setScene(borrowRegisterUser.getBorrowRegisterUserScene());
+            } else if (result.get() == cancelButtonType) {
+                // The "Cancel" button simply closes the alert
+                alert.close();
+            }
+        }
+    }
+    /**
+     * Displays an error alert with the given message and provides options to register a new user.
+     *
+     * @param message       the error message to display
+     * @param primaryStage  the primary stage
+     * @param width         the width of the scene
+     * @param height        the height of the scene
+     */
+    public static void showErrorAlert1(String message, Stage primaryStage, double width, double height) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        // Add a "Cancel" button
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonType.CANCEL.getButtonData());
+        alert.getButtonTypes().setAll(ButtonType.OK, cancelButtonType);
+
+        // Display the dialog and wait for user interaction
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent()) {
+            if (result.get() == ButtonType.OK) {
+                // Change the scene on "OK" click
+                LibraryPage LibraryPage = new LibraryPage(primaryStage, width, height);
+                primaryStage.setScene(LibraryPage.getLibraryPageScene());
             } else if (result.get() == cancelButtonType) {
                 // The "Cancel" button simply closes the alert
                 alert.close();
