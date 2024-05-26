@@ -184,7 +184,7 @@ public class UserManager {
      */
     public static List<Object> displayUser(String mail) throws SQLException {
         List<Object> userBorrows = new ArrayList<>();
-        User user = UserManager.searchUser(mail); // Retrieve user details
+        User user = searchUser(mail); // Retrieve user details
         userBorrows.add(user); // Add user details to the list
 
         List<Borrow> listborrow = historyBorrow(mail); // Retrieve borrowing history for the user
@@ -208,7 +208,6 @@ public class UserManager {
                 while (rs.next()) {
                     String mail = rs.getString("mail");
                     User user = searchUser(mail); // Retrieve user details
-                    System.out.println(" ");
                     UserList.add(user); // Add user details to the list
                 }
             } catch (SQLException e) {
@@ -236,7 +235,6 @@ public class UserManager {
                 while (rs.next()) {
                     String idUser = rs.getString("idUser");
                     User user = searchUser(idUser); // Retrieve user details
-                    System.out.println(" ");
                     UserList.add(user); // Add user details to the list
                 }
             } catch (SQLException e) {

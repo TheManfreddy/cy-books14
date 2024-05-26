@@ -45,14 +45,8 @@ public class BorrowManager {
             pstmt.setInt(6, 0); // Status initially set to 0
 
             // Execute the INSERT INTO query
-            int rowsAffected = pstmt.executeUpdate();
+            pstmt.executeUpdate();
 
-            // Check if the insertion was successful
-            if (rowsAffected > 0) {
-                System.out.println("Insertion réussie !");
-            } else {
-                System.out.println("Échec de l'insertion !");
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -115,14 +109,8 @@ public class BorrowManager {
                     updateStmt.setString(2, idUser);
                     updateStmt.setString(3, isbn);
 
-                    int rowsAffected = updateStmt.executeUpdate();
+                    updateStmt.executeUpdate();
 
-                    // Check if the update was successful
-                    if (rowsAffected > 0) {
-                        System.out.println("Mise à jour réussie!");
-                    } else {
-                        System.out.println("Échec de la mise à jour!");
-                    }
                 }
             }
         } catch (SQLException e) {
@@ -223,14 +211,9 @@ public class BorrowManager {
 
             if (rs.next()) {
                 numberBorrow = rs.getInt("number_borrow");
-                System.out.println("Nombre d'emprunts actuels: " + numberBorrow);
-            } else {
-                System.out.println("Utilisateur non trouvé.");
             }
-
             // Check if the user can borrow more books
             if (numberBorrow >= 5) {
-                System.out.println("L'utilisateur a atteint le nombre maximal d'emprunts.");
                 return false;
             } else {
                 // Add a new borrow entry
@@ -244,8 +227,6 @@ public class BorrowManager {
                 int updateRows = pstmt.executeUpdate();
                 if (updateRows > 0) {
                     return true;
-                } else {
-                    System.out.println("Échec de la mise à jour du nombre d'emprunts.");
                 }
             }
 

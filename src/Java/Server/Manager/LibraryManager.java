@@ -41,7 +41,6 @@ public class LibraryManager {
         } catch (SQLException e) {
             // Handle connection and query execution errors
             e.printStackTrace();
-            // You may also use a logger to log errors
         }
 
         // Return false if the user does not exist or in case of an error
