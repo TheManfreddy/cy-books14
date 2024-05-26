@@ -192,37 +192,37 @@ public class UsersPage extends VBox {
      */
     private void createTableColumns(TableView<User> tableView) {
         // Create a column for the name
-        TableColumn<User, String> nameColumn = new TableColumn<>("Name");
+        TableColumn<User, String> nameColumn = new TableColumn<>("Nom");
         nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         nameColumn.setPrefWidth(100);
 
         // Create a column for the user
-        TableColumn<User, String> firstNameColumn = new TableColumn<>("First Name");
+        TableColumn<User, String> firstNameColumn = new TableColumn<>("Prénom");
         firstNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirst_name()));
         firstNameColumn.setPrefWidth(100);
 
         // Create a column for the mail
-        TableColumn<User, String> mailColumn = new TableColumn<>("Email");
+        TableColumn<User, String> mailColumn = new TableColumn<>("Mail");
         mailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMail()));
         mailColumn.setPrefWidth(130);
 
         // Create a column for the birthDate
-        TableColumn<User, String> birthDateColumn = new TableColumn<>("Birth Date");
+        TableColumn<User, String> birthDateColumn = new TableColumn<>("Date de naissance");
         birthDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBirth_date()));
         birthDateColumn.setPrefWidth(120);
 
         // Create a column for the address
-        TableColumn<User, String> addressColumn = new TableColumn<>("Address");
+        TableColumn<User, String> addressColumn = new TableColumn<>("Adresse");
         addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAddress()));
         addressColumn.setPrefWidth(120);
 
         // Create a column for the phone number
-        TableColumn<User, String> phoneNumberColumn = new TableColumn<>("Phone Number");
+        TableColumn<User, String> phoneNumberColumn = new TableColumn<>("Téléphone");
         phoneNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumber()));
         phoneNumberColumn.setPrefWidth(100);
 
         // Create a column for the number of borrows
-        TableColumn<User, String> numberBorrowColumn = new TableColumn<>("Borrows");
+        TableColumn<User, String> numberBorrowColumn = new TableColumn<>("Emprunts");
         numberBorrowColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumber_borrow()));
         numberBorrowColumn.setPrefWidth(80);
 
